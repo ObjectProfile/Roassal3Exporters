@@ -1,2 +1,2 @@
-# Roassal3PDFExporter
-PDF Exporter for Roassal3
+# Roassal3Exporter
+Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3)
