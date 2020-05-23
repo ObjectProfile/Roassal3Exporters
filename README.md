@@ -1,5 +1,5 @@
 # Roassal3Exporter
-Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3)
+Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3) and Pharo9
 
 
 Execute the following code snippet in a Playground:
