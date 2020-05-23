@@ -1,0 +1,38 @@
+"
+TODO
+"
+Class {
+	#name : #RSCairoExporter,
+	#superclass : #RSRoassalExporter,
+	#category : #'Roassal3-Exporters-Core'
+}
+
+{ #category : #public }
+RSCairoExporter >> cairoSurfaceClass [ 
+	^ self subclassResponsibility
+]
+
+{ #category : #public }
+RSCairoExporter >> createCairoSurfaceFor: file [
+	^ self cairoSurfaceClass 
+		extent: cameraSetter extent
+		fileName: file pathString
+]
+
+{ #category : #public }
+RSCairoExporter >> exportToFile: file [
+	| surface oldSurface morph |
+	surface := self createCairoSurfaceFor: file.
+	morph := self morph.
+	self cameraSetter set: [ 
+		oldSurface := morph surface.
+		morph surface: surface.
+		
+		morph drawShapes.
+		surface showPage; finish.
+		
+		surface := nil.
+		morph surface: oldSurface. ].
+	
+	3 timesRepeat: [ Smalltalk garbageCollect ].
+]
