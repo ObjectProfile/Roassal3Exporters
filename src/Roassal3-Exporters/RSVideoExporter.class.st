@@ -103,7 +103,7 @@ RSVideoExporter >> exportWithffmpeg: file [
 	self newProcess
 		runAndWaitOnExitDo: [ :process :outString :errString |
 		process isSuccess ifTrue: [ 
-			'MP4 file created!' traceCr.
+			self extension,' file created!' traceCr.
 			shouldRemoveTempDir ifTrue: [ tempFiles deleteAll ].
 			 ]
 		ifFalse: [
@@ -181,6 +181,7 @@ RSVideoExporter >> newProcess [
 
 { #category : #public }
 RSVideoExporter >> opaque [
+	"will produce mp4 videos"
 	hasTransparency := false
 	
 ]
@@ -220,9 +221,14 @@ RSVideoExporter >> processArguments [
 		add: '*.png';
 		yourself.
 	hasTransparency ifTrue: [ 
+		"-vcodec prores_ks -pix_fmt yuva444p10le -profile:v 4444"
 		args
 			add: '-vcodec';
-			add: 'png' ]
+			add: 'prores_ks';
+			add: '-pix_fmt';
+			add: 'yuva444p10le';
+			add: '-profile:v';
+			add: '4444' ]
 	ifFalse: [ 
 		args
 			add: '-c:v';
@@ -240,6 +246,9 @@ RSVideoExporter >> removeTempDir [
 
 { #category : #public }
 RSVideoExporter >> transparent [
+	"will produce mov videos with transparency.
+	Warning use this videos to post creation to another video, not the final video.
+	These mov files has occupy a lot space on disk, even just a few seconds"
 	hasTransparency := true
 	
 ]
