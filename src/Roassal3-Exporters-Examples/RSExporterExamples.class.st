@@ -108,6 +108,16 @@ RSExporterExamples >> example09PNGExport [
 	
 ]
 
+{ #category : #examples }
+RSExporterExamples >> example10VideoExport [
+	"should produce a png with resolution 247@247"
+	<script: 'self new example10VideoExport'>
+	self openFile: (self canvas videoExporter
+		fileName: 'test';
+		export) asFileReference
+	
+]
+
 { #category : #opening }
 RSExporterExamples >> openFile: aFileReference [ 
 	| inspector window |

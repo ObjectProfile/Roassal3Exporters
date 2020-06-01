@@ -14,6 +14,17 @@ Class {
 }
 
 { #category : #accessing }
+RSRoassalExporter >> baseName [
+	| file ext |
+	file := self fileName.
+	ext := self extension.
+	file := (file endsWith: ext)
+		ifTrue: [ file ]
+		ifFalse: [ file, '.', ext ].
+	^ file
+]
+
+{ #category : #accessing }
 RSRoassalExporter >> cameraSetter [ 
 	^ cameraSetter
 ]
@@ -32,13 +43,7 @@ RSRoassalExporter >> canvas: aRSCanvas [
 
 { #category : #accessing }
 RSRoassalExporter >> createFile [
-	| file ext |
-	file := self fileName.
-	ext := self extension.
-	file := (file endsWith: ext)
-		ifTrue: [ file ]
-		ifFalse: [ file, '.', ext ].
-	^ file asFileReference
+	^ self baseName asFileReference
 ]
 
 { #category : #accessing }

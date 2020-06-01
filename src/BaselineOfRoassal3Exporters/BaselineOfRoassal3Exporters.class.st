@@ -15,11 +15,16 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 		do: [
 			"our dependencies"
 			"https://github.com/ObjectProfile/Roassal3Exporters"
-			spec baseline: 'Roassal3' with: [ spec repository: 'github://ObjectProfile/Roassal3' ].
+			spec
+				baseline: 'Roassal3' 
+				with: [ spec repository: 'github://ObjectProfile/Roassal3' ].
+			spec 
+				baseline: 'OSSubprocess'
+				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
 			
 			"The packages to use, but not load"
 			spec
-				package: #'Roassal3-Exporters' with: [ spec requires: #('Roassal3') ].
+				package: #'Roassal3-Exporters' with: [ spec requires: #('Roassal3' 'OSSubprocess') ].
 
 			spec
 				group: 'default' with: #('Roassal3-Exporters') ].
