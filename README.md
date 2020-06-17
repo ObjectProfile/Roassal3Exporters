@@ -104,3 +104,16 @@ c videoExporter
 <img src="https://user-images.githubusercontent.com/10532890/84852814-c695a680-b02b-11ea-8070-3396c0b8931e.png" width="300">
 </a>
 
+You can export the video with transparency and then use that video to edit another video.
+
+```Smalltalk
+"..."
+c color: Color transparent.
+c videoExporter
+	duration: 2 seconds;
+	transparent;
+	fileName: 'Roassal3Demo';
+	export
+```
+
+Windows users can not use the video exporter, because it depends on OSProcess and that project does not run well in windows, let us know if this is important to you to work on that.
