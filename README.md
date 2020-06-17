@@ -11,6 +11,12 @@ Metacello new
     load.
 ``` 
 
+Available exporters:
+
+- PNG, with methods: `exportToPNG`, `pngExporter` or class `RSPNGExporter`
+- SVG, with methods: `exportToSVG`, `svgExporter` or class `RSSVGExporter`
+- PDF, with methods: `exportToPDF`, `pdfExporter` or class `RSPDFExporter`
+- Video mp4 or mov, with: methods `exportToVideo`, `videoExporter` or class `RSVideoExporter`
 
 # Example of usage:
 ```Smalltalk
@@ -40,11 +46,15 @@ RSPDFExporter new
 		canvas: c;
 		exportToFile: '/tmp/foo.pdf' asFileReference
 
-```        
+```
+
+You can access some of these exporters in the inspector
+
+<img src="https://user-images.githubusercontent.com/10532890/84853801-ff367f80-b02d-11ea-9040-5de4920e7635.png" width="400"/>
 
 # Video
 
-You can export your animations in a video you will need to load this baseline.
+You can export your animations in a video. Load this baseline to load its dependencies.
 
 ```Smalltalk
 Metacello new
@@ -99,12 +109,14 @@ c videoExporter
 	duration: 2 seconds;
 	fileName: 'Roassal3Demo';
 	export
+"result will be Roassal3Demo.mp4"
 ```
+
 <a href="https://vimeo.com/429861918" target="_blank" title="Roassal3 video demo - Click to Watch!">
-<img src="https://user-images.githubusercontent.com/10532890/84852814-c695a680-b02b-11ea-8070-3396c0b8931e.png" width="300">
+<img src="https://user-images.githubusercontent.com/10532890/84852814-c695a680-b02b-11ea-8070-3396c0b8931e.png" width="400">
 </a>
 
-You can export the video with transparency and then use that video to edit another video.
+You can export the video with transparency and then use that video to edit another video. Videos with transparency take more disk memory.
 
 ```Smalltalk
 "..."
@@ -114,6 +126,7 @@ c videoExporter
 	transparent;
 	fileName: 'Roassal3Demo';
 	export
+"result will be Roassal3Demo.mov"
 ```
 
-Windows users can not use the video exporter, because it depends on OSProcess and that project does not run well in windows, let us know if this is important to you to work on that.
+Windows users can not use the video exporter, because it depends on OSSubProcess and that project does not run well in windows, let us know if this is important to you to work on that.
