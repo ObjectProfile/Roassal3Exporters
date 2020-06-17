@@ -39,3 +39,11 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 
 
 ]
+
+{ #category : #baselines }
+BaselineOfRoassal3Exporters >> exporterDependencies [
+	
+	^ Smalltalk globals at: #RSCanvas 
+		ifPresent: [ #() ]
+		ifAbsent: [ #('Roassal3') ].
+]
