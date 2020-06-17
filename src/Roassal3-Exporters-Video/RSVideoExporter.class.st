@@ -18,7 +18,7 @@ Class {
 	#classVars : [
 		'ffmpegPath'
 	],
-	#category : #'Roassal3-Exporters-Core'
+	#category : #'Roassal3-Exporters-Video'
 }
 
 { #category : #public }

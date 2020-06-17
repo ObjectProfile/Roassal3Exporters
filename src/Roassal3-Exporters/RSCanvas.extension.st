@@ -16,11 +16,6 @@ RSCanvas >> exportToSVG [
 ]
 
 { #category : #'*Roassal3-Exporters' }
-RSCanvas >> exportToVideo [
-	^ self videoExporter export
-]
-
-{ #category : #'*Roassal3-Exporters' }
 RSCanvas >> pdfExporter [
 	^ RSPDFExporter new
 		canvas: self;
@@ -37,13 +32,6 @@ RSCanvas >> pngExporter [
 { #category : #'*Roassal3-Exporters' }
 RSCanvas >> svgExporter [
 	^ RSSVGExporter new
-		canvas: self;
-		yourself
-]
-
-{ #category : #'*Roassal3-Exporters' }
-RSCanvas >> videoExporter [
-	^ RSVideoExporter new
 		canvas: self;
 		yourself
 ]
