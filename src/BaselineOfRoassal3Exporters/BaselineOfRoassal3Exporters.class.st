@@ -21,6 +21,9 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 			spec 
 				baseline: 'OSSubprocess'
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
+			spec
+				baseline: 'Units'
+				with: [ spec repository: 'github://zweidenker/Units' ].
 			
 			"The packages to use, but not load"
 			spec
@@ -53,8 +56,7 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 
 { #category : #baselines }
 BaselineOfRoassal3Exporters >> exporterDependencies [
-	
 	^ Smalltalk globals at: #RSCanvas 
-		ifPresent: [ #() ]
-		ifAbsent: [ #('Roassal3') ].
+		ifPresent: [ #('Units') ]
+		ifAbsent: [ #('Roassal3' 'Units') ].
 ]

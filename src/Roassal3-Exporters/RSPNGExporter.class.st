@@ -11,8 +11,11 @@ Class {
 RSPNGExporter >> exportToFile: file [
 	| morph |
 	morph := self morph.
-	self cameraSetter set: [ 
-		morph surface writeToPng: file pathString.
+	self cameraSetter set: [
+		| surface |
+		surface := AthensCairoSurface extent: morph extent asIntegerPoint.
+		surface drawDuring: [ :can | morph fullDrawOnAthensCanvas: can ].
+		surface writeToPng: file pathString.
 		 ]
 ]
 

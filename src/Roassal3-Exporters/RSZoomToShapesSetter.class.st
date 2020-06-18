@@ -3,7 +3,7 @@ TODO
 "
 Class {
 	#name : #RSZoomToShapesSetter,
-	#superclass : #RSCamSetter,
+	#superclass : #RSAbstractCamSetter,
 	#category : #'Roassal3-Exporters-Setters'
 }
 

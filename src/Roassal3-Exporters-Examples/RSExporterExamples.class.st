@@ -109,10 +109,28 @@ RSExporterExamples >> example09PNGExport [
 ]
 
 { #category : #examples }
-RSExporterExamples >> example10VideoExport [
-	"should produce a png with resolution 247@247"
-	<script: 'self new example10VideoExport'>
-	self openFile: (self canvas videoExporter
+RSExporterExamples >> example11PDFExport [
+	"should produce a pdf with resolution 8.26 inches@ 11.69 inches"
+	<script: 'self new example11PDFExport'>
+	| c lbls |
+	c := RSCanvas new.
+
+	lbls := RSGroup new.
+	Collection withAllSubclassesDo: [ :cls | | lbl |
+	    lbl := RSLabel new text: cls name; model: cls.
+	    lbls add: lbl ].
+	c addAll: lbls.
+
+	RSNormalizer fontSize
+	    shapes: lbls;
+	    normalize: #numberOfMethods.
+	c @ RSCanvasController.
+	c @ RSHierarchyPacker.
+	"c extent: RSPageExtent letter.
+	c extent: RSPageExtent a4."
+	c extent: (RSPageExtent from: 8.26 inches@ 11.69 inches).
+	
+	self openFile: (c pdfExporter
 		fileName: 'test';
 		export) asFileReference
 	
