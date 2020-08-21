@@ -130,3 +130,21 @@ c videoExporter
 ```
 
 Windows users can not use the video exporter, because it depends on OSSubProcess and that project does not run well in windows, let us know if this is important to you to work on that.
+
+# AFrame 3D
+
+You can export a canvas to an html 3D basic exporter with AFrame <a href="https://aframe.io/" target="_blank">https://aframe.io/</a>
+
+```Smalltalk
+Metacello new
+    baseline: 'Roassal3Exporters';
+    repository: 'github://ObjectProfile/Roassal3Exporters';
+    load: 'AFrame'.
+```
+
+Then execute the example `example12AFrameExport`, you will get:
+
+<img src="https://user-images.githubusercontent.com/10532890/90902971-4842e100-e39b-11ea-93fe-418cb1b5e0f8.png" width="400">
+
+
+
