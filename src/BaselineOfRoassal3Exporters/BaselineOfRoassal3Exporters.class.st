@@ -30,7 +30,8 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 				package: #'Roassal3-Exporters' with: [ spec requires: self exporterDependencies ];
 				package: #'Roassal3-Exporters-Examples';
 				package: #'Roassal3-Exporters-Tests';
-				package: #'Roassal3-Exporters-Video' with: [spec requires: #('OSSubprocess') ].
+				package: #'Roassal3-Exporters-Video' with: [spec requires: #('OSSubprocess') ];
+				package: #'Roassal3-Exporters-AFrame'.
 				
 
 			spec
@@ -41,6 +42,10 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 				group: 'Video' with: #(
 					'Core'
 					'Roassal3-Exporters-Video');
+				group: 'AFrame' with: #(
+					'Core'
+					'Roassal3-Exporters-AFrame'
+				);
 				group: 'default' with: #('Core') ].
 
 		
