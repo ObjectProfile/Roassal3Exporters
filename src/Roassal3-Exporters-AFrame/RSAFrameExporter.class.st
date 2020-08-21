@@ -12,6 +12,15 @@ Class {
 	#category : #'Roassal3-Exporters-AFrame'
 }
 
+{ #category : #accessing }
+RSAFrameExporter >> angleFor: aShape [
+	| m a b |
+	m := aShape matrix.
+	a := m transform: 0@0.
+	b := m transform: 1@0.
+	^ (b-a) angle negated radiansToDegrees
+]
+
 { #category : #public }
 RSAFrameExporter >> exportToFile: file [
 	file writeStreamDo: [ :s | self writeToStream: s ]. 
@@ -58,17 +67,27 @@ RSAFrameExporter >> visitCanvas: aRSCanvas [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLabel: aRSLabel [
-	| color |
+	| color angle delta |
 	color := aRSLabel color.
-	
+	angle := self angleFor: aRSLabel.
+	delta := angle isZero
+		ifTrue: [ 100@0 ]
+		ifFalse: [ -20@ -100 ].
 	stream << '<a-entity position="'.
-	self write3DPoint: aRSLabel position+(100@0).
+	self write3DPoint: aRSLabel position+delta .
+	angle isZero ifFalse: [ 
+		stream 
+			<< '" rotation="0 0 ';
+			<< angle asString
+		 ].
 	stream 
-		<< '" text="width: 1.5; color: #';
+		<< '" text="width: 1.5';
+		<< '; color: #';
 		<< color asHexString;
 		<< '; value: ';
 		<< aRSLabel text;
-		<< '"></a-entity>'
+		<< '" ></a-entity>'
+
 
 ]
 
