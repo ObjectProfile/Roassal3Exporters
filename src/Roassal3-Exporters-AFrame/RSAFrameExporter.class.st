@@ -7,7 +7,8 @@ Class {
 	#instVars : [
 		'stream',
 		'scale',
-		'translation'
+		'translation',
+		'shouldRenderFloor'
 	],
 	#category : #'Roassal3-Exporters-AFrame'
 }
@@ -37,6 +38,13 @@ RSAFrameExporter >> initialize [
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.5.
+	shouldRenderFloor := true.
+]
+
+{ #category : #'public - configuration' }
+RSAFrameExporter >> noFloor [
+	"Do not have a floor"
+	shouldRenderFloor := false
 ]
 
 { #category : #visiting }
@@ -148,19 +156,23 @@ RSAFrameExporter >> writeHMTL [
 
 { #category : #writing }
 RSAFrameExporter >> writeShapes [
+
 	self write: '
 <a-scene background="color: #fff" stats>
 <a-assets>
 <img id="floor" src="'.
 	self write: self floorImgBase64.
 	self write: '">
-</a-assets>
-<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
-'.
+</a-assets>'.
+
+	shouldRenderFloor ifTrue: [ 
+		self write:
+			'<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+' ].
 	canvas accept: self.
 	self write: '
 </a-scene>
-'.
+'
 ]
 
 { #category : #writing }
