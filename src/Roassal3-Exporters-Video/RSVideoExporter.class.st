@@ -88,7 +88,7 @@ RSVideoExporter >> exportToDirectory: directory [
 	maxIndex := fps * (self duration asSeconds max: 1).
 	(1 to: maxIndex) do: [ :index |
 		self exportFrame: index
-	] displayingProgress: ['Rendering'].
+	] displayingProgress: [:i | 'Rendering ', i asString,'/', maxIndex asString ].
 	canvas timer: oldTimer.
 ]
 
