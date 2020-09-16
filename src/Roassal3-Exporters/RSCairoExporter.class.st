@@ -29,10 +29,9 @@ RSCairoExporter >> exportToFile: file [
 		morph surface: surface.
 		
 		morph drawShapes.
-		surface showPage; finish.
+		surface close.
 		
 		surface := nil.
 		morph surface: oldSurface. ].
 	
-	3 timesRepeat: [ Smalltalk garbageCollect ].
 ]

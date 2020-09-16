@@ -136,6 +136,55 @@ RSExporterExamples >> example11PDFExport [
 	
 ]
 
+{ #category : #examples }
+RSExporterExamples >> example12SVGRelax [
+	<script: 'self new example12SVGRelax open
+		extent: 2340@1080 *0.5;
+		setLabel: ''Easy Breezy'''>
+	| canvas label file svg contents i1 i2 frame perlin visitor r |
+	canvas := RSCanvas new.
+	r := Random new.
+	canvas add: (label := RSLabel new
+		border: (RSBorder new color: Color black);
+		paint: Color red;
+		text: 'Relax';
+		fontSize: 100;
+		yourself).
+	file := canvas svgExporter export asFileReference.
+	label remove.
+	contents := file contents.
+	i1 := (contents indexOfSubCollection: 'd="M')+3.
+	i2 := (contents indexOf: $" startingAt: i1)-1.
+	svg := RSSVGPath new svgPath: (contents copyFrom: i1 to: i2).
+	file delete.
+	
+	visitor := RSBlockSegmentsVisitor new.
+	visitor simplePoints:[ :segment :current |
+		canvas addAll: ((segment pointsWithStart: current) collect: [:p |
+			(RSEllipse new
+				size: (r next * 2.5 +1.5);
+				position: p;
+				color: Color black;
+				yourself) ]).
+		].
+		
+	svg accept: visitor.
+	frame := 0.
+	perlin := NSPerlinNoise3 new octaves: 5.
+	canvas newAnimation repeat; onStepDo: [ :t |
+		canvas nodes doWithIndex: [ :each :i | 
+			| n |
+			n := (perlin noise: (each position + frame)* 0.01)- 0.5.
+			each translateBy: n.
+			].
+		frame := frame + 1.
+		canvas signalUpdate.
+		].
+	canvas when: RSExtentChangedEvent send: #zoomToFit to: canvas.
+	^ canvas
+
+]
+
 { #category : #opening }
 RSExporterExamples >> openFile: aFileReference [ 
 	| inspector window |
