@@ -151,6 +151,8 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js">
+</script>
 </head>
 <body>
 '.
