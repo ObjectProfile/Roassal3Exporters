@@ -72,7 +72,11 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-	stream << '<a-camera position="0 1.6 4"></a-camera>'; crlf.
+	stream << '<a-camera position="0 1.6 4">';
+			 << '<a-text id="cylinderText" value="Prueba';
+			 << '" align="center" width="4" color="#FFF"';
+			 << 'visible="false" position="-2 -2 -4" geometry="primitive: plane; width: 1.75"'; 			 			 			 << 'material="color: #333"></a-text> ';
+			 << '<a-cursor></a-cursor></a-camera>'; crlf.
 	aRSCanvas shapes do: [ :shape | shape accept: self ] separatedBy: [ stream crlf ].
 ]
 
