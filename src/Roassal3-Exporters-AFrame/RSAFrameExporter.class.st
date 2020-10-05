@@ -65,7 +65,8 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 		<< (extent x min: extent y) asString;
 		<< '" color= "#';
 		<< color asHexString;
-		<< '" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		<< '#cylinderText; visible: true;"';
+		<< '" change-color-on-hover="color: #8FF7FF"';
+		<< ' roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		<< '#cylinderText; visible: true;"';
 		<< ' event-set__leave="_event: mouseleave;  _target: #cylinderText; visible: false;';
 		<<'" ></a-box>'.
 ]
