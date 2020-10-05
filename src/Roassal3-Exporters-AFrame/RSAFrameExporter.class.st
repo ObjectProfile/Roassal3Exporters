@@ -8,7 +8,8 @@ Class {
 		'stream',
 		'scale',
 		'translation',
-		'shouldRenderFloor'
+		'shouldRenderFloor',
+		'dictionary'
 	],
 	#category : #'Roassal3-Exporters-AFrame'
 }
@@ -53,18 +54,20 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 	extent := aShape extent * scale abs.
 	color := aShape color.
 	color ifNil: [ ^ self ].
-	stream << '<a-entity position="'.
+	stream << '<a-box position="'.
 	self write3DPoint: aShape position.
 	stream 
-		<< '" geometry="primitive: box; width: ';
+		<< '" width=" ';
 		<< extent x asString; space; 
-		<< '; height: ';
+		<< '" height=" ';
 		<< extent y asString; 
-		<< '; depth: ';
+		<< '" depth=" ';
 		<< (extent x min: extent y) asString;
-		<< ';" material="color: #';
+		<< '" color= "#';
 		<< color asHexString;
-		<< '; roughness: 1.0; metalness: 0.2;" ></a-entity>'.
+		<< '" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		<< '#cylinderText; visible: true;"';
+		<< ' event-set__leave="_event: mouseleave;  _target: #cylinderText; visible: false;';
+		<<'" ></a-box>'.
 ]
 
 { #category : #visiting }
