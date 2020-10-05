@@ -152,7 +152,27 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js">
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+  <script>
+  AFRAME.registerComponent(''change-color-on-hover'', {
+    schema: {
+      color: {default: ''1F77B4''}
+    },
+
+    init: function () {
+      var data = this.data;
+      var el = this.el;  // <a-box>
+      var defaultColor = el.getAttribute(''material'').color;
+
+      el.addEventListener(''mouseenter'', function () {
+        el.setAttribute(''color'', data.color);
+      });
+
+      el.addEventListener(''mouseleave'', function () {
+        el.setAttribute(''color'', defaultColor);
+      });
+    }
+  });
 </script>
 </head>
 <body>
