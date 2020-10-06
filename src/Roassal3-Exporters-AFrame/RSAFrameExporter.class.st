@@ -66,15 +66,16 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 		<< '" color= "#';
 		<< color asHexString;
 		<< '" change-color-on-hover="color: #8FF7FF"';
-		<< ' roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		<< '#cylinderText; visible: true;"';
-		<< ' event-set__leave="_event: mouseleave;  _target: #cylinderText; visible: false;';
+		<< ' roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		
+		<< '#idPopUP; visible: true;"';
+		<< ' event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;';
 		<<'" ></a-box>'.
 ]
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [ 
 	stream << '<a-camera position="0 1.6 4">';
-			 << '<a-text id="cylinderText" value="Prueba';
+			 << '<a-text id="idPopUP" value="Prueba';
 			 << '" align="center" width="4" color="#FFF"';
 			 << 'visible="false" position="2 2 -4" geometry="primitive: plane; width: 1.75"'; 			 			 			 << 'material="color: #333"></a-text> ';
 			 << '<a-cursor></a-cursor></a-camera>'; crlf.
@@ -166,6 +167,9 @@ RSAFrameExporter >> writeHMTL [
 
       el.addEventListener(''mouseenter'', function () {
         el.setAttribute(''color'', data.color);
+          var height = Math.round(el.getAttribute(''height'')*10);
+          document.getElementById(''idPopUP'').value = height;
+          console.log(document.getElementById(''idPopUP'').value);
       });
 
       el.addEventListener(''mouseleave'', function () {
