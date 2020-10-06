@@ -116,7 +116,7 @@ RSAFrameExporter >> visitLine: aRSLine [
 	stream  << '" end=" '.
 	self write3DPoint: aRSLine endPoint.
 	stream 
-		<< '" color= #"';
+		<< '" color= "#';
 		<< color; 
 		<< '"></a-line>'.
 
