@@ -164,12 +164,14 @@ RSAFrameExporter >> writeHMTL [
       var data = this.data;
       var el = this.el;  // <a-box>
       var defaultColor = el.getAttribute(''material'').color;
+		var aTextPopUP = document.querySelector(''#idPopUP'');
 
       el.addEventListener(''mouseenter'', function () {
         el.setAttribute(''color'', data.color);
-          var height = Math.round(el.getAttribute(''height'')*10);
-          document.getElementById(''idPopUP'').value = height;
-          console.log(document.getElementById(''idPopUP'').value);
+        var txtInfo = ''Height: ''+ el.getAttribute(''height'') + ''\n'' + ''Width: ''+ el.getAttribute(''width'') + ''\n'' + ''Depth: ''+ el.getAttribute(''depth'');
+        document.getElementById(''idPopUP'').value = txtInfo;
+        console.log(document.getElementById(''idPopUP'').value);
+        aTextPopUP.setAttribute(''value'',txtInfo);
       });
 
       el.addEventListener(''mouseleave'', function () {
