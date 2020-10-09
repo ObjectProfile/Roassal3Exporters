@@ -65,8 +65,9 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 		<< (extent x min: extent y) asString;
 		<< '" color= "#';
 		<< color asHexString;
-		<< '" change-color-on-hover="color: #8FF7FF"';
-		<< ' roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		
+		<< '" change-color-on-hover="color: #';
+		<< color muchLighter asHexString;
+		<< '" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		
 		<< '#idPopUP; visible: true;"';
 		<< ' event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;';
 		<<'" ></a-box>'.
