@@ -183,7 +183,7 @@ RSAFrameExporter >> writeShapes [
 <a-scene background="color: #fff" stats>
 <a-assets>
 <a-image id="floor" src="'.
-	self write: self floorImgBase64.
+	self write: self floorImg.
 	self write: '"></a-image>
 </a-assets>'.
 
