@@ -60,27 +60,11 @@ RSAFrameExporter >> stream: aWriteStream [
 
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
-	| color extent |
-	extent := aShape extent * scale abs.
-	color := aShape color.
-	color ifNil: [ ^ self ].
-	stream << '<a-box position="'.
-	self write3DPoint: aShape position.
-	stream 
-		<< '" width=" ';
-		<< extent x asString; space; 
-		<< '" height=" ';
-		<< extent y asString; 
-		<< '" depth=" ';
-		<< (extent x min: extent y) asString;
-		<< '" color= "#';
-		<< color asHexString;
-		<< '" change-color-on-hover="color: #';
-		<< color muchLighter asHexString;
-		<< '" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:'; 		
-		<< '#idPopUP; visible: true;"';
-		<< ' event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;';
-		<<'" ></a-box>'.
+	"| color extent |"
+	"extent := aShape extent * scale abs."
+	"color := aShape color."
+	aShape printOnAFrame: self.
+
 ]
 
 { #category : #visiting }
