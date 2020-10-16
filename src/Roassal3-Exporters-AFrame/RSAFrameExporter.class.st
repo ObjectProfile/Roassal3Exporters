@@ -29,6 +29,11 @@ RSAFrameExporter >> exportToFile: file [
 ]
 
 { #category : #accessing }
+RSAFrameExporter >> floorImg [
+	^ 'https://i.imgur.com/dckg70j.jpg'
+]
+
+{ #category : #accessing }
 RSAFrameExporter >> floorImgBase64 [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
