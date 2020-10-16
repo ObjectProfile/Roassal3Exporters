@@ -33,3 +33,11 @@ RSAFrameExporterTest >> testElipse [
 	elipse printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
+
+{ #category : #tests }
+RSAFrameExporterTest >> testImage [
+	"Check it is Ok floorImgBase64"	
+	| stream |
+	stream := RSAFrameExporter new.
+	self assert: stream floorImg  equals: imgFloor.
+]
