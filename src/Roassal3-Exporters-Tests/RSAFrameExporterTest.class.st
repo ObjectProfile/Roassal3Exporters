@@ -24,3 +24,12 @@ RSAFrameExporterTest >> testBox [
 	box printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
+
+{ #category : #tests }
+RSAFrameExporterTest >> testElipse [
+	| result elipse |
+	result := '<a-sphere radius="0.0 0.0 0.0" position="0.0 0.5 0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:#idPopUP; visible: true;" event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;" ></a-sphere>'.
+	elipse := RSEllipse new.
+	elipse printOnAFrame: aFrameExporter.
+	self assert: aFrameExporter stream contents equals: result.
+]
