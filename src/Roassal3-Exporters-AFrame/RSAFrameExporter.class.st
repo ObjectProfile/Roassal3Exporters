@@ -33,11 +33,6 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
-{ #category : #accessing }
-RSAFrameExporter >> floorImgBase64 [
-	^ 'https://i.imgur.com/dckg70j.jpg'
-]
-
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
