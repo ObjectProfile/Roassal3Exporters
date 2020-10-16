@@ -105,16 +105,8 @@ RSAFrameExporter >> visitLabel: aRSLabel [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLine: aRSLine [
-	| color |
-	color := aRSLine color asHexString.
-	stream << '<a-entity line= "start: '.
-	self write3DPoint: aRSLine startPoint.
-	stream  << '; end: '.
-	self write3DPoint: aRSLine endPoint.
-	stream 
-		<< '; color: #';
-		<< color; 
-		<< '"></a-entity>'.
+	aRSLine printOnAFrame: self.	
+
 ]
 
 { #category : #writing }
