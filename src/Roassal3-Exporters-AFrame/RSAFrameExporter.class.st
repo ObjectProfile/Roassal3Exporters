@@ -153,11 +153,11 @@ RSAFrameExporter >> writeHMTL [
 		var aTextPopUP = document.querySelector(''#idPopUP'');
 
       el.addEventListener(''mouseenter'', function () {
-        el.setAttribute(''color'', data.color);
-        var txtInfo = ''Height: ''+ el.getAttribute(''height'') + ''\n'' + ''Width: ''+ el.getAttribute(''width'') + ''\n'' + ''Depth: ''+ el.getAttribute(''depth'');
-        document.getElementById(''idPopUP'').value = txtInfo;
-        console.log(document.getElementById(''idPopUP'').value);
-        aTextPopUP.setAttribute(''value'',txtInfo);
+		el.setAttribute(''color'', data.color);
+		var txtInfo = ''Height: '' + el.getAttribute(''height'') + ''\n'' + ''Width: '' + el.getAttribute(''width'') + ''\n'' + ''Depth: '' + el.getAttribute(''depth'');
+		document.getElementById(''idPopUP'').value = txtInfo;
+		console.log(document.getElementById(''idPopUP'').value);
+		aTextPopUP.setAttribute(''value'', txtInfo);
       });
 
       el.addEventListener(''mouseleave'', function () {
