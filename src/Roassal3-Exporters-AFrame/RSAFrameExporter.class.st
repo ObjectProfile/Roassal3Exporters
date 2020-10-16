@@ -48,6 +48,16 @@ RSAFrameExporter >> noFloor [
 	shouldRenderFloor := false
 ]
 
+{ #category : #accesing }
+RSAFrameExporter >> stream [
+	^ stream
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> stream: aWriteStream [ 
+	stream := aWriteStream
+]
+
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
 	| color extent |
