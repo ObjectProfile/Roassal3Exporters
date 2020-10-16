@@ -41,3 +41,12 @@ RSAFrameExporterTest >> testImage [
 	stream := RSAFrameExporter new.
 	self assert: stream floorImg  equals: imgFloor.
 ]
+
+{ #category : #tests }
+RSAFrameExporterTest >> testLine [
+	| result line |
+	result := '<a-entity line= "start: 0.0 0.5 0; end: 0.6 -0.09999999999999998 0; color: #404040"></a-entity>'.
+	line := RSLine new.
+	line printOnAFrame: aFrameExporter.
+	self assert: aFrameExporter stream contents equals: result.
+]
