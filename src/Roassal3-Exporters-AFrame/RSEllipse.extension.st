@@ -10,8 +10,10 @@ RSEllipse >> printOnAFrame: aRSAFrameExporter [
 	color := self color.
 	color ifNil: [ ^self ].
 	radius := extent / 2.0.
-	stream << '<a-sphere radius="'.
+	stream << '<a-sphere '.
+	self model ifNotNil: [ stream <<'model="'; << self model asString; <<'" ' ].
 	stream
+		<< 'radius="';
 		<< radius x asString; space;
 		<< radius y asString; space;
 		<< (radius x min: radius y) asString;
