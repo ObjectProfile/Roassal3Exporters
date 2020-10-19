@@ -9,7 +9,9 @@ RSBox >> printOnAFrame: aRSAFrameExporter [
 	extent := self extent * scale abs.
 	color := self color.
 	color ifNil: [ ^ self ].
-	stream << '<a-box position="'.
+	stream << '<a-box '. 
+	self model ifNotNil: [ stream <<'model="'; << self model asString; <<'" ' ].
+	stream <<'position="'.
 	aRSAFrameExporter write3DPoint: self position.
 	stream 
 		<< '" width=" ';
