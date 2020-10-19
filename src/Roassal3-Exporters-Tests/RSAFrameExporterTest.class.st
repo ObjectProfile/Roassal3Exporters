@@ -50,3 +50,13 @@ RSAFrameExporterTest >> testLine [
 	line printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
+
+{ #category : #tests }
+RSAFrameExporterTest >> testPopUp [
+	| result box |
+	result := '<a-box model="Collection" position="0.0 0.5 0" width=" 0.0 " height=" 0.0" depth=" 0.0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:#idPopUP; visible: true;" event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;" ></a-box>'.
+	box := RSBox new.
+	box model: Collection. 
+	box printOnAFrame: aFrameExporter.
+	self assert: aFrameExporter stream contents equals: result.
+]
