@@ -79,26 +79,7 @@ RSAFrameExporter >> visitCanvas: aRSCanvas [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLabel: aRSLabel [
-	| color angle delta |
-	color := aRSLabel color.
-	angle := self angleFor: aRSLabel.
-	delta := angle isZero
-		ifTrue: [ 100@0 ]
-		ifFalse: [ -20@ -100 ].
-	stream << '<a-entity position="'.
-	self write3DPoint: aRSLabel position+delta .
-	angle isZero ifFalse: [ 
-		stream 
-			<< '" rotation="0 0 ';
-			<< angle asString
-		 ].
-	stream 
-		<< '" text="width: 1.5';
-		<< '; color: #';
-		<< color asHexString;
-		<< '; value: ';
-		<< aRSLabel text;
-		<< '" ></a-entity>'
+	aRSLabel printOnAFrame: self.
 
 
 ]
