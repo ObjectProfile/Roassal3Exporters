@@ -43,6 +43,16 @@ RSAFrameExporterTest >> testImage [
 ]
 
 { #category : #tests }
+RSAFrameExporterTest >> testLabel [
+	| result label |
+	result := '<a-entity position="0.6 0.5 0" text="width: 1.5; color: #000000; value:hello world" ></a-entity>'.
+	label := RSLabel new.
+	label text: 'hello world'.
+	label printOnAFrame: aFrameExporter.
+	self assert: aFrameExporter stream contents equals: result.
+]
+
+{ #category : #tests }
 RSAFrameExporterTest >> testLine [
 	| result line |
 	result := '<a-entity line= "start: 0.0 0.5 0; end: 0.6 -0.09999999999999998 0; color: #404040"></a-entity>'.
