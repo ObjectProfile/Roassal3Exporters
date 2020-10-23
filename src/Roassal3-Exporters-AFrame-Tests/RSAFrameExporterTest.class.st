@@ -5,7 +5,7 @@ Class {
 		'imgFloor',
 		'aFrameExporter'
 	],
-	#category : #'Roassal3-Exporters-Tests'
+	#category : #'Roassal3-Exporters-AFrame-Tests'
 }
 
 { #category : #running }
