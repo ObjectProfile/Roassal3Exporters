@@ -10,3 +10,16 @@ smalltalk:
 
 matrix:
   fast_finish: true
+  include: 
+      - smalltalk: Pharo64-9.0
+        smalltalk_config: .smalltalk.ston
+        os: osx
+      - smalltalk: Pharo64-9.0
+        smalltalk_config: .smalltalk_aframe.ston
+        os: osx
+      - smalltalk: Pharo64-9.0
+        smalltalk_config: .smalltalk.ston
+        os: linux
+      - smalltalk: Pharo64-9.0
+        smalltalk_config: .smalltalk_aframe.ston
+        os: linux
