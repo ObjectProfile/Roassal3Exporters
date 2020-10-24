@@ -24,3 +24,26 @@ RSExporterExamples >> example12AFrameExport [
 		export) asFileReference
 	
 ]
+
+{ #category : #'*Roassal3-Exporters-AFrame' }
+RSExporterExamples >> example13AFrameExport [
+	"This example uses AFrame to build a 3d basic scene in a webbrowser"
+	<script: 'self new example13AFrameExport'>
+	| m |
+	m := RSMondrian new.
+	m shape label height: 30.
+	m nodes: Collection withAllSubclasses.
+	m line connectFrom: #superclass.
+
+	m normalizeSize: #numberOfMethods.
+	m normalizeColor: #numberOfLinesOfCode.
+
+	m layout tree.
+	m build.
+
+	m canvas aFrameExporter
+	
+		noFloor;
+			fileName: '/tmp/foo';
+			export
+]
