@@ -1,0 +1,11 @@
+SmalltalkCISpec {
+  #preLoading: 'scripts/preLoading.st',
+  #loading : [
+    SCIMetacelloLoadSpec {
+      #baseline : 'Roassal3Exporters',
+      #directory : 'src',
+      #load : [ 'AFrame' ],
+      #platforms : [ #pharo ]
+    }
+  ]
+}
