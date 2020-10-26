@@ -17,7 +17,7 @@ RSLine >> printOnAFrame: aRSAFrameExporter [
 		<< 'height:';
 		<< height asString ;
 		<<'" position=" '.
-	aRSAFrameExporter write3DPoint: self position  .
+	aRSAFrameExporter write3DPoint: self position.
 	angle isZero ifFalse: [ 
 	stream 
 		<< '" rotation=" 0 0 ';
