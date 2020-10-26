@@ -23,6 +23,11 @@ RSAFrameExporter >> angleFor: aShape [
 	^ (b-a) angle negated radiansToDegrees
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> exportAndOpen [
+	WebBrowser openOn: self export asFileReference asUrl asString
+]
+
 { #category : #public }
 RSAFrameExporter >> exportToFile: file [
 	file writeStreamDo: [ :s | self writeToStream: s ]. 

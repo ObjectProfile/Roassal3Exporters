@@ -55,7 +55,7 @@ RSAFrameExporterTest >> testLabel [
 { #category : #tests }
 RSAFrameExporterTest >> testLine [
 	| result line |
-	result := '<a-entity line= "start: 0.0 0.5 0; end: 0.6 -0.09999999999999998 0; color: #404040"></a-entity>'.
+	result := '<a-entity geometry="primitive: cylinder; radius: 0.003; height:0.8485281374238571" position=" 0.3 0.2 0" rotation=" 0 0 -135.0" material=" color:#404040"></a-entity>'.
 	line := RSLine new.
 	line printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
