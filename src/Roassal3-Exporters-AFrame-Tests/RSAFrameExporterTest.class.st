@@ -45,7 +45,7 @@ RSAFrameExporterTest >> testImage [
 { #category : #tests }
 RSAFrameExporterTest >> testLabel [
 	| result label |
-	result := '<a-entity position="0.6 0.5 0" text="width: 1.5; color: #808080; value:hello world" ></a-entity>'.
+	result := '<a-entity position="0.6 0.5 0" text="width: 1.5; color: #000000; value:hello world" ></a-entity>'.
 	label := RSLabel new.
 	label text: 'hello world'.
 	label printOnAFrame: aFrameExporter.
