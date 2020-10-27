@@ -145,11 +145,13 @@ RSAFrameExporter >> writeHMTL [
 			document.getElementById(''idPopUP'').value = txtInfo;
 			console.log(document.getElementById(''idPopUP'').value);
 			aTextPopUP.setAttribute(''value'', txtInfo);
+			aTextPopUP.setAttribute(''visible'', true);
 		}
       });
 
       el.addEventListener(''mouseleave'', function () {
         el.setAttribute(''color'', defaultColor);
+		  aTextPopUP.setAttribute(''visible'', false);
       });
     }
   });
