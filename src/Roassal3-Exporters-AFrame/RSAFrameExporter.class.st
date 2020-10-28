@@ -44,7 +44,7 @@ RSAFrameExporter >> initialize [
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.5.
-	shouldRenderFloor := true.
+	shouldRenderFloor := true. "chequear el piso y crear un nuevo metodo que lo cree y ver el tema de bajar la posicion del piso y la camara"
 ]
 
 { #category : #'public - configuration' }
@@ -125,6 +125,7 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
 <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
   <script>
   AFRAME.registerComponent(''change-color-on-hover'', {
