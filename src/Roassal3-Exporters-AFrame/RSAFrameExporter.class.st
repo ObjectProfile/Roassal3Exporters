@@ -95,6 +95,12 @@ RSAFrameExporter >> visitLine: aRSLine [
 
 ]
 
+{ #category : #'public - configuration' }
+RSAFrameExporter >> withFloor [
+	"Do not have a floor"
+	shouldRenderFloor := true
+]
+
 { #category : #writing }
 RSAFrameExporter >> write3DPoint: aPoint [ 
 	| p |
