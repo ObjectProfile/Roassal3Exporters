@@ -177,16 +177,15 @@ RSAFrameExporter >> writeHMTL [
 RSAFrameExporter >> writeShapes [
 
 	self write: '
-<a-scene background="color: #fff" stats>
-<a-assets>
-<a-image id="floor" src="'.
-	self write: self floorImg.
-	self write: '"></a-image>
-</a-assets>'.
+<a-scene background="color: #fff" stats>'.
 
 	shouldRenderFloor ifTrue: [ 
-		self write:
-			'<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+		self write: '<a-assets>
+<a-image id="floor" src="'.
+		self write: self floorImg.
+		self write: '"></a-image>
+</a-assets>
+			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
 	canvas accept: self.
 	self write: '
