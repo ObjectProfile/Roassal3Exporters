@@ -45,7 +45,7 @@ RSAFrameExporterTest >> testImage [
 { #category : #tests }
 RSAFrameExporterTest >> testLabel [
 	| result label |
-	result := '<a-entity position="0.6 0.5 0" text="width: 1.5; color: #000000; value:hello world" ></a-entity>'.
+	result := '<a-entity position="0.6 0.5 0" text="width: 1.5; color: #808080; value:hello world" ></a-entity>'.
 	label := RSLabel new.
 	label text: 'hello world'.
 	label printOnAFrame: aFrameExporter.
@@ -64,7 +64,7 @@ RSAFrameExporterTest >> testLine [
 { #category : #tests }
 RSAFrameExporterTest >> testPopUp [
 	| result box |
-	result := '<a-box model="Collection" position="0.0 0.5 0" width=" 0.0 " height=" 0.0" depth=" 0.0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" event-set__enter="_event: mouseenter;  _target:#idPopUP; visible: true;" event-set__leave="_event: mouseleave;  _target: #idPopUP; visible: false;" ></a-box>'.
+	result := '<a-box model="Collection" position="0.0 0.5 0" width=" 0.0 " height=" 0.0" depth=" 0.0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
 	box := RSBox new.
 	box model: Collection. 
 	box printOnAFrame: aFrameExporter.
