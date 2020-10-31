@@ -206,7 +206,13 @@ RSAFrameExporter >> writeHMTL [
 RSAFrameExporter >> writeShapes [
 
 	self write: '
-<a-scene background="color: #fff" stats>'.
+<a-scene '.
+	shouldRenderAR | shouldRenderQR 
+		ifTrue:  [ self write: 'embedded arjs ' ]
+		
+		ifFalse: [ self write: 'background="color: #fff" ' ].
+
+self write: 'stats>'.
 
 	shouldRenderFloor ifTrue: [ 
 		self write: '<a-assets>
