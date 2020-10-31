@@ -123,6 +123,13 @@ RSAFrameExporter >> withFloor [
 	shouldRenderFloor := true
 ]
 
+{ #category : #'public - configuration' }
+RSAFrameExporter >> withQR [
+	"with QR presset hiro Image"
+	shouldRenderQR := true.
+	shouldRenderFloor := false.
+]
+
 { #category : #writing }
 RSAFrameExporter >> write3DPoint: aPoint [ 
 	| p |
