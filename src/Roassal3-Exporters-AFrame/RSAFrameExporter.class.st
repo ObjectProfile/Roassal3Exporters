@@ -9,7 +9,9 @@ Class {
 		'scale',
 		'translation',
 		'shouldRenderFloor',
-		'dictionary'
+		'dictionary',
+		'shouldRenderAR',
+		'shouldRenderQR'
 	],
 	#category : #'Roassal3-Exporters-AFrame'
 }
@@ -44,7 +46,9 @@ RSAFrameExporter >> initialize [
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.5.
-	shouldRenderFloor := false. "chequear el piso y crear un nuevo metodo que lo cree y ver el tema de bajar la posicion del piso y la camara"
+	shouldRenderFloor := false.
+	shouldRenderAR := false.
+	shouldRenderQR := false.
 ]
 
 { #category : #'public - configuration' }
