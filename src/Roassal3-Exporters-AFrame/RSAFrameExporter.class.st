@@ -78,11 +78,22 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-	stream << '<a-camera position="0 1.6 4">';
+			 shouldRenderQR 
+					ifTrue: [ self write: '<a-marker-camera preset="hiro"']
+					ifFalse: [ self write: '<a-camera '].
+		stream
+			 << 'position="0 1.6 4">';
 			 << '<a-text id="idPopUP" ';
-			 << ' align="center" width="2.5" color="#FFF"';
-			 << 'visible="false" position="2 2 -4" geometry="primitive: plane; width: 1.75"'; 			 			 			 << 'material="color: #333"></a-text> ';
-			 << '<a-cursor></a-cursor></a-camera>'; crlf.
+			 << 'geometry="primitive: plane; height: 0.4px; width: 0.7px" ';
+			 << ' align="center" width="1" color="#FFF"';
+			 << 'visible="false" position="0.5 0.2 -3" ';
+		 	 << 'material="color: #333"></a-text> ';
+			 << '<a-cursor></a-cursor>'.
+			 shouldRenderQR 
+					ifTrue: [ self write: '</a-marker-camera>' ]
+					ifFalse: [ self write: '</a-camera>' ].
+		stream	
+				crlf.
 	aRSCanvas shapes do: [ :shape | shape accept: self ] separatedBy: [ stream crlf ].
 ]
 
