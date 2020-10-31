@@ -111,6 +111,13 @@ RSAFrameExporter >> visitLine: aRSLine [
 ]
 
 { #category : #'public - configuration' }
+RSAFrameExporter >> withAR [
+	"with AR"
+	shouldRenderAR := true.
+	shouldRenderFloor := false.
+]
+
+{ #category : #'public - configuration' }
 RSAFrameExporter >> withFloor [
 	"Do not have a floor"
 	shouldRenderFloor := true
