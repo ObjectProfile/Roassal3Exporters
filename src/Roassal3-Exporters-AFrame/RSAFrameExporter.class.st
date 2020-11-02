@@ -147,10 +147,11 @@ RSAFrameExporter >> write: aString [
 
 { #category : #writing }
 RSAFrameExporter >> writeHMTL [
+
 	| title |
-	title := canvas 
-		propertyAt: #title 
-		ifAbsent: [ 'Roassal with AFrame' ].
+	title := canvas
+		         propertyAt: #title
+		         ifAbsent: [ 'Roassal with AFrame' ].
 	self write: '<!DOCTYPE html>
 <html>
 <head>
@@ -160,8 +161,12 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>'.
+	shouldRenderFloor ifFalse: [ 
+		self write: '
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+' ].
+	self write: '
   <script>
   AFRAME.registerComponent(''change-color-on-hover'', {
     schema: {
@@ -199,7 +204,7 @@ RSAFrameExporter >> writeHMTL [
 	self write: '
 </body>
 </html>
-'.
+'
 ]
 
 { #category : #writing }
