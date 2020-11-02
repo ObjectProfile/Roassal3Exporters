@@ -9,7 +9,9 @@ Class {
 		'scale',
 		'translation',
 		'shouldRenderFloor',
-		'dictionary'
+		'dictionary',
+		'shouldRenderAR',
+		'shouldRenderQR'
 	],
 	#category : #'Roassal3-Exporters-AFrame'
 }
@@ -44,7 +46,9 @@ RSAFrameExporter >> initialize [
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.5.
-	shouldRenderFloor := true.
+	shouldRenderFloor := false.
+	shouldRenderAR := false.
+	shouldRenderQR := false.
 ]
 
 { #category : #'public - configuration' }
@@ -74,11 +78,22 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-	stream << '<a-camera position="0 1.6 4">';
+			 shouldRenderQR 
+					ifTrue: [ self write: '<a-marker-camera preset="hiro"']
+					ifFalse: [ self write: '<a-camera '].
+		stream
+			 << 'position="0 1.6 4">';
 			 << '<a-text id="idPopUP" ';
-			 << ' align="center" width="2.5" color="#FFF"';
-			 << 'visible="false" position="2 2 -4" geometry="primitive: plane; width: 1.75"'; 			 			 			 << 'material="color: #333"></a-text> ';
-			 << '<a-cursor></a-cursor></a-camera>'; crlf.
+			 << 'geometry="primitive: plane; height: 0.4px; width: 0.7px" ';
+			 << ' align="center" width="1" color="#FFF"';
+			 << 'visible="false" position="0.5 0.2 -3" ';
+		 	 << 'material="color: #333"></a-text> ';
+			 << '<a-cursor></a-cursor>'.
+			 shouldRenderQR 
+					ifTrue: [ self write: '</a-marker-camera>' ]
+					ifFalse: [ self write: '</a-camera>' ].
+		stream	
+				crlf.
 	aRSCanvas shapes do: [ :shape | shape accept: self ] separatedBy: [ stream crlf ].
 ]
 
@@ -93,6 +108,26 @@ RSAFrameExporter >> visitLabel: aRSLabel [
 RSAFrameExporter >> visitLine: aRSLine [
 	aRSLine printOnAFrame: self.	
 
+]
+
+{ #category : #'public - configuration' }
+RSAFrameExporter >> withAR [
+	"with AR"
+	shouldRenderAR := true.
+	shouldRenderFloor := false.
+]
+
+{ #category : #'public - configuration' }
+RSAFrameExporter >> withFloor [
+	"Do not have a floor"
+	shouldRenderFloor := true
+]
+
+{ #category : #'public - configuration' }
+RSAFrameExporter >> withQR [
+	"with QR presset hiro Image"
+	shouldRenderQR := true.
+	shouldRenderFloor := false.
 ]
 
 { #category : #writing }
@@ -112,10 +147,11 @@ RSAFrameExporter >> write: aString [
 
 { #category : #writing }
 RSAFrameExporter >> writeHMTL [
+
 	| title |
-	title := canvas 
-		propertyAt: #title 
-		ifAbsent: [ 'Roassal with AFrame' ].
+	title := canvas
+		         propertyAt: #title
+		         ifAbsent: [ 'Roassal with AFrame' ].
 	self write: '<!DOCTYPE html>
 <html>
 <head>
@@ -125,7 +161,12 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>'.
+	shouldRenderFloor ifFalse: [ 
+		self write: '
+<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+' ].
+	self write: '
   <script>
   AFRAME.registerComponent(''change-color-on-hover'', {
     schema: {
@@ -145,11 +186,13 @@ RSAFrameExporter >> writeHMTL [
 			document.getElementById(''idPopUP'').value = txtInfo;
 			console.log(document.getElementById(''idPopUP'').value);
 			aTextPopUP.setAttribute(''value'', txtInfo);
+			aTextPopUP.setAttribute(''visible'', true);
 		}
       });
 
       el.addEventListener(''mouseleave'', function () {
         el.setAttribute(''color'', defaultColor);
+		  aTextPopUP.setAttribute(''visible'', false);
       });
     }
   });
@@ -161,23 +204,28 @@ RSAFrameExporter >> writeHMTL [
 	self write: '
 </body>
 </html>
-'.
+'
 ]
 
 { #category : #writing }
 RSAFrameExporter >> writeShapes [
 
 	self write: '
-<a-scene background="color: #fff" stats>
-<a-assets>
-<a-image id="floor" src="'.
-	self write: self floorImg.
-	self write: '"></a-image>
-</a-assets>'.
+<a-scene '.
+	shouldRenderAR | shouldRenderQR 
+		ifTrue:  [ self write: 'embedded arjs ' ]
+		
+		ifFalse: [ self write: 'background="color: #fff" ' ].
+
+self write: 'stats>'.
 
 	shouldRenderFloor ifTrue: [ 
-		self write:
-			'<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+		self write: '<a-assets>
+<a-image id="floor" src="'.
+		self write: self floorImg.
+		self write: '"></a-image>
+</a-assets>
+			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
 	canvas accept: self.
 	self write: '
