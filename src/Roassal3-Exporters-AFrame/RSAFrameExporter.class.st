@@ -69,24 +69,21 @@ RSAFrameExporter >> stream: aWriteStream [
 
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
-	"| color extent |"
-	"extent := aShape extent * scale abs."
-	"color := aShape color."
 	aShape printOnAFrame: self.
 
 ]
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-			 shouldRenderQR 
-					ifTrue: [ self write: '<a-marker-camera preset="hiro"']
-					ifFalse: [ self write: '<a-camera '].
+		shouldRenderQR 
+			ifTrue: [ self write: '<a-marker-camera preset="hiro"']
+			ifFalse: [ self write: '<a-camera '].
 		stream
 			 << 'position="0 1.6 4">';
 			 << '<a-text id="idPopUP" ';
-			 << 'geometry="primitive: plane; height: 0.4px; width: 0.7px" ';
-			 << ' align="center" width="1" color="#FFF"';
-			 << 'visible="false" position="0.5 0.2 -3" ';
+			 << 'geometry="primitive: plane; height: auto; width: auto" ';
+			 << ' align="center" width="1.7" color="#FFF"';
+			 << 'visible="false" position="1.5 0.4 -3.5" ';
 		 	 << 'material="color: #333"></a-text> ';
 			 << '<a-cursor></a-cursor>'.
 			 shouldRenderQR 
