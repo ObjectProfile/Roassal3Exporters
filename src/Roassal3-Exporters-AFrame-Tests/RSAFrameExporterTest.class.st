@@ -34,8 +34,8 @@ RSAFrameExporterTest >> testElipse [
 
 { #category : #tests }
 RSAFrameExporterTest >> testImage [
-	"Check it is Ok floorImgBase64"	
-	| stream |
+	| stream imgFloor |
+	imgFloor 	:= 'https://i.imgur.com/dckg70j.jpg'.
 	stream := RSAFrameExporter new.
 	self assert: stream floorImg  equals: imgFloor.
 ]
