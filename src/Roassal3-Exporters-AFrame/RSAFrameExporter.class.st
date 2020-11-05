@@ -233,6 +233,7 @@ self write: 'stats>'.
 </a-assets>
 			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
+	self visitCamera. 
 	canvas accept: self.
 	self write: '
 </a-scene>
