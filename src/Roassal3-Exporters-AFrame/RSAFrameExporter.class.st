@@ -75,8 +75,6 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCamera [ 
-	"ver el canvas y usar un evaluador para moverlo"
-	"aRSCanvas encompassingRectangle corner (y con esto evaluar la ubicacion para mover".	
 	shouldRenderQR
 		ifTrue: [ self write: '<a-marker-camera preset="hiro"' ]
 		ifFalse: [ self write: '<a-camera ' ].
