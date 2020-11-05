@@ -95,24 +95,12 @@ RSAFrameExporter >> visitCamera [
 ]
 
 { #category : #visiting }
-RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-		shouldRenderQR 
-			ifTrue: [ self write: '<a-marker-camera preset="hiro"']
-			ifFalse: [ self write: '<a-camera '].
-		stream
-			 << 'position="0 1.6 4">';
-			 << '<a-text id="idPopUP" ';
-			 << 'geometry="primitive: plane; height: auto; width: auto" ';
-			 << ' align="center" width="1.7" color="#FFF"';
-			 << 'visible="false" position="1.5 0.4 -3.5" ';
-		 	 << 'material="color: #333"></a-text> ';
-			 << '<a-cursor></a-cursor>'.
-			 shouldRenderQR 
-					ifTrue: [ self write: '</a-marker-camera>' ]
-					ifFalse: [ self write: '</a-camera>' ].
-		stream	
-				crlf.
-	aRSCanvas shapes do: [ :shape | shape accept: self ] separatedBy: [ stream crlf ].
+RSAFrameExporter >> visitCanvas: aRSCanvas [
+	"ver el canvas y usar un evaluador para moverlo"
+	"aRSCanvas encompassingRectangle corner (y con esto evaluar la ubicacion para mover"
+	aRSCanvas shapes
+		do: [ :shape | shape accept: self ]
+		separatedBy: [ stream crlf ]
 ]
 
 { #category : #visiting }
