@@ -83,7 +83,7 @@ RSAFrameExporter >> visitCamera [
 		<< '<a-text id="idPopUP" ';
 		<< 'geometry="primitive: plane; height: auto; width: auto" ';
 		<< ' align="center" width="1.7" color="#FFF"';
-		<< 'visible="false" position="1.5 0.4 -3.5" ';
+		<< 'visible="false" position="1.5 0.4 -2" ';
 		<< 'material="color: #333"></a-text> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
