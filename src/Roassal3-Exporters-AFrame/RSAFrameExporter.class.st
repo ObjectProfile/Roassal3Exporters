@@ -91,8 +91,11 @@ RSAFrameExporter >> visitCamera [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [
-	"ver el canvas y usar un evaluador para moverlo"
-	"aRSCanvas encompassingRectangle corner (y con esto evaluar la ubicacion para mover"
+	| rec |
+	scale := 0.006.
+	scale := scale @ scale negated.
+	rec := aRSCanvas encompassingRectangle.
+	translation := (rec floatCenter negated * scale) + (0@rec height negated * scale).
 	aRSCanvas shapes
 		do: [ :shape | shape accept: self ]
 		separatedBy: [ stream crlf ]
