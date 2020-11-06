@@ -137,6 +137,9 @@ RSAFrameExporter >> withQR [
 { #category : #writing }
 RSAFrameExporter >> write3DPoint: aPoint [ 
 	| p |
+	scale := 0.006.
+	scale := scale @ scale negated.
+	translation := 0 @ 0.5.
 	p := aPoint * scale + translation.
 	stream
 		<< p x asString; space;
