@@ -186,16 +186,16 @@ RSAFrameExporter >> writeHMTL [
 		var aTextPopUP = document.querySelector(''#idPopUP'');
 
       el.addEventListener(''mouseenter'', function () {
-		el.setAttribute(''color'', data.color);
-		var txtInfo = el.getAttribute(''model'');
-		if (txtInfo != null) {
-			document.getElementById(''idPopUP'').value = txtInfo;
+		 el.setAttribute(''color'', data.color);
+		 var txtInfo = el.getAttribute(''model'');
+		 if (txtInfo != null) {
 			console.log(document.getElementById(''idPopUP'').value);
-			aTextPopUP.setAttribute(''value'', txtInfo);
+			var value = ''value: '' + txtInfo + ''; color: #FFF; align: center'';
+			aTextPopUP.setAttribute(''text'', value);
 			aTextPopUP.setAttribute(''visible'', true);
-		}
-      });
-
+		  }
+		});
+		
       el.addEventListener(''mouseleave'', function () {
         el.setAttribute(''color'', defaultColor);
 		  aTextPopUP.setAttribute(''visible'', false);
