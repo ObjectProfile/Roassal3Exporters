@@ -190,7 +190,7 @@ RSAFrameExporter >> writeHMTL [
 		 var txtInfo = el.getAttribute(''model'');
 		 if (txtInfo != null) {
 			console.log(document.getElementById(''idPopUP'').value);
-			var value = ''value: '' + txtInfo + ''; color: #FFF; align: center'';
+			var value = ''value: value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
 			aTextPopUP.setAttribute(''text'', value);
 			aTextPopUP.setAttribute(''visible'', true);
 		  }
