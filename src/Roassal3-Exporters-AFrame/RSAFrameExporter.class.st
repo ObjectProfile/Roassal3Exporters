@@ -78,7 +78,7 @@ RSAFrameExporter >> visitCamera [
 	stream
 		<< 'position="0 1.6 4">';
 		<< '<a-entity id="idPopUP" ';
-		<< 'geometry="primitive: plane; height: auto; width: 1.2" ';
+		<< 'geometry="primitive: plane; height: auto; width: auto" ';
 		<< 'visible="false" position="1.5 0.4 -2" ';
 		<< 'material="color: #333"></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
