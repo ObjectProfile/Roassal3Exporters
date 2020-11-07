@@ -77,11 +77,10 @@ RSAFrameExporter >> visitCamera [
 		ifFalse: [ self write: '<a-camera ' ].
 	stream
 		<< 'position="0 1.6 4">';
-		<< '<a-text id="idPopUP" ';
-		<< 'geometry="primitive: plane; height: auto; width: auto" ';
-		<< ' align="center" width="1.7" color="#FFF"';
+		<< '<a-entity id="idPopUP" ';
+		<< 'geometry="primitive: plane; height: auto; width: 1.2" ';
 		<< 'visible="false" position="1.5 0.4 -2" ';
-		<< 'material="color: #333"></a-text> ';
+		<< 'material="color: #333"></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
 		ifTrue: [ self write: '</a-marker-camera>' ]
