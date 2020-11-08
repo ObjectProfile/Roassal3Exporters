@@ -173,14 +173,16 @@ RSAFrameExporter >> writeHMTL [
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 ' ].
 	self write: '
-  <script>
-  AFRAME.registerComponent(''change-color-on-hover'', {
-    schema: {
-      color: {default: ''1F77B4''}
-    },
+<script>
+ AFRAME.registerComponent(''change-color-on-hover'', {
+  schema: {
+    color:{
+		default: ''1F77B4''
+	 }
+	},
 
-    init: function () {
-      var data = this.data;
+	init: function () {
+		var data = this.data;
       var el = this.el;  // <a-box>
       var defaultColor = el.getAttribute(''material'').color;
 		var aTextPopUP = document.querySelector(''#idPopUP'');
@@ -189,9 +191,18 @@ RSAFrameExporter >> writeHMTL [
 		 el.setAttribute(''color'', data.color);
 		 var txtInfo = el.getAttribute(''model'');
 		 if (txtInfo != null) {
-			console.log(document.getElementById(''idPopUP'').value);
-			var value = ''value: value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+			totalWidth = Math.trunc(txtInfo.length / 10);
+			console.log(totalWidth);
+			if (totalWidth > 2) {
+				var width = 2;
+			} else {
+				var width = 1;
+			}
+			var geometry = ''primitive: plane; height: auto; width: '' + width;
+			aTextPopUP.setAttribute(''geometry'', geometry);
 			aTextPopUP.setAttribute(''text'', value);
+			console.log(txtInfo);
 			aTextPopUP.setAttribute(''visible'', true);
 		  }
 		});
