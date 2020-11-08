@@ -46,6 +46,10 @@ RSAFrameExporter >> initialize [
 	shouldRenderFloor := false.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
+	scale := 0.006.
+	scale := scale @ scale negated.
+	translation := 0@ 0.
+
 ]
 
 { #category : #'public - configuration' }
