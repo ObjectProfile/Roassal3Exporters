@@ -194,12 +194,25 @@ RSAFrameExporter >> writeHMTL [
 			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
 			totalWidth = Math.trunc(txtInfo.length / 10);
 			console.log(totalWidth);
-			if (totalWidth > 2) {
-				var width = 2;
-			} else {
-				var width = 1;
-			}
-			var geometry = ''primitive: plane; height: auto; width: '' + width;
+			switch (totalWidth) {
+				case 0:
+					var width = 0.4;
+					var height = 0.15;
+					break;
+				case 1:
+					var width = 0.7;
+					var height = 0.15;
+					break;
+				case 2:
+					var width = 1;
+					var height = 0.15;
+					break;
+				case totalWidth > 2:
+					var width = 2;
+					var height = ''auto'';
+					break;
+				}
+			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
 			aTextPopUP.setAttribute(''geometry'', geometry);
 			aTextPopUP.setAttribute(''text'', value);
 			console.log(txtInfo);
