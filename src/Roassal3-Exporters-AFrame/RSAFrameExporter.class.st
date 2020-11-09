@@ -208,7 +208,7 @@ RSAFrameExporter >> writeHMTL [
 					var height = 0.15;
 					break;
 				case totalWidth > 2:
-					var width = 2;
+					var width = ''auto'';
 					var height = ''auto'';
 					break;
 				}
