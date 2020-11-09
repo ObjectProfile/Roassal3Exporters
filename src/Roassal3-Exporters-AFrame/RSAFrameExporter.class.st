@@ -43,12 +43,13 @@ RSAFrameExporter >> floorImg [
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
-	scale := 0.006.
-	scale := scale @ scale negated.
-	translation := 0@ 0.5.
 	shouldRenderFloor := false.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
+	scale := 0.006.
+	scale := scale @ scale negated.
+	translation := 0@ 0.
+
 ]
 
 { #category : #'public - configuration' }
@@ -69,32 +70,37 @@ RSAFrameExporter >> stream: aWriteStream [
 
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
-	"| color extent |"
-	"extent := aShape extent * scale abs."
-	"color := aShape color."
 	aShape printOnAFrame: self.
 
 ]
 
 { #category : #visiting }
-RSAFrameExporter >> visitCanvas: aRSCanvas [ 
-			 shouldRenderQR 
-					ifTrue: [ self write: '<a-marker-camera preset="hiro"']
-					ifFalse: [ self write: '<a-camera '].
-		stream
-			 << 'position="0 1.6 4">';
-			 << '<a-text id="idPopUP" ';
-			 << 'geometry="primitive: plane; height: 0.4px; width: 0.7px" ';
-			 << ' align="center" width="1" color="#FFF"';
-			 << 'visible="false" position="0.5 0.2 -3" ';
-		 	 << 'material="color: #333"></a-text> ';
-			 << '<a-cursor></a-cursor>'.
-			 shouldRenderQR 
-					ifTrue: [ self write: '</a-marker-camera>' ]
-					ifFalse: [ self write: '</a-camera>' ].
-		stream	
-				crlf.
-	aRSCanvas shapes do: [ :shape | shape accept: self ] separatedBy: [ stream crlf ].
+RSAFrameExporter >> visitCamera [ 
+	shouldRenderQR
+		ifTrue: [ self write: '<a-marker-camera preset="hiro"' ]
+		ifFalse: [ self write: '<a-camera ' ].
+	stream
+		<< 'position="0 1.6 4">';
+		<< '<a-entity id="idPopUP" ';
+		<< 'visible="false" position="1.5 0.4 -2" ';
+		<< 'material="color: #333"></a-entity> ';
+		<< '<a-cursor></a-cursor>'.
+	shouldRenderQR
+		ifTrue: [ self write: '</a-marker-camera>' ]
+		ifFalse: [ self write: '</a-camera>' ].
+	stream crlf.
+]
+
+{ #category : #visiting }
+RSAFrameExporter >> visitCanvas: aRSCanvas [
+	| rec |
+	scale := 0.006.
+	scale := scale @ scale negated.
+	rec := aRSCanvas encompassingRectangle.
+	translation := (rec floatCenter negated * scale) + (0@rec height negated * scale).
+	aRSCanvas shapes
+		do: [ :shape | shape accept: self ]
+		separatedBy: [ stream crlf ]
 ]
 
 { #category : #visiting }
@@ -167,29 +173,53 @@ RSAFrameExporter >> writeHMTL [
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 ' ].
 	self write: '
-  <script>
-  AFRAME.registerComponent(''change-color-on-hover'', {
-    schema: {
-      color: {default: ''1F77B4''}
-    },
+<script>
+ AFRAME.registerComponent(''change-color-on-hover'', {
+  schema: {
+    color:{
+		default: ''1F77B4''
+	 }
+	},
 
-    init: function () {
-      var data = this.data;
+	init: function () {
+		var data = this.data;
       var el = this.el;  // <a-box>
       var defaultColor = el.getAttribute(''material'').color;
 		var aTextPopUP = document.querySelector(''#idPopUP'');
 
       el.addEventListener(''mouseenter'', function () {
-		el.setAttribute(''color'', data.color);
-		var txtInfo = el.getAttribute(''model'');
-		if (txtInfo != null) {
-			document.getElementById(''idPopUP'').value = txtInfo;
-			console.log(document.getElementById(''idPopUP'').value);
-			aTextPopUP.setAttribute(''value'', txtInfo);
+		 el.setAttribute(''color'', data.color);
+		 var txtInfo = el.getAttribute(''model'');
+		 if (txtInfo != null) {
+			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+			totalWidth = Math.trunc(txtInfo.length / 10);
+			console.log(totalWidth);
+			switch (totalWidth) {
+				case 0:
+					var width = 0.4;
+					var height = 0.15;
+					break;
+				case 1:
+					var width = 0.7;
+					var height = 0.15;
+					break;
+				case 2:
+					var width = 1;
+					var height = 0.15;
+					break;
+				case totalWidth > 2:
+					var width = ''auto'';
+					var height = ''auto'';
+					break;
+				}
+			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
+			aTextPopUP.setAttribute(''geometry'', geometry);
+			aTextPopUP.setAttribute(''text'', value);
+			console.log(txtInfo);
 			aTextPopUP.setAttribute(''visible'', true);
-		}
-      });
-
+		  }
+		});
+		
       el.addEventListener(''mouseleave'', function () {
         el.setAttribute(''color'', defaultColor);
 		  aTextPopUP.setAttribute(''visible'', false);
@@ -227,6 +257,7 @@ self write: 'stats>'.
 </a-assets>
 			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
+	self visitCamera. 
 	canvas accept: self.
 	self write: '
 </a-scene>
