@@ -16,6 +16,8 @@ RSPNGExporter >> exportToFile: file [
 		surface := AthensCairoSurface extent: morph extent asIntegerPoint.
 		surface drawDuring: [ :can | morph fullDrawOnAthensCanvas: can ].
 		surface writeToPng: file pathString.
+		surface flush.
+		surface finish.
 		 ]
 ]
 
