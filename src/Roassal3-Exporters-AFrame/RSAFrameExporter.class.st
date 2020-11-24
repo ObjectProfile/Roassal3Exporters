@@ -82,7 +82,11 @@ RSAFrameExporter >> visitCamera [
 	stream
 		<< 'position="0 1.6 4">';
 		<< '<a-entity id="idPopUP" ';
-		<< 'visible="false" position="1.5 0.4 -2" ';
+		<< 'visible="false" position=" '.
+	shouldRenderQR | shouldRenderAR 
+		ifTrue: [ self write: '0.3 0.2 -2"' ]
+		ifFalse: [ self write: '1.5 0.4 -2"' ].
+	stream
 		<< 'material="color: #333"></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
