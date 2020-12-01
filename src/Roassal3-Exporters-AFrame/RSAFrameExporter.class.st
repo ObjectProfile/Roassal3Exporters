@@ -40,6 +40,15 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
+{ #category : #public }
+RSAFrameExporter >> handleRequest: request [
+	| html |
+	request uri path = #aFrame
+	ifFalse: [ ^ ZnResponse notFound: request uri ].
+	html :=	String streamContents: [ :temporalStream | self writeToStream: temporalStream ].
+	^ZnResponse ok: (ZnEntity html: html  )
+]
+
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
