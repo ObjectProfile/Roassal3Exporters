@@ -58,3 +58,16 @@ RSAFrameExporterTest >> testLine [
 	line printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
+
+{ #category : #enumerating }
+RSAFrameExporterTest >> withServerDo: block [
+  | server |
+  server := ZnServer on: 1700 + 10 atRandom.
+  [ 
+    server start.
+    self assert: server isRunning & server isListening.
+    server delegate:  aFrameExporter stream.
+    block cull: server
+  ] 
+    ensure: [ server stop ]
+]
