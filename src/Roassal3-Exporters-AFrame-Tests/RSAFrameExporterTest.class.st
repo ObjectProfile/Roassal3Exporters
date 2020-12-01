@@ -59,6 +59,18 @@ RSAFrameExporterTest >> testLine [
 	self assert: aFrameExporter stream contents equals: result.
 ]
 
+{ #category : #tests }
+RSAFrameExporterTest >> testMainPage [
+	self withServerDo: [ :server |
+	| client |
+	client := ZnClient new.
+	client url: server localUrl; addPath: #aFrame.
+	client get.
+	self assert: client isSuccess.
+	self assert: (client entity contentType matches: ZnMimeType textHtml).
+	client close ]
+]
+
 { #category : #enumerating }
 RSAFrameExporterTest >> withServerDo: block [
   | server |
