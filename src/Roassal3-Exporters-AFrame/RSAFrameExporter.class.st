@@ -43,7 +43,7 @@ RSAFrameExporter >> floorImg [
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
-	shouldRenderFloor := false.
+	shouldRenderFloor := true.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
 	scale := 0.006.
