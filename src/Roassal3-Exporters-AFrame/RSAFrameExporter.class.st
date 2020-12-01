@@ -58,6 +58,13 @@ RSAFrameExporter >> noFloor [
 	shouldRenderFloor := false
 ]
 
+{ #category : #public }
+RSAFrameExporter >> runInZinc [
+	ZnServer startDefaultOn: 8080.
+	ZnServer default logToTranscript.
+	ZnServer default delegate map: #aFrame to: self.
+]
+
 { #category : #accesing }
 RSAFrameExporter >> stream [
 	^ stream
