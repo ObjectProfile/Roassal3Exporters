@@ -79,7 +79,10 @@ RSAFrameExporter >> noFloor [
 RSAFrameExporter >> runInZinc [
 	ZnServer startDefaultOn: 8080.
 	ZnServer default logToTranscript.
-	ZnServer default delegate map: #aFrame to: self.
+	ZnServer default delegate 
+		map: #aFrame to: self;
+		map: #aFrameLog to: [ :request | 
+			self handleLogRequest: request ].
 ]
 
 { #category : #accesing }
