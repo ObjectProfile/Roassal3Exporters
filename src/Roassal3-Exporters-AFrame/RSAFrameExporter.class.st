@@ -97,7 +97,7 @@ RSAFrameExporter >> stream: aWriteStream [
 
 { #category : #public }
 RSAFrameExporter >> value: request [
-  ^ self handleRequest: request
+	^ self handleRequest: request
 ]
 
 { #category : #visiting }
