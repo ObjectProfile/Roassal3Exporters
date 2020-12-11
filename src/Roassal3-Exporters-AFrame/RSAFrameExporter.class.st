@@ -40,6 +40,14 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> handleLogRequest: request [
+	| json |
+	(request entity fields) traceCr.
+	json := NeoJSONWriter toString: 'Foo bar'.
+	^ ZnResponse ok: (ZnEntity json: json ).
+]
+
 { #category : #public }
 RSAFrameExporter >> handleRequest: request [
 	| html |
