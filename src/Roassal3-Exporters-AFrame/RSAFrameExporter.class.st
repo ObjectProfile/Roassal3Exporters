@@ -205,15 +205,36 @@ RSAFrameExporter >> writeHMTL [
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>
 <script> 
-	$.get(''https://www.cloudflare.com/cdn-cgi/trace'', function(data) {
-	console.log(data);
-	console.log(navigator.appName);
-	console.log(bowser.name, bowser.version);
-	console.log(navigator.platform);
-})
+	var parser = new UAParser();
+	var result = parser.getResult();
+	var nav = navigator.appName;
+	var bow = bowser.name+'' ''+bowser.version;
+	var os = result.os;
+	var info =  $.get(''https://www.cloudflare.com/cdn-cgi/trace'', function(data) {
+		console.log(data);		
+	});
+
+    $(document).ready(function(callback) {
+		return $.ajax({
+			type: ''POST'',
+			url: ''aFrameLog'',
+			async : true,
+			data: { navigator: nav, browser: bow, OS: os},
+			dataType: ''json'',
+			success: function(result) {
+				console.log(result);	
+				callback(nav, bow, os);		
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+		})
+		});
 </script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>'.
+'.
 	shouldRenderFloor ifFalse: [ 
 		self write: '
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
@@ -263,6 +284,23 @@ RSAFrameExporter >> writeHMTL [
 			aTextPopUP.setAttribute(''text'', value);
 			console.log(txtInfo);
 			aTextPopUP.setAttribute(''visible'', true);
+			var date = new Date();
+			$(document).ready(function(callback) {
+			return $.ajax({
+				type: ''POST'',
+				url: ''aFrameLog'',
+				async : true,
+				data: {material: txtInfo, time: date},
+				dataType: ''json'',
+				success: function(result) {
+					console.log(result);	
+					callback(txtInfo);		
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			})
+			});
 		  }
 		});
 		
