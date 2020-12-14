@@ -17,7 +17,7 @@ RSAFrameExporterTest >> setUp [
 { #category : #tests }
 RSAFrameExporterTest >> testBox [
 	| result box |
-	result := '<a-box position="0.0 0.0 0" width=" 0.0 " height=" 0.0" depth=" 0.0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
+	result := '<a-box position="0.0 0.0 0" width=" 0.03 " height=" 0.03" depth=" 0.03" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
 	box := RSBox new.
 	box printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
@@ -26,7 +26,7 @@ RSAFrameExporterTest >> testBox [
 { #category : #tests }
 RSAFrameExporterTest >> testElipse [
 	| result elipse |
-	result := '<a-sphere radius="0.0 0.0 0.0" position="0.0 0.0 0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-sphere>'.
+	result := '<a-sphere radius="0.015 0.015 0.015" position="0.0 0.0 0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-sphere>'.
 	elipse := RSEllipse new.
 	elipse printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
@@ -57,4 +57,29 @@ RSAFrameExporterTest >> testLine [
 	line := RSLine new.
 	line printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
+]
+
+{ #category : #tests }
+RSAFrameExporterTest >> testMainPage [
+	self withServerDo: [ :server |
+	| client |
+	client := ZnClient new.
+	client url: server localUrl; addPath: #aFrame.
+	client get.
+	self assert: client isSuccess not.
+	"self assert: (client entity contentType matches: ZnMimeType textHtml)."
+	client close ]
+]
+
+{ #category : #enumerating }
+RSAFrameExporterTest >> withServerDo: block [
+  | server |
+  server := ZnServer on: 1700 + 10 atRandom.
+  [ 
+    server start.
+    self assert: server isRunning & server isListening.
+    server delegate:  aFrameExporter stream.
+    block cull: server
+  ] 
+    ensure: [ server stop ]
 ]

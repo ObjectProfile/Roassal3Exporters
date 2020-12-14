@@ -40,10 +40,27 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> handleLogRequest: request [
+	| json |
+	(request entity fields) traceCr.
+	json := NeoJSONWriter toString: 'Foo bar'.
+	^ ZnResponse ok: (ZnEntity json: json ).
+]
+
+{ #category : #public }
+RSAFrameExporter >> handleRequest: request [
+	| html |
+	request uri path = #aFrame
+	ifFalse: [ ^ ZnResponse notFound: request uri ].
+	html :=	String streamContents: [ :temporalStream | self writeToStream: temporalStream ].
+	^ZnResponse ok: (ZnEntity html: html)
+]
+
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
-	shouldRenderFloor := false.
+	shouldRenderFloor := true.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
 	scale := 0.006.
@@ -58,6 +75,16 @@ RSAFrameExporter >> noFloor [
 	shouldRenderFloor := false
 ]
 
+{ #category : #public }
+RSAFrameExporter >> runInZinc [
+	ZnServer startDefaultOn: 8080.
+	ZnServer default logToTranscript.
+	ZnServer default delegate 
+		map: #aFrame to: self;
+		map: #aFrameLog to: [ :request | 
+			self handleLogRequest: request ].
+]
+
 { #category : #accesing }
 RSAFrameExporter >> stream [
 	^ stream
@@ -66,6 +93,11 @@ RSAFrameExporter >> stream [
 { #category : #accessing }
 RSAFrameExporter >> stream: aWriteStream [ 
 	stream := aWriteStream
+]
+
+{ #category : #public }
+RSAFrameExporter >> value: request [
+	^ self handleRequest: request
 ]
 
 { #category : #visiting }
@@ -82,7 +114,11 @@ RSAFrameExporter >> visitCamera [
 	stream
 		<< 'position="0 1.6 4">';
 		<< '<a-entity id="idPopUP" ';
-		<< 'visible="false" position="1.5 0.4 -2" ';
+		<< 'visible="false" position=" '.
+	shouldRenderQR | shouldRenderAR 
+		ifTrue: [ self write: '0 -0.2 -2"' ]
+		ifFalse: [ self write: '1.5 0.4 -2"' ].
+	stream
 		<< 'material="color: #333"></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
@@ -167,7 +203,38 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>'.
+<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>
+<script> 
+	var parser = new UAParser();
+	var result = parser.getResult();
+	var nav = navigator.appName;
+	var bow = bowser.name+'' ''+bowser.version;
+	var os = result.os;
+	var info =  $.get(''https://www.cloudflare.com/cdn-cgi/trace'', function(data) {
+		console.log(data);		
+	});
+
+    $(document).ready(function(callback) {
+		return $.ajax({
+			type: ''POST'',
+			url: ''aFrameLog'',
+			async : true,
+			data: { navigator: nav, browser: bow, OS: os},
+			dataType: ''json'',
+			success: function(result) {
+				console.log(result);	
+				callback(nav, bow, os);		
+		},
+		error: function(XMLHttpRequest, textStatus, errorThrown) {
+			alert(errorThrown);
+		}
+		})
+		});
+</script>
+'.
 	shouldRenderFloor ifFalse: [ 
 		self write: '
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
@@ -217,6 +284,23 @@ RSAFrameExporter >> writeHMTL [
 			aTextPopUP.setAttribute(''text'', value);
 			console.log(txtInfo);
 			aTextPopUP.setAttribute(''visible'', true);
+			var date = new Date();
+			$(document).ready(function(callback) {
+			return $.ajax({
+				type: ''POST'',
+				url: ''aFrameLog'',
+				async : true,
+				data: {material: txtInfo, time: date},
+				dataType: ''json'',
+				success: function(result) {
+					console.log(result);	
+					callback(txtInfo);		
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			})
+			});
 		  }
 		});
 		
