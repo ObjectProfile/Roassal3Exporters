@@ -11,7 +11,8 @@ Class {
 		'shouldRenderFloor',
 		'dictionary',
 		'shouldRenderAR',
-		'shouldRenderQR'
+		'shouldRenderQR',
+		'shouldRunInZinc'
 	],
 	#category : #'Roassal3-Exporters-AFrame'
 }
@@ -63,6 +64,7 @@ RSAFrameExporter >> initialize [
 	shouldRenderFloor := true.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
+	shouldRunInZinc := false.
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.
