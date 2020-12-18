@@ -14,7 +14,7 @@ Class {
 		'shouldRenderQR',
 		'shouldRunInZinc'
 	],
-	#category : #'Roassal3-Exporters-AFrame'
+	#category : #'Roassal3-Exporters-AFrame-Exporter'
 }
 
 { #category : #accessing }
