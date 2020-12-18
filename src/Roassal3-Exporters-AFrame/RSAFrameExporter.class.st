@@ -79,6 +79,7 @@ RSAFrameExporter >> noFloor [
 
 { #category : #public }
 RSAFrameExporter >> runInZinc [
+	shouldRunInZinc := true.
 	ZnServer startDefaultOn: 8080.
 	ZnServer default logToTranscript.
 	ZnServer default delegate 
