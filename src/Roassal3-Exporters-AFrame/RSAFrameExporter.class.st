@@ -41,7 +41,7 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
-{ #category : #accessing }
+{ #category : #public }
 RSAFrameExporter >> handleLogRequest: request [
 	| json |
 	(request entity fields) traceCr.
@@ -289,7 +289,7 @@ var popUp = [ ];
 			type: ''POST'',
 			url: ''aFrameLog'',
 			async : true,
-			data: { InfoPopUP: popUp,  timeSession: resultSession + " seconds", navigator: nav, browser: bow, OS: os},
+			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession + " seconds", navigator: nav, browser: bow, OS: os}]},
 			dataType: ''json'',
 			success: function(result) {
 				console.log(result);	
