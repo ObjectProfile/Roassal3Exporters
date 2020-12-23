@@ -218,6 +218,10 @@ RSAFrameExporter >> writeHMTL [
 	self write: '
 <script>
 var popUp = [ ];
+var popInfo = "";
+var dateStart;
+var dateFinal;
+var dateResult = 0;
  AFRAME.registerComponent(''change-color-on-hover'', {
   schema: {
     color:{
@@ -263,13 +267,19 @@ var popUp = [ ];
 			console.log(txtInfo);
 			aTextPopUP.setAttribute(''visible'', true);
 			var date = new Date();
-			popUp.push("material: " + txtInfo + "- Time: "+ date);
+			popInfo = txtInfo;
+			dateStart = date.getTime();
+			
 		  }
 		});
 		
       el.addEventListener(''mouseleave'', function () {
-        el.setAttribute(''color'', defaultColor);
-		  aTextPopUP.setAttribute(''visible'', false);
+			el.setAttribute(''color'', defaultColor);
+			aTextPopUP.setAttribute(''visible'', false);
+			var date = new Date;
+			dateFinal = date.getTime();
+			dateResult = (dateFinal - dateStart) / 1000; // time in seconds
+			popUp.push({"Material": popInfo,"Time": dateResult});
       });
     }
   });'.
@@ -278,18 +288,17 @@ var popUp = [ ];
 	var startSession= new Date();
 	var parser = new UAParser();
 	var result = parser.getResult();
-	var nav = navigator.appName;
 	var bow = bowser.name+'' ''+bowser.version;
 	var os = result.os;
 	$(document).ready(function(callback) {
 		window.onbeforeunload = function(){
 		var endSession = new Date();
-		var resultSession = (endSession.getTime() - startSession.getTime()) / 1000;
+		var resultSession = (endSession.getTime() - startSession.getTime()) / 1000; //time in seconds
 		return $.ajax({
 			type: ''POST'',
 			url: ''aFrameLog'',
 			async : true,
-			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession + " seconds", navigator: nav, browser: bow, OS: os}]},
+			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession, browser: bow, OS: os}]},
 			dataType: ''json'',
 			success: function(result) {
 				console.log(result);	
