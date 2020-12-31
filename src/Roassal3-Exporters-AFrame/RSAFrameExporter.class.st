@@ -238,111 +238,16 @@ RSAFrameExporter >> writeHMTL [
 <meta name="description" content="Roassal canvas exported">
 <script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
 <script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>
-'.
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'.
+	shouldRunInZinc ifTrue: [ 
+		self write: self writeScriptToInfo ].
 	shouldRenderFloor ifFalse: [ 
 		self write: '
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 ' ].
-	self write: '
-<script>
-var popUp = [ ];
-var popInfo = "";
-var dateStart;
-var dateFinal;
-var dateResult = 0;
- AFRAME.registerComponent(''change-color-on-hover'', {
-  schema: {
-    color:{
-		default: ''1F77B4''
-	 }
-	},
-
-	init: function () {
-		var data = this.data;
-      var el = this.el;  // <a-box>
-      var defaultColor = el.getAttribute(''material'').color;
-		var aTextPopUP = document.querySelector(''#idPopUP'');
-		
-
-      el.addEventListener(''mouseenter'', function () {
-		 el.setAttribute(''color'', data.color);
-		 var txtInfo = el.getAttribute(''model'');
-		 if (txtInfo != null) {
-			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
-			totalWidth = Math.trunc(txtInfo.length / 10);
-			console.log(totalWidth);
-			switch (totalWidth) {
-				case 0:
-					var width = 0.4;
-					var height = 0.15;
-					break;
-				case 1:
-					var width = 0.7;
-					var height = 0.15;
-					break;
-				case 2:
-					var width = 1;
-					var height = 0.15;
-					break;
-				case totalWidth > 2:
-					var width = ''auto'';
-					var height = ''auto'';
-					break;
-				}
-			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
-			aTextPopUP.setAttribute(''geometry'', geometry);
-			aTextPopUP.setAttribute(''text'', value);
-			console.log(txtInfo);
-			aTextPopUP.setAttribute(''visible'', true);
-			var date = new Date();
-			popInfo = txtInfo;
-			dateStart = date.getTime();
-			
-		  }
-		});
-		
-      el.addEventListener(''mouseleave'', function () {
-			el.setAttribute(''color'', defaultColor);
-			aTextPopUP.setAttribute(''visible'', false);
-			var date = new Date;
-			dateFinal = date.getTime();
-			dateResult = (dateFinal - dateStart) / 1000; // time in seconds
-			popUp.push({"Material": popInfo,"Time": dateResult});
-      });
-    }
-  });'.
-	shouldRunInZinc ifTrue: [ 
-		self write: '
-	var startSession= new Date();
-	var parser = new UAParser();
-	var result = parser.getResult();
-	var bow = bowser.name+'' ''+bowser.version;
-	var os = result.os;
-	$(document).ready(function(callback) {
-		window.onbeforeunload = function(){
-		var endSession = new Date();
-		var resultSession = (endSession.getTime() - startSession.getTime()) / 1000; //time in seconds
-		return $.ajax({
-			type: ''POST'',
-			url: ''aFrameLog'',
-			async : true,
-			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession, browser: bow, OS: os}]},
-			dataType: ''json'',
-			success: function(result) {
-				console.log(result);	
-				callback(popUp, resultsession, nav, bow, os);		
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert(errorThrown);
-			}
-		})
-		}
-	});
-' ].
-	self write: '
+	self write: self writeScript.
+	shouldRunInZinc ifTrue: [ self write: self sendInfoToZinc ].
+	self write:'
 </script>
 </head>
 <body>
