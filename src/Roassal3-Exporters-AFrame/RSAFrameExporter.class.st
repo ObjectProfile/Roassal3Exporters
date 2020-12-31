@@ -88,6 +88,37 @@ RSAFrameExporter >> runInZinc [
 			self handleLogRequest: request ].
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> sendInfoToZinc [
+	^ '
+	var startSession= new Date();
+	var parser = new UAParser();
+	var result = parser.getResult();
+	var bow = bowser.name+'' ''+bowser.version;
+	var os = result.os;
+	$(document).ready(function(callback) {
+		window.onbeforeunload = function(){
+		var endSession = new Date();
+		var resultSession = (endSession.getTime() - startSession.getTime()) / 1000; //time in seconds
+		return $.ajax({
+			type: ''POST'',
+			url: ''aFrameLog'',
+			async : true,
+			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession, browser: bow, OS: os}]},
+			dataType: ''json'',
+			success: function(result) {
+				console.log(result);	
+				callback(popUp, resultsession, nav, bow, os);		
+			},
+			error: function(XMLHttpRequest, textStatus, errorThrown) {
+				alert(errorThrown);
+			}
+		})
+		}
+	});
+' 
+]
+
 { #category : #accesing }
 RSAFrameExporter >> stream [
 	^ stream
