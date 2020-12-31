@@ -260,6 +260,85 @@ RSAFrameExporter >> writeHMTL [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeScript [
+	^'
+<script>
+var popUp = [ ];
+var popInfo = "";
+var dateStart;
+var dateFinal;
+var dateResult = 0;
+ AFRAME.registerComponent(''change-color-on-hover'', {
+  schema: {
+    color:{
+		default: ''1F77B4''
+	 }
+	},
+
+	init: function () {
+		var data = this.data;
+      var el = this.el;  // <a-box>
+      var defaultColor = el.getAttribute(''material'').color;
+		var aTextPopUP = document.querySelector(''#idPopUP'');
+		
+
+      el.addEventListener(''mouseenter'', function () {
+		 el.setAttribute(''color'', data.color);
+		 var txtInfo = el.getAttribute(''model'');
+		 if (txtInfo != null) {
+			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+			totalWidth = Math.trunc(txtInfo.length / 10);
+			console.log(totalWidth);
+			switch (totalWidth) {
+				case 0:
+					var width = 0.4;
+					var height = 0.15;
+					break;
+				case 1:
+					var width = 0.7;
+					var height = 0.15;
+					break;
+				case 2:
+					var width = 1;
+					var height = 0.15;
+					break;
+				case totalWidth > 2:
+					var width = ''auto'';
+					var height = ''auto'';
+					break;
+				}
+			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
+			aTextPopUP.setAttribute(''geometry'', geometry);
+			aTextPopUP.setAttribute(''text'', value);
+			console.log(txtInfo);
+			aTextPopUP.setAttribute(''visible'', true);
+			var date = new Date();
+			popInfo = txtInfo;
+			dateStart = date.getTime();
+			
+		  }
+		});
+		
+      el.addEventListener(''mouseleave'', function () {
+			el.setAttribute(''color'', defaultColor);
+			aTextPopUP.setAttribute(''visible'', false);
+			var date = new Date;
+			dateFinal = date.getTime();
+			dateResult = (dateFinal - dateStart) / 1000; // time in seconds
+			popUp.push({"Material": popInfo,"Time": dateResult});
+      });
+    }
+  });'.
+
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> writeScriptToInfo [
+	^'	<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>'
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeShapes [
 
 	self write: '
