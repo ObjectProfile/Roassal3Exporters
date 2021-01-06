@@ -95,11 +95,11 @@ RSAFrameExporter >> sendInfoToZinc [
 	var parser = new UAParser();
 	var result = parser.getResult();
 	var bow = bowser.name+'' ''+bowser.version;
-	var os = result.os;
+	var os = result.os;	
 	$(document).ready(function(callback) {
 		window.onbeforeunload = function(){
 		var endSession = new Date();
-		var resultSession = (endSession.getTime() - startSession.getTime()) / 1000; //time in seconds
+		var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
 		return $.ajax({
 			type: ''POST'',
 			url: ''aFrameLog'',
@@ -268,6 +268,9 @@ var popInfo = "";
 var dateStart;
 var dateFinal;
 var dateResult = 0;
+
+var monitorEvent = [ { "Event": (function(e) { console.log(e.type, e); }) } ];
+
  AFRAME.registerComponent(''change-color-on-hover'', {
   schema: {
     color:{
@@ -324,7 +327,7 @@ var dateResult = 0;
 			aTextPopUP.setAttribute(''visible'', false);
 			var date = new Date;
 			dateFinal = date.getTime();
-			dateResult = (dateFinal - dateStart) / 1000; // time in seconds
+			dateResult = (dateFinal - dateStart); // time in milliseconds
 			popUp.push({"Material": popInfo,"Time": dateResult});
       });
     }
