@@ -95,28 +95,40 @@ RSAFrameExporter >> sendInfoToZinc [
 	var parser = new UAParser();
 	var result = parser.getResult();
 	var bow = bowser.name+'' ''+bowser.version;
-	var os = result.os;	
+	var os = result.os;
+	function monitorEvents(document) {
+		var documentsEvents = [ ];
+		var log = function(e) { events.push(e);};
+		for(var i in document) {
+			if(i.startsWith("on")) documentsEvents.push(i.substr(2));
+		}
+		documentsEvents.forEach(function(eventName) {
+			document.addEventListener(eventName, log, true);
+		});
+	}	
 	$(document).ready(function(callback) {
+		monitorEvents(document);
 		window.onbeforeunload = function(){
-		var endSession = new Date();
-		var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
-		return $.ajax({
-			type: ''POST'',
-			url: ''aFrameLog'',
-			async : true,
-			data: {data: [{ InfoPopUP: popUp,  timeSession: resultSession, browser: bow, OS: os}]},
-			dataType: ''json'',
-			success: function(result) {
-				console.log(result);	
-				callback(popUp, resultsession, nav, bow, os);		
-			},
-			error: function(XMLHttpRequest, textStatus, errorThrown) {
-				alert(errorThrown);
-			}
-		})
+			events = JSON.stringify(events,[''type'',''timeStamp'']);
+			var endSession = new Date();
+			var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
+			return $.ajax({
+				type: ''POST'',
+				url: ''aFrameLog'',
+				async : true,
+				data: {data: [{ events: events, infoPopUP: popUp,  timeSession: resultSession, browser: bow, os: os}]},
+				dataType: ''json'',
+				success: function(result) {
+					console.log(result);	
+					callback(events, popUp, resultsession, nav, bow, os);		
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			})
 		}
 	});
-' 
+'
 ]
 
 { #category : #accesing }
