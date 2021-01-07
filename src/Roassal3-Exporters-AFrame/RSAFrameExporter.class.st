@@ -257,6 +257,7 @@ RSAFrameExporter >> writeHMTL [
 		self write: '
 <script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 ' ].
+	self write: '<script>'.
 	self write: self writeScript.
 	shouldRunInZinc ifTrue: [ self write: self sendInfoToZinc ].
 	self write:'
