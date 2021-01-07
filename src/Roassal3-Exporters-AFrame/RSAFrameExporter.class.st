@@ -230,7 +230,7 @@ RSAFrameExporter >> write3DPoint: aPoint [
 
 { #category : #writing }
 RSAFrameExporter >> write: aString [
-	stream nextPutAll: (aString replaceAll: String cr with: String crlf)
+	stream nextPutAll: (aString copyReplaceAll: String cr with: String crlf)
 ]
 
 { #category : #writing }
