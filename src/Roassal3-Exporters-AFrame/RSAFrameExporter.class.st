@@ -351,26 +351,26 @@ RSAFrameExporter >> writeShapes [
 
 	self write: '
 <a-scene '.
-	shouldRenderAR | shouldRenderQR 
-		ifTrue:  [ self write: 'embedded arjs ' ]
+	shouldRenderAR | shouldRenderQR
+		ifTrue: [ self write: 'embedded arjs ' ]
 		
 		ifFalse: [ self write: 'background="color: #fff" ' ].
-
-self write: 'stats>'.
-
+		
+	self write: 'stats>'.
+	
 	shouldRenderFloor ifTrue: [ 
-		self write: '<a-assets>
-<a-image id="floor" src="'.
+		self write: '
+<a-assets>
+	<a-image id="floor" src="'.
 		self write: self floorImg.
 		self write: '"></a-image>
 </a-assets>
-			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
-	self visitCamera. 
+	self visitCamera.
 	canvas accept: self.
 	self write: '
-</a-scene>
-'
+</a-scene>'
 ]
 
 { #category : #writing }
