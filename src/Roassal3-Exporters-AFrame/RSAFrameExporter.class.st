@@ -276,74 +276,66 @@ RSAFrameExporter >> writeHMTL [
 { #category : #writing }
 RSAFrameExporter >> writeScript [
 	^'
-var popUp = [ ];
-var popInfo = "";
-var dateStart;
-var dateFinal;
-var dateResult = 0;
-var events = [ ];
-
- AFRAME.registerComponent(''change-color-on-hover'', {
-  schema: {
-    color:{
-		default: ''1F77B4''
-	 }
-	},
-
-	init: function () {
-		var data = this.data;
-      var el = this.el;  // <a-box>
-      var defaultColor = el.getAttribute(''material'').color;
-		var aTextPopUP = document.querySelector(''#idPopUP'');
-		
-
-      el.addEventListener(''mouseenter'', function () {
-		 el.setAttribute(''color'', data.color);
-		 var txtInfo = el.getAttribute(''model'');
-		 if (txtInfo != null) {
-			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
-			totalWidth = Math.trunc(txtInfo.length / 10);
-			console.log(totalWidth);
-			switch (totalWidth) {
-				case 0:
-					var width = 0.4;
-					var height = 0.15;
-					break;
-				case 1:
-					var width = 0.7;
-					var height = 0.15;
-					break;
-				case 2:
-					var width = 1;
-					var height = 0.15;
-					break;
-				case totalWidth > 2:
-					var width = ''auto'';
-					var height = ''auto'';
-					break;
-				}
-			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
-			aTextPopUP.setAttribute(''geometry'', geometry);
-			aTextPopUP.setAttribute(''text'', value);
-			console.log(txtInfo);
-			aTextPopUP.setAttribute(''visible'', true);
-			var date = new Date();
-			popInfo = txtInfo;
-			dateStart = date.getTime();
-			
-		  }
-		});
-		
-      el.addEventListener(''mouseleave'', function () {
-			el.setAttribute(''color'', defaultColor);
-			aTextPopUP.setAttribute(''visible'', false);
-			var date = new Date;
-			dateFinal = date.getTime();
-			dateResult = (dateFinal - dateStart); // time in milliseconds
-			popUp.push({"Material": popInfo,"Time": dateResult});
-      });
-    }
-  });'.
+	var popUp = [ ];
+	var popInfo = "";
+	var dateStart;
+	var dateFinal;
+	var dateResult = 0;
+	var events = [ ];
+	AFRAME.registerComponent(''change-color-on-hover'', {
+		schema: {
+			color:{
+				default: ''1F77B4''
+			}
+		},
+		init: function () {
+			var data = this.data;
+	      var el = this.el;  // <a-box>
+	      var defaultColor = el.getAttribute(''material'').color;
+			var aTextPopUP = document.querySelector(''#idPopUP'');
+			el.addEventListener(''mouseenter'', function () {
+				el.setAttribute(''color'', data.color);
+				var txtInfo = el.getAttribute(''model'');
+				if (txtInfo != null) {
+					var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+					totalWidth = Math.trunc(txtInfo.length / 10);
+					switch (totalWidth) {
+						case 0:
+							var width = 0.4;
+							var height = 0.15;
+							break;
+						case 1:
+							var width = 0.7;
+							var height = 0.15;
+							break;
+						case 2:
+							var width = 1;
+							var height = 0.15;
+							break;
+						case totalWidth > 2:
+							var width = ''auto'';
+							var height = ''auto'';
+							break;
+					}
+					var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
+					aTextPopUP.setAttribute(''geometry'', geometry);
+					aTextPopUP.setAttribute(''text'', value);
+					aTextPopUP.setAttribute(''visible'', true);
+					var date = new Date();
+					popInfo = txtInfo;
+					dateStart = date.getTime();
+			 	}
+			});
+			el.addEventListener(''mouseleave'', function () {
+				el.setAttribute(''color'', defaultColor);
+				aTextPopUP.setAttribute(''visible'', false);
+				var date = new Date;
+				dateFinal = date.getTime();
+				dateResult = (dateFinal - dateStart); // time in milliseconds
+				popUp.push({"Material": popInfo,"Time": dateResult});
+	      });
+		}
+	});'.
 
 ]
 
