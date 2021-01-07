@@ -341,7 +341,8 @@ RSAFrameExporter >> writeScript [
 
 { #category : #accessing }
 RSAFrameExporter >> writeScriptToInfo [
-	^'<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
+	^'
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>'
 ]
 
