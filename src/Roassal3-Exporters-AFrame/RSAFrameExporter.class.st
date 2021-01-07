@@ -275,14 +275,12 @@ RSAFrameExporter >> writeHMTL [
 { #category : #writing }
 RSAFrameExporter >> writeScript [
 	^'
-<script>
 var popUp = [ ];
 var popInfo = "";
 var dateStart;
 var dateFinal;
 var dateResult = 0;
-
-var monitorEvent = [ { "Event": (function(e) { console.log(e.type, e); }) } ];
+var events = [ ];
 
  AFRAME.registerComponent(''change-color-on-hover'', {
   schema: {
