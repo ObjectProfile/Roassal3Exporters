@@ -90,6 +90,7 @@ RSAFrameExporter >> runInZinc [
 
 { #category : #accessing }
 RSAFrameExporter >> sendInfoToZinc [
+
 	^ '
 	var startSession= new Date();
 	var parser = new UAParser();
