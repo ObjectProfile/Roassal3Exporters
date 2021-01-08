@@ -82,15 +82,17 @@ RSAFrameExporter >> sendInfoToZinc [
 	$(document).ready(function(callback) {
 		monitorEvents(document);
 		window.onbeforeunload = function(){
-			events = JSON.stringify(events,[''type'',''timeStamp'']);
+			events = JSON.parse(JSON.stringify(events, [''type'',''timeStamp'']));
 			var endSession = new Date();
 			var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
+			var data = {"data": { "events": events, "infoPopUP": popUp,  "timeSession": resultSession, "browser": bow, "os": os } };
 			return $.ajax({
 				type: ''POST'',
 				url: ''aFrameLog'',
 				async : true,
-				data: {data: [{ events: events, infoPopUP: popUp,  timeSession: resultSession, browser: bow, os: os}]},
+				data: JSON.stringify(data),
 				dataType: ''json'',
+				contentType: "application/json; charset=utf-8",
 				success: function(result) {
 					console.log(result);	
 					callback(events, popUp, resultsession, nav, bow, os);		
