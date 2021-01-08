@@ -95,6 +95,7 @@ RSAFrameLogServer >> stop [
 
 { #category : #'user requests' }
 RSAFrameLogServer >> write: entity to: stream [
+
 	entity ifNil: [ ^ self ].
-	stream nextPutAll: (entity at: #data ifAbsent: ['NO DAta']).
+	stream nextPutAll: entity contents
 ]
