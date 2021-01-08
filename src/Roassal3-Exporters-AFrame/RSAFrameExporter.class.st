@@ -193,6 +193,12 @@ RSAFrameExporter >> withQR [
 	shouldRenderFloor := false.
 ]
 
+{ #category : #public }
+RSAFrameExporter >> withRunInZinc [
+	shouldRunInZinc := true.
+
+]
+
 { #category : #writing }
 RSAFrameExporter >> write3DPoint: aPoint [ 
 	| p |
