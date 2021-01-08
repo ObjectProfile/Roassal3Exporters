@@ -15,11 +15,12 @@ Class {
 
 { #category : #'user requests' }
 RSAFrameLogServer >> createFile: entity [
+
 	| file |
 	file := self logsDirectory asFileReference.
 	file exists ifFalse: [ file createDirectory ].
-	file := file / UUID new asString36.
-	file writeStreamDo: [ :stream | self write: entity to: stream ].
+	file := file / (UUID new asString36 , '.json').
+	file writeStreamDo: [ :stream | self write: entity to: stream ]
 ]
 
 { #category : #accessing }
