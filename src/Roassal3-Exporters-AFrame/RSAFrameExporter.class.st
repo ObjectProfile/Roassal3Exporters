@@ -85,7 +85,7 @@ RSAFrameExporter >> sendInfoToZinc [
 			events = JSON.parse(JSON.stringify(events, [''type'',''timeStamp'']));
 			var endSession = new Date();
 			var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
-			var data = {"data": {  "os": os, "browser": bow, "timeSession": resultSession, "infoPopUP": popUp, "events": events} };
+			var data = {"data": {  "os": os, "browser": bow, "startSession": startSession, "timeSession": resultSession, "infoPopUP": popUp, "events": events} };
 			return $.ajax({
 				type: ''POST'',
 				url: ''aFrameLog'',
@@ -303,16 +303,15 @@ RSAFrameExporter >> writeScript [
 					aTextPopUP.setAttribute(''visible'', true);
 					var date = new Date();
 					popInfo = txtInfo;
-					dateStart = date.getTime();
+					dateStart = date.getMilliseconds();
 			 	}
 			});
 			el.addEventListener(''mouseleave'', function () {
 				el.setAttribute(''color'', defaultColor);
 				aTextPopUP.setAttribute(''visible'', false);
 				var date = new Date;
-				dateFinal = date.getTime();
-				dateResult = (dateFinal - dateStart); // time in milliseconds
-				popUp.push({"Material": popInfo,"Time": dateResult});
+				dateFinal = date.getMilliseconds();
+				popUp.push({"model": popInfo,"timeStart": dateStart, "timeFinal": dateFinal});
 	      });
 		}
 	});'.
