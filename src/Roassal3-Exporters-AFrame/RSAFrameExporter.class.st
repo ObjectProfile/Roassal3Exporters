@@ -85,7 +85,7 @@ RSAFrameExporter >> sendInfoToZinc [
 			events = JSON.parse(JSON.stringify(events, [''type'',''timeStamp'']));
 			var endSession = new Date();
 			var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
-			var data = {"data": { "events": events, "infoPopUP": popUp,  "timeSession": resultSession, "browser": bow, "os": os } };
+			var data = {"data": {  "os": os, "browser": bow, "timeSession": resultSession, "infoPopUP": popUp, "events": events} };
 			return $.ajax({
 				type: ''POST'',
 				url: ''aFrameLog'',
