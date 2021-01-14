@@ -26,7 +26,7 @@ RSAFrameExporterTest >> testBox [
 { #category : #tests }
 RSAFrameExporterTest >> testElipse [
 	| result elipse |
-	result := '<a-sphere radius="0.015 0.015 0.015" position="0.0 0.0 0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-sphere>'.
+	result := '<a-entity geometry=" primitive: cylinder; height:0.03;radius: 0.015 0.015 0.015" position="0.0 0.0 0" rotation=" 90 0 0" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-entity>'.
 	elipse := RSEllipse new.
 	elipse printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
