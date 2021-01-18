@@ -116,6 +116,11 @@ RSAFrameExporter >> stream: aWriteStream [
 	stream := aWriteStream
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> translation [
+	^ translation
+]
+
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
 	aShape printOnAFrame: self.
