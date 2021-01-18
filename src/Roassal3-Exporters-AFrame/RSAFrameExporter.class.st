@@ -235,7 +235,7 @@ RSAFrameExporter >> writeHMTL [
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'.
 	shouldRunInZinc ifTrue: [ 
 		self write: self writeScriptToInfo ].
-	shouldRenderFloor ifFalse: [ 
+	shouldRenderAR ifTrue: [ 
 		self write: '
 	<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
 ' ].
