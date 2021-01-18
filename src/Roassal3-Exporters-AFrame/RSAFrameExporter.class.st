@@ -106,7 +106,7 @@ RSAFrameExporter >> sendInfoToZinc [
 '
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
 RSAFrameExporter >> stream [
 	^ stream
 ]
