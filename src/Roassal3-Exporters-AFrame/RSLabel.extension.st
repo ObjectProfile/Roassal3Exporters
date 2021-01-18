@@ -2,26 +2,24 @@ Extension { #name : #RSLabel }
 
 { #category : #'*Roassal3-Exporters-AFrame' }
 RSLabel >> printOnAFrame: aRSAFrameExporter [ 
-	| stream color angle delta |
+	| stream color angle |
 	stream := aRSAFrameExporter stream.
 	color := self color.
 	color ifNil: [ ^self ].
 	angle := aRSAFrameExporter angleFor: self.
-	delta := angle isZero
-		ifTrue: [ 100@0 ]
-		ifFalse: [ -20@ -100 ].
 	stream << '<a-entity position="'.
-	aRSAFrameExporter write3DPoint: self position+delta .
+	aRSAFrameExporter write3DPoint: self position .
 	angle isZero ifFalse: [ 
-	stream 
+	stream  
 		<< '" rotation="0 0 ';
 		<< angle asString
 		 ].
 	stream 
-		<< '" text="width: 1.5';
+		<< '" text="width: ';
+		<< (self baseRectangle corner y * 0.2) asString;
 		<< '; color: #';
 		<< color asHexString;
 		<< '; value:';
 		<< self text;
-		<< '" ></a-entity>'
+		<< '; align: center" ></a-entity>'
 ]
