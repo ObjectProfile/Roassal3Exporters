@@ -151,7 +151,18 @@ RSAFrameExporter >> translation [
 
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
-	aShape printOnAFrame: self.
+	matrix restoreAfter: [ 
+		matrix multiplyBy: aShape matrix. 
+		aShape color ifNotNil: [ aShape printOnAFrame: self ].
+		"aShape hasBorder ifTrue: [ aShape printBorderOnAFrame: self ]."
+		aShape hasChildren ifTrue: [ 
+			self restoreLevelAfter: [ 
+				aShape children do: [ :child | 
+					stream crlf.
+					child accept: self  ]
+			]
+		]
+	].
 
 ]
 
