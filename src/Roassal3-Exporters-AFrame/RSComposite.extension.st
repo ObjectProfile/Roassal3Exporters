@@ -1,6 +1,6 @@
-Extension { #name : #RSBox }
+Extension { #name : #RSComposite }
 
 { #category : #'*Roassal3-Exporters-AFrame' }
-RSBox >> printOnAFrame: aRSAFrameExporter [ 
+RSComposite >> printOnAFrame: aRSAFrameExporter [
 	aRSAFrameExporter writeSolidBox: self.
 ]
