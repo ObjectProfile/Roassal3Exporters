@@ -215,7 +215,7 @@ RSAFrameExporter >> visitCanvas: aRSCanvas [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLabel: aRSLabel [
-	aRSLabel printOnAFrame: self.
+	self visitBoundingShape: aRSLabel.
 
 
 ]
