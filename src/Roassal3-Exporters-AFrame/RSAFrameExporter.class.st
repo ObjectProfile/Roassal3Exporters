@@ -93,6 +93,13 @@ RSAFrameExporter >> noFloor [
 	shouldRenderFloor := false
 ]
 
+{ #category : #helper }
+RSAFrameExporter >> restoreLevelAfter: aBlock [
+	self level: self level +1.
+	aBlock value.
+	self level: self level -1.
+]
+
 { #category : #accessing }
 RSAFrameExporter >> sendInfoToZinc [
 
