@@ -9,10 +9,12 @@ Class {
 		'scale',
 		'translation',
 		'shouldRenderFloor',
-		'dictionary',
 		'shouldRenderAR',
 		'shouldRenderQR',
-		'shouldRunInZinc'
+		'shouldRunInZinc',
+		'matrix',
+		'depthSize',
+		'level'
 	],
 	#category : #'Roassal3-Exporters-AFrame-Exporter'
 }
@@ -24,6 +26,16 @@ RSAFrameExporter >> angleFor: aShape [
 	a := m transform: 0@0.
 	b := m transform: 1@0.
 	^ (b-a) angle negated radiansToDegrees
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> depthSize [
+	^depthSize.
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> depthSize: aNumber [
+	depthSize := aNumber.
 ]
 
 { #category : #accessing }
@@ -52,6 +64,18 @@ RSAFrameExporter >> initialize [
 	scale := scale @ scale negated.
 	translation := 0@ 0.
 
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> level [
+
+	^ level
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> level: anObject [
+
+	level := anObject
 ]
 
 { #category : #'public - configuration' }
