@@ -222,7 +222,7 @@ RSAFrameExporter >> visitLabel: aRSLabel [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLine: aRSLine [
-	aRSLine printOnAFrame: self.	
+	aRSLine printOnAFrame: self.
 
 ]
 
