@@ -161,6 +161,13 @@ RSAFrameExporter >> translation [
 	^ translation
 ]
 
+{ #category : #public }
+RSAFrameExporter >> validTextFor: aString [
+	^aString copyReplaceAll: '"' with: '\"'.
+	
+	
+]
+
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
 	matrix restoreAfter: [ 
