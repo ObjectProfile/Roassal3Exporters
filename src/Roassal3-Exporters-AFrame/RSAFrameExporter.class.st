@@ -187,8 +187,6 @@ RSAFrameExporter >> visitCamera [
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [
 	| rec |
-	scale := 0.006.
-	scale := scale @ scale negated.
 	rec := aRSCanvas encompassingRectangle.
 	translation := (rec floatCenter negated * scale) + (0@rec height negated * scale).
 	aRSCanvas shapes
