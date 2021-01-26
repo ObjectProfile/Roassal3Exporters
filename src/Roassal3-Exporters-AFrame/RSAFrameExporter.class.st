@@ -258,8 +258,8 @@ RSAFrameExporter >> write3DPoint: aPoint [
 	p := aPoint * scale + translation.
 	stream
 		<< p x asFloat asString; space;
-		<< p y asFloat asString;
-		<< ' 0'.
+		<< p y asFloat asString; space;
+		<< (self level * self depthSize ) asString.
 ]
 
 { #category : #writing }
