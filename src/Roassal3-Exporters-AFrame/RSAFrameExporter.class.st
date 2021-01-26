@@ -456,6 +456,29 @@ RSAFrameExporter >> writeSolidEllipse: ellipse [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeSolidLabel: label [
+	| color angle |
+	color := label color.
+	color ifNil: [ ^self ].
+	angle := self angleFor: label.
+	stream << '<a-entity position="'.
+	self write3DPoint: matrix translation.
+	angle isZero ifFalse: [ 
+		stream  
+			<< '" rotation="0 0 ';
+			<< angle asString
+		 ].
+	stream 
+		<< '" text="width: ';
+		<< (label baseRectangle corner y * 0.2) asString;
+		<< '; color: #';
+		<< color asHexString;
+		<< '; value:';
+		<< label text;
+		<< '; align: center" ></a-entity>'
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeToStream: aStream [
 	stream := aStream.
 	self writeHMTL.
