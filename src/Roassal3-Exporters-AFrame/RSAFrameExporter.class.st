@@ -431,6 +431,31 @@ RSAFrameExporter >> writeSolidBox: box [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeSolidEllipse: ellipse [
+	| extent color radius |
+	extent := ellipse extent * scale abs.
+	color := ellipse color.
+	color ifNil: [ ^self ].
+	radius := extent / 2.0.
+	stream << '<a-entity geometry=" primitive: cylinder; height: ';
+		<< extent y asString  ;
+		<< '; radius: ';
+		<< radius x asString; space;
+		<< ' " '.
+	"ellipse model ifNotNil: [ stream <<' model=""'; << ellipse model asString; <<'" "' ]."
+	stream
+		<< ' position="'.
+		self write3DPoint: matrix translation.
+	stream 
+		<< '" rotation=" 90 0 0';
+		<< '"  material= "color: #';
+		<< color asHexString;
+		<< '; blending: multiply; transparent: true" change-color-on-hover="color: #';
+		<< color muchLighter asHexString;
+		<< '" roughness=" 1.0" metalness=" 0.2" ></a-entity>'.
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeToStream: aStream [
 	stream := aStream.
 	self writeHMTL.
