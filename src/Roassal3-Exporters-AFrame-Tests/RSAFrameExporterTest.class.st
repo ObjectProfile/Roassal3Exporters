@@ -24,6 +24,20 @@ RSAFrameExporterTest >> testBox [
 ]
 
 { #category : #tests }
+RSAFrameExporterTest >> testComposite [
+	| result box composite |
+	result := '<a-box position="0.0 0.0 0.0" width=" 0.06 " height=" 0.06" depth=" 0.03" color= "#0000FF" change-color-on-hover="color: #C4C4FF" roughness=" 1.0" metalness=" 0.2" ></a-box>', String crlf,'<a-box position="0.0 0.0 0.03" width=" 0.06 " height=" 0.06" depth=" 0.03" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
+	composite := RSComposite new.
+	composite color: Color blue.
+	box := RSBox new.
+	box size: 10.
+	composite children: { box }.
+	self assert: composite extent equals: 10@10.
+	composite accept: aFrameExporter.
+	self assert: aFrameExporter stream contents equals: result.
+]
+
+{ #category : #tests }
 RSAFrameExporterTest >> testElipse [
 	| result elipse |
 	result := '<a-entity geometry=" primitive: cylinder; height: 0.03; radius: 0.015  "  position="0.0 0.0 0.0" rotation=" 90 0 0"  material= "color: #9F9F9F; blending: multiply; transparent: true" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-entity>'.
