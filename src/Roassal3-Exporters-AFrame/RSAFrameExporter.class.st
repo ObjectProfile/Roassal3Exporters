@@ -479,6 +479,31 @@ RSAFrameExporter >> writeSolidLabel: label [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeSolidPolyline: polyline [
+	| color angle height |
+	color := polyline color muchDarker asHexString.
+	angle := ((polyline endPoint - polyline startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := (polyline startPoint distanceTo: polyline endPoint ) * scale abs.
+	stream 
+		<< '<a-entity geometry="primitive: cylinder; radius: ';
+		<< (self depthSize * scale ) asString;
+		<< '; height:';
+		<< height asString ;
+		<<'" position=" '.
+	self write3DPoint: matrix translation.
+	angle isZero ifFalse: [ 
+		stream 
+			<< '" rotation=" 0 0 ';
+			<< angle asString
+		].
+	stream  
+		<< '" material=" color:#';
+		<< color; 
+		<< '"></a-entity>'.
+
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeToStream: aStream [
 	stream := aStream.
 	self writeHMTL.
