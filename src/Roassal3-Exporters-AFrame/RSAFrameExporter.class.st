@@ -407,6 +407,30 @@ RSAFrameExporter >> writeShapes [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeSolidBox: box [
+	| extent color |
+	extent := box extent * scale abs.
+	color := box color.
+	color ifNil: [ ^ self ].
+	stream << '<a-box '. 
+	"box model ifNotNil: [ stream <<'model=""'; << ( self validTextFor: box model asString); <<'" "' ]."
+	stream <<'position="'.
+	self write3DPoint: matrix translation.
+	stream 
+		<< '" width=" ';
+		<< extent x asString; space; 
+		<< '" height=" ';
+		<< extent y asString; 
+		<< '" depth=" ';
+		<< self depthSize asString ;
+		<< '" color= "#';
+		<< color asHexString;
+		<< '" change-color-on-hover="color: #';
+		<< color muchLighter asHexString;
+		<< '" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeToStream: aStream [
 	stream := aStream.
 	self writeHMTL.
