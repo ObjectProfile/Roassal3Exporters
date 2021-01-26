@@ -82,6 +82,11 @@ RSAFrameExporter >> level: anObject [
 	level := anObject
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> matrix [
+	^matrix
+]
+
 { #category : #'public - configuration' }
 RSAFrameExporter >> noFloor [
 	"Do not have a floor"
