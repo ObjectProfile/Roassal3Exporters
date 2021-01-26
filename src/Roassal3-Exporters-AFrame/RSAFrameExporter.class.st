@@ -63,6 +63,10 @@ RSAFrameExporter >> initialize [
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.
+	matrix := AthensAffineTransform new.
+	self depthSize: 0.03.
+	self level: 0.
+	
 
 ]
 
