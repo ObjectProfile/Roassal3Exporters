@@ -17,7 +17,7 @@ RSAFrameExporterTest >> setUp [
 { #category : #tests }
 RSAFrameExporterTest >> testBox [
 	| result box |
-	result := '<a-box position="0.0 0.0 0" width=" 0.03 " height=" 0.03" depth=" 0.03" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
+	result := '<a-box position="0.0 0.0 0.0" width=" 0.03 " height=" 0.03" depth=" 0.03" color= "#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
 	box := RSBox new.
 	box printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
@@ -26,7 +26,7 @@ RSAFrameExporterTest >> testBox [
 { #category : #tests }
 RSAFrameExporterTest >> testElipse [
 	| result elipse |
-	result := '<a-entity geometry=" primitive: cylinder; height:0.03; radius: 0.015  "  position="0.0 0.0 0" rotation=" 90 0 0"  material= "color: #9F9F9F; blending: multiply; transparent: true" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-entity>'.
+	result := '<a-entity geometry=" primitive: cylinder; height: 0.03; radius: 0.015  "  position="0.0 0.0 0.0" rotation=" 90 0 0"  material= "color: #9F9F9F; blending: multiply; transparent: true" change-color-on-hover="color: #E9E9E9" roughness=" 1.0" metalness=" 0.2" ></a-entity>'.
 	elipse := RSEllipse new.
 	elipse printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
@@ -43,7 +43,7 @@ RSAFrameExporterTest >> testImage [
 { #category : #tests }
 RSAFrameExporterTest >> testLabel [
 	| result label |
-	result := '<a-entity position="0.0 0.0 0" text="width: 1.6341; color: #808080; value:hello world; align: center" ></a-entity>'.
+	result := '<a-entity position="0.0 0.0 0.0" text="width: 1.6341; color: #808080; value:hello world; align: center" ></a-entity>'.
 	label := RSLabel new.
 	label text: 'hello world'.
 	label printOnAFrame: aFrameExporter.
@@ -52,9 +52,9 @@ RSAFrameExporterTest >> testLabel [
 
 { #category : #tests }
 RSAFrameExporterTest >> testLine [
-	| result line |
-	result := '<a-entity geometry="primitive: cylinder; radius: 0.003; height:0.8485281374238571" position=" 0.3 -0.3 0" rotation=" 0 0 -135.0" material=" color:#404040"></a-entity>'.
-	line := RSLine new.
-	line printOnAFrame: aFrameExporter.
+	| result polyline |
+	result := '<a-entity geometry="primitive: cylinder; radius: (0.00017999999999999998@ -0.00017999999999999998); height:(0.0@0.0)" position=" 0.0 0.0 0.0" rotation=" 0 0 -90.0" material=" color:#404040"></a-entity>'.
+	polyline := RSPolyline new.
+	polyline printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
