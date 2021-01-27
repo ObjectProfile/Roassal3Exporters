@@ -6,11 +6,11 @@ RSLine >> printOnAFrame: aRSAFrameExporter [
 	stream := aRSAFrameExporter stream.
 	scale := 0.006.
 	color := self color muchDarker asHexString.
-	angle := ((self endPoint - self startPoint ) angle + Float halfPi ) negated radiansToDegrees.
-	height := (self startPoint distanceTo: self endPoint ) * scale abs.
+	angle := ( ( self endPoint - self startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( self startPoint distanceTo: self endPoint ) * scale abs.
 	stream 
 		<< '<a-entity geometry="primitive: cylinder; radius: ';
-		<< (aRSAFrameExporter depthSize * scale ) asString;
+		<< ( aRSAFrameExporter depthSize * scale ) asString;
 		<< '; height:';
 		<< height asString ;
 		<<'" position=" '.
