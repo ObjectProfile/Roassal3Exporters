@@ -64,7 +64,7 @@ RSAFrameExporter >> initialize [
 	scale := scale @ scale negated.
 	translation := 0@ 0.
 	matrix := AthensAffineTransform new.
-	self depthSize: 0.03.
+	self depthSize: 0.2.
 	self level: 0.
 	
 
@@ -486,7 +486,7 @@ RSAFrameExporter >> writeSolidPolyline: polyline [
 	height := (polyline startPoint distanceTo: polyline endPoint ) * scale abs.
 	stream 
 		<< '<a-entity geometry="primitive: cylinder; radius: ';
-		<< (self depthSize * scale ) asString;
+		<< (self depthSize * scale abs) asString;
 		<< '; height:';
 		<< height asString ;
 		<<'" position=" '.
