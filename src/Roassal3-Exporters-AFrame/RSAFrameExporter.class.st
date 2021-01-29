@@ -64,7 +64,7 @@ RSAFrameExporter >> initialize [
 	scale := scale @ scale negated.
 	translation := 0@ 0.
 	matrix := AthensAffineTransform new.
-	self depthSize: 0.2.
+	self depthSize: 0.003.
 	self level: 0.
 	
 
@@ -173,7 +173,7 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 	matrix restoreAfter: [ 
 		matrix multiplyBy: aShape matrix. 
 		aShape color ifNotNil: [ aShape printOnAFrame: self ].
-		"aShape hasBorder ifTrue: [ aShape printBorderOnAFrame: self ]."
+		aShape hasBorder ifTrue: [ aShape printBorderOnAFrame: self ].
 		aShape hasChildren ifTrue: [ 
 			self restoreLevelAfter: [ 
 				aShape children do: [ :child | 
@@ -188,14 +188,14 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 { #category : #visiting }
 RSAFrameExporter >> visitCamera [ 
 	shouldRenderQR
-		ifTrue: [ self write: '<a-marker-camera preset="hiro"' ]
+		ifTrue: [ self write: '<a-marker-camera preset=''hiro''' ]
 		ifFalse: [ self write: '<a-camera ' ].
 	stream
-		<< 'position="0 1.6 4">';
-		<< '<a-entity id="idPopUP" ';
-		<< 'visible="false" position=" ';
-		<< '0 -0.2 -2"';
-		<< 'material="color: #333"></a-entity> ';
+		<< 'position=''0 1.6 4''>';
+		<< '<a-entity id=''idPopUP'' ';
+		<< 'visible=''false'' position='' ';
+		<< '0 -0.2 -2''';
+		<< 'material=''color: #333''></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
 		ifTrue: [ self write: '</a-marker-camera>' ]
@@ -277,20 +277,20 @@ RSAFrameExporter >> writeHMTL [
 	self write: '<!DOCTYPE html>
 <html>
 	<head>
-	<meta charset="utf-8">
+	<meta charset=''utf-8''>
 	<title>'.
 	self write: title.
 	self write: '</title>
-	<meta name="description" content="Roassal canvas exported">
-	<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-	<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.	min.js"></script>
-	<script src="https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>'.
+	<meta name=''description'' content=''Roassal canvas exported''>
+	<script src=''https://aframe.io/releases/1.0.4/aframe.min.js''></script>
+	<script src=''https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.	min.js''></script>
+	<script src=''https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js''></script>
+	<script src=''https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js''></script>'.
 	shouldRunInZinc ifTrue: [ 
 		self write: self writeScriptToInfo ].
 	shouldRenderAR ifTrue: [ 
 		self write: '
-	<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+	<script src=''https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js''></script>
 ' ].
 	self write: '<script>'.
 	self write: self writeScript.
@@ -311,7 +311,7 @@ RSAFrameExporter >> writeHMTL [
 RSAFrameExporter >> writeScript [
 	^'
 	var popUp = [ ];
-	var popInfo = "";
+	var popInfo = '''';
 	var dateStart;
 	var dateFinal;
 	var dateResult = 0;
@@ -365,7 +365,7 @@ RSAFrameExporter >> writeScript [
 				aTextPopUP.setAttribute(''visible'', false);
 				var date = new Date;
 				dateFinal = date.getMilliseconds();
-				popUp.push({"model": popInfo,"timeStart": dateStart, "timeFinal": dateFinal});
+				popUp.push({''model'': popInfo,''timeStart'': dateStart, ''timeFinal'': dateFinal});
 	      });
 		}
 	});'.
@@ -375,8 +375,8 @@ RSAFrameExporter >> writeScript [
 { #category : #accessing }
 RSAFrameExporter >> writeScriptToInfo [
 	^'
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>'
+	<script src=''https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js''></script>
+	<script src=''https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js''></script>'
 ]
 
 { #category : #writing }
@@ -387,18 +387,18 @@ RSAFrameExporter >> writeShapes [
 	shouldRenderAR | shouldRenderQR
 		ifTrue: [ self write: 'embedded arjs ' ]
 		
-		ifFalse: [ self write: 'background="color: #fff" ' ].
+		ifFalse: [ self write: 'background=''color: #fff'' ' ].
 		
 	self write: 'stats>'.
 	
 	shouldRenderFloor ifTrue: [ 
 		self write: '
 <a-assets>
-	<a-image id="floor" src="'.
+	<a-image id=''floor'' src='''.
 		self write: self floorImg.
-		self write: '"></a-image>
+		self write: '''></a-image>
 </a-assets>
-<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+<a-entity geometry=''primitive: cylinder; height: .2; radius: 12;'' material=''color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1'' position=''0 0 0''></a-entity>
 ' ].
 	self visitCamera.
 	canvas accept: self.
@@ -413,21 +413,21 @@ RSAFrameExporter >> writeSolidBox: box [
 	color := box color.
 	color ifNil: [ ^ self ].
 	stream << '<a-box '. 
-	"box model ifNotNil: [ stream <<'model=""'; << ( self validTextFor: box model asString); <<'" "' ]."
-	stream <<'position="'.
+	box model ifNotNil: [ stream <<'model='''; << ( self validTextFor: box model asString); <<'''' ].
+	stream <<'position='''.
 	self write3DPoint: matrix translation.
 	stream 
-		<< '" width=" ';
+		<< ''' width='' ';
 		<< extent x asString; space; 
-		<< '" height=" ';
+		<< ''' height='' ';
 		<< extent y asString; 
-		<< '" depth=" ';
+		<< ''' depth='' ';
 		<< self depthSize asString ;
-		<< '" color= "#';
+		<< ''' color= ''#';
 		<< color asHexString;
-		<< '" change-color-on-hover="color: #';
+		<< ''' change-color-on-hover=''color: #';
 		<< color muchLighter asHexString;
-		<< '" roughness=" 1.0" metalness=" 0.2" ></a-box>'.
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
 ]
 
 { #category : #writing }
