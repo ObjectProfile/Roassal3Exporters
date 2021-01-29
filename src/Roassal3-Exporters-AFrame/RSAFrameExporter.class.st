@@ -163,7 +163,7 @@ RSAFrameExporter >> translation [
 
 { #category : #public }
 RSAFrameExporter >> validTextFor: aString [
-	^aString copyReplaceAll: '"' with: '\"'.
+	^aString copyReplaceAll: '''' with: '`'.
 	
 	
 ]
