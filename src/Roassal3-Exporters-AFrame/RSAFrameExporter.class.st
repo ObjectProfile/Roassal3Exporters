@@ -268,6 +268,90 @@ RSAFrameExporter >> write: aString [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint [
+	| angle height position border color |
+	border := RSBorder new.
+	color := border color muchDarker asHexString.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream
+		<< '<a-box '; 
+		<<'position='''.
+	self write3DPoint: matrix translation + position.
+	stream 
+		<< ''' width='' ';
+		<< (border width * scale x) asString; space; 
+		<< ''' height='' ';
+		<<  height asString; 
+		<< ''' depth='' ';
+		<< self depthSize asString ;
+		<< ''' color= ''#';
+		<< color asString .
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint color: aColor [
+	| angle height position border |
+	border := RSBorder new.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream
+		<< '<a-box '; 
+		<<'position='''.
+	self write3DPoint: matrix translation + position.
+	stream 
+		<< ''' width='' ';
+		<< (border width * scale x) asString; space; 
+		<< ''' height='' ';
+		<<  height asString; 
+		<< ''' depth='' ';
+		<< self depthSize asString ;
+		<< ''' color= ''#';
+		<< aColor asString .
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeEllipse: ellipse [
+	| extent color radius |
+	extent := ellipse extent * scale abs.
+	color := ellipse color.
+	color ifNil: [ ^self ].
+	radius := extent / 2.0.
+	stream << '<a-entity geometry='' primitive: cylinder; height: ';
+		<< extent y asString  ;
+		<< '; radius: ';
+		<< radius x asString; space;
+		<< ' '' '.
+	"ellipse model ifNotNil: [ stream <<' model=""'; << ellipse model asString; <<'" "' ]."
+	stream
+		<< ' position='''.
+		self write3DPoint: matrix translation.
+	stream 
+		<< ''' rotation='' 90 0 0';
+		<< '''  material= ''color: #';
+		<< color asHexString;
+		<< '; blending: multiply; transparent: true'' change-color-on-hover=''color: #';
+		<< color muchLighter asHexString;
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-entity>'.
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeHMTL [
 
 	| title |
@@ -305,6 +389,55 @@ RSAFrameExporter >> writeHMTL [
 </body>
 </html>
 '
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeLabel: label [
+	| color angle |
+	color := label color.
+	color ifNil: [ ^self ].
+	angle := self angleFor: label.
+	stream << '<a-entity position='''.
+	self write3DPoint: matrix translation.
+	angle isZero ifFalse: [ 
+		stream  
+			<< ''' rotation=''0 0 ';
+			<< angle asString
+		 ].
+	stream 
+		<< ''' text='' width: ';
+		<< (label baseRectangle corner y * 0.2) asString;
+		<< '; color: #';
+		<< color asHexString;
+		<< '; value:';
+		<< label text;
+		<< '; align: center'' ></a-entity>'
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeLine: startPoint endPoint: endPoint color: aColor [
+	| color angle height position |
+	color :=  aColor muchDarker asHexString.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream 
+		<< '<a-entity geometry=''primitive: cylinder; radius: ';
+		<< self depthSize asString;
+		<< '; height:';
+		<< height asString ;
+		<<''' position='' '.
+	self write3DPoint: matrix translation + position.
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream  
+		<< ''' material='' color:#';
+		<< color; 
+		<< '''></a-entity>'. 
+
 ]
 
 { #category : #writing }
