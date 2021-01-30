@@ -9,11 +9,14 @@ Class {
 		'scale',
 		'translation',
 		'shouldRenderFloor',
-		'dictionary',
 		'shouldRenderAR',
-		'shouldRenderQR'
+		'shouldRenderQR',
+		'shouldRunInZinc',
+		'matrix',
+		'depthSize',
+		'level'
 	],
-	#category : #'Roassal3-Exporters-AFrame'
+	#category : #'Roassal3-Exporters-AFrame-Exporter'
 }
 
 { #category : #accessing }
@@ -23,6 +26,16 @@ RSAFrameExporter >> angleFor: aShape [
 	a := m transform: 0@0.
 	b := m transform: 1@0.
 	^ (b-a) angle negated radiansToDegrees
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> depthSize [
+	^depthSize.
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> depthSize: aNumber [
+	depthSize := aNumber.
 ]
 
 { #category : #accessing }
@@ -40,33 +53,38 @@ RSAFrameExporter >> floorImg [
 	^ 'https://i.imgur.com/dckg70j.jpg'
 ]
 
-{ #category : #accessing }
-RSAFrameExporter >> handleLogRequest: request [
-	| json |
-	(request entity fields) traceCr.
-	json := NeoJSONWriter toString: 'Foo bar'.
-	^ ZnResponse ok: (ZnEntity json: json ).
-]
-
-{ #category : #public }
-RSAFrameExporter >> handleRequest: request [
-	| html |
-	request uri path = #aFrame
-	ifFalse: [ ^ ZnResponse notFound: request uri ].
-	html :=	String streamContents: [ :temporalStream | self writeToStream: temporalStream ].
-	^ZnResponse ok: (ZnEntity html: html)
-]
-
 { #category : #initialization }
 RSAFrameExporter >> initialize [
 	super initialize.
 	shouldRenderFloor := true.
 	shouldRenderAR := false.
 	shouldRenderQR := false.
+	shouldRunInZinc := false.
 	scale := 0.006.
 	scale := scale @ scale negated.
 	translation := 0@ 0.
+	matrix := AthensAffineTransform new.
+	self depthSize: 0.003.
+	self level: 0.
+	
 
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> level [
+
+	^ level
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> level: anObject [
+
+	level := anObject
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> matrix [
+	^matrix
 ]
 
 { #category : #'public - configuration' }
@@ -75,17 +93,60 @@ RSAFrameExporter >> noFloor [
 	shouldRenderFloor := false
 ]
 
-{ #category : #public }
-RSAFrameExporter >> runInZinc [
-	ZnServer startDefaultOn: 8080.
-	ZnServer default logToTranscript.
-	ZnServer default delegate 
-		map: #aFrame to: self;
-		map: #aFrameLog to: [ :request | 
-			self handleLogRequest: request ].
+{ #category : #helper }
+RSAFrameExporter >> restoreLevelAfter: aBlock [
+	self level: self level +1.
+	aBlock value.
+	self level: self level -1.
 ]
 
-{ #category : #accesing }
+{ #category : #accessing }
+RSAFrameExporter >> sendInfoToZinc [
+
+	^ '
+	var startSession= new Date();
+	var parser = new UAParser();
+	var result = parser.getResult();
+	var bow = bowser.name+'' ''+bowser.version;
+	var os = result.os;
+	function monitorEvents(document) {
+		var documentsEvents = [ ];
+		var log = function(e) { events.push(e);};
+		for(var i in document) {
+			if(i.startsWith("on")) documentsEvents.push(i.substr(2));
+		}
+		documentsEvents.forEach(function(eventName) {
+			document.addEventListener(eventName, log, true);
+		});
+	}	
+	$(document).ready(function(callback) {
+		monitorEvents(document);
+		window.onbeforeunload = function(){
+			events = JSON.parse(JSON.stringify(events, [''type'',''timeStamp'']));
+			var endSession = new Date();
+			var resultSession = (endSession.getTime() - startSession.getTime()); //time in milliseconds
+			var data = {"data": {  "os": os, "browser": bow, "startSession": startSession, "timeSession": resultSession, "infoPopUP": popUp, "events": events} };
+			return $.ajax({
+				type: ''POST'',
+				url: ''aFrameLog'',
+				async : true,
+				data: JSON.stringify(data),
+				dataType: ''json'',
+				contentType: "application/json; charset=utf-8",
+				success: function(result) {
+					console.log(result);	
+					callback(events, popUp, resultsession, nav, bow, os);		
+				},
+				error: function(XMLHttpRequest, textStatus, errorThrown) {
+					alert(errorThrown);
+				}
+			})
+		}
+	});
+'
+]
+
+{ #category : #accessing }
 RSAFrameExporter >> stream [
 	^ stream
 ]
@@ -95,31 +156,46 @@ RSAFrameExporter >> stream: aWriteStream [
 	stream := aWriteStream
 ]
 
+{ #category : #accessing }
+RSAFrameExporter >> translation [
+	^ translation
+]
+
 { #category : #public }
-RSAFrameExporter >> value: request [
-	^ self handleRequest: request
+RSAFrameExporter >> validTextFor: aString [
+	^aString copyReplaceAll: '''' with: '`'.
+	
+	
 ]
 
 { #category : #visiting }
 RSAFrameExporter >> visitBoundingShape: aShape [
-	aShape printOnAFrame: self.
+	matrix restoreAfter: [ 
+		matrix multiplyBy: aShape matrix. 
+		aShape color ifNotNil: [ aShape printOnAFrame: self ].
+		aShape hasBorder ifTrue: [ aShape printBorderOnAFrame: self ].
+		aShape hasChildren ifTrue: [ 
+			self restoreLevelAfter: [ 
+				aShape children do: [ :child | 
+					stream crlf.
+					child accept: self  ]
+			]
+		]
+	].
 
 ]
 
 { #category : #visiting }
 RSAFrameExporter >> visitCamera [ 
 	shouldRenderQR
-		ifTrue: [ self write: '<a-marker-camera preset="hiro"' ]
+		ifTrue: [ self write: '<a-marker-camera preset=''hiro''' ]
 		ifFalse: [ self write: '<a-camera ' ].
 	stream
-		<< 'position="0 1.6 4">';
-		<< '<a-entity id="idPopUP" ';
-		<< 'visible="false" position=" '.
-	shouldRenderQR | shouldRenderAR 
-		ifTrue: [ self write: '0 -0.2 -2"' ]
-		ifFalse: [ self write: '1.5 0.4 -2"' ].
-	stream
-		<< 'material="color: #333"></a-entity> ';
+		<< 'position=''0 1.6 4''>';
+		<< '<a-entity id=''idPopUP'' ';
+		<< 'visible=''false'' position='' ';
+		<< '0 -0.2 -2''';
+		<< 'material=''color: #333''></a-entity> ';
 		<< '<a-cursor></a-cursor>'.
 	shouldRenderQR
 		ifTrue: [ self write: '</a-marker-camera>' ]
@@ -130,8 +206,6 @@ RSAFrameExporter >> visitCamera [
 { #category : #visiting }
 RSAFrameExporter >> visitCanvas: aRSCanvas [
 	| rec |
-	scale := 0.006.
-	scale := scale @ scale negated.
 	rec := aRSCanvas encompassingRectangle.
 	translation := (rec floatCenter negated * scale) + (0@rec height negated * scale).
 	aRSCanvas shapes
@@ -141,14 +215,14 @@ RSAFrameExporter >> visitCanvas: aRSCanvas [
 
 { #category : #visiting }
 RSAFrameExporter >> visitLabel: aRSLabel [
-	aRSLabel printOnAFrame: self.
+	self visitBoundingShape: aRSLabel.
 
 
 ]
 
 { #category : #visiting }
 RSAFrameExporter >> visitLine: aRSLine [
-	aRSLine printOnAFrame: self.	
+	aRSLine printOnAFrame: self.
 
 ]
 
@@ -172,19 +246,109 @@ RSAFrameExporter >> withQR [
 	shouldRenderFloor := false.
 ]
 
+{ #category : #public }
+RSAFrameExporter >> withRunInZinc [
+	shouldRunInZinc := true.
+
+]
+
 { #category : #writing }
 RSAFrameExporter >> write3DPoint: aPoint [ 
 	| p |
 	p := aPoint * scale + translation.
 	stream
-		<< p x asString; space;
-		<< p y asString;
-		<< ' 0'.
+		<< p x asFloat asString; space;
+		<< p y asFloat asString; space;
+		<< (self level * self depthSize ) asString.
 ]
 
 { #category : #writing }
 RSAFrameExporter >> write: aString [
-	stream nextPutAll: (aString replaceAll: String cr with: String crlf)
+	stream nextPutAll: (aString copyReplaceAll: String cr with: String crlf)
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint [
+	| angle height position border color |
+	border := RSBorder new.
+	color := border color muchDarker asHexString.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream
+		<< '<a-box '; 
+		<<'position='''.
+	self write3DPoint: matrix translation + position.
+	stream 
+		<< ''' width='' ';
+		<< (border width * scale x) asString; space; 
+		<< ''' height='' ';
+		<<  height asString; 
+		<< ''' depth='' ';
+		<< self depthSize asString ;
+		<< ''' color= ''#';
+		<< color asString .
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint color: aColor [
+	| angle height position border |
+	border := RSBorder new.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream
+		<< '<a-box '; 
+		<<'position='''.
+	self write3DPoint: matrix translation + position.
+	stream 
+		<< ''' width='' ';
+		<< (border width * scale x) asString; space; 
+		<< ''' height='' ';
+		<<  height asString; 
+		<< ''' depth='' ';
+		<< self depthSize asString ;
+		<< ''' color= ''#';
+		<< aColor asString .
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeEllipse: ellipse [
+	| extent color radius |
+	extent := ellipse extent * scale abs.
+	color := ellipse color.
+	color ifNil: [ ^self ].
+	radius := extent / 2.0.
+	stream << '<a-entity geometry='' primitive: cylinder; height: ';
+		<< extent y asString  ;
+		<< '; radius: ';
+		<< radius x asString; space;
+		<< ' '' '.
+	"ellipse model ifNotNil: [ stream <<' model=""'; << ellipse model asString; <<'" "' ]."
+	stream
+		<< ' position='''.
+		self write3DPoint: matrix translation.
+	stream 
+		<< ''' rotation='' 90 0 0';
+		<< '''  material= ''color: #';
+		<< color asHexString;
+		<< '; blending: multiply; transparent: true'' change-color-on-hover=''color: #';
+		<< color muchLighter asHexString;
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-entity>'.
 ]
 
 { #category : #writing }
@@ -196,120 +360,26 @@ RSAFrameExporter >> writeHMTL [
 		         ifAbsent: [ 'Roassal with AFrame' ].
 	self write: '<!DOCTYPE html>
 <html>
-<head>
-<meta charset="utf-8">
-<title>'.
+	<head>
+	<meta charset=''utf-8''>
+	<title>'.
 	self write: title.
 	self write: '</title>
-<meta name="description" content="Roassal canvas exported">
-<script src="https://aframe.io/releases/1.0.4/aframe.min.js"></script>
-<script src="https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js"></script>
-<script> 
-	var parser = new UAParser();
-	var result = parser.getResult();
-	var nav = navigator.appName;
-	var bow = bowser.name+'' ''+bowser.version;
-	var os = result.os;
-	var info =  $.get(''https://www.cloudflare.com/cdn-cgi/trace'', function(data) {
-		console.log(data);		
-	});
-
-    $(document).ready(function(callback) {
-		return $.ajax({
-			type: ''POST'',
-			url: ''aFrameLog'',
-			async : true,
-			data: { navigator: nav, browser: bow, OS: os},
-			dataType: ''json'',
-			success: function(result) {
-				console.log(result);	
-				callback(nav, bow, os);		
-		},
-		error: function(XMLHttpRequest, textStatus, errorThrown) {
-			alert(errorThrown);
-		}
-		})
-		});
-</script>
-'.
-	shouldRenderFloor ifFalse: [ 
+	<meta name=''description'' content=''Roassal canvas exported''>
+	<script src=''https://aframe.io/releases/1.0.4/aframe.min.js''></script>
+	<script src=''https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.	min.js''></script>
+	<script src=''https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js''></script>
+	<script src=''https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js''></script>'.
+	shouldRunInZinc ifTrue: [ 
+		self write: self writeScriptToInfo ].
+	shouldRenderAR ifTrue: [ 
 		self write: '
-<script src="https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js"></script>
+	<script src=''https://jeromeetienne.github.io/AR.js/aframe/build/aframe-ar.js''></script>
 ' ].
-	self write: '
-<script>
- AFRAME.registerComponent(''change-color-on-hover'', {
-  schema: {
-    color:{
-		default: ''1F77B4''
-	 }
-	},
-
-	init: function () {
-		var data = this.data;
-      var el = this.el;  // <a-box>
-      var defaultColor = el.getAttribute(''material'').color;
-		var aTextPopUP = document.querySelector(''#idPopUP'');
-
-      el.addEventListener(''mouseenter'', function () {
-		 el.setAttribute(''color'', data.color);
-		 var txtInfo = el.getAttribute(''model'');
-		 if (txtInfo != null) {
-			var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
-			totalWidth = Math.trunc(txtInfo.length / 10);
-			console.log(totalWidth);
-			switch (totalWidth) {
-				case 0:
-					var width = 0.4;
-					var height = 0.15;
-					break;
-				case 1:
-					var width = 0.7;
-					var height = 0.15;
-					break;
-				case 2:
-					var width = 1;
-					var height = 0.15;
-					break;
-				case totalWidth > 2:
-					var width = ''auto'';
-					var height = ''auto'';
-					break;
-				}
-			var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
-			aTextPopUP.setAttribute(''geometry'', geometry);
-			aTextPopUP.setAttribute(''text'', value);
-			console.log(txtInfo);
-			aTextPopUP.setAttribute(''visible'', true);
-			var date = new Date();
-			$(document).ready(function(callback) {
-			return $.ajax({
-				type: ''POST'',
-				url: ''aFrameLog'',
-				async : true,
-				data: {material: txtInfo, time: date},
-				dataType: ''json'',
-				success: function(result) {
-					console.log(result);	
-					callback(txtInfo);		
-				},
-				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					alert(errorThrown);
-				}
-			})
-			});
-		  }
-		});
-		
-      el.addEventListener(''mouseleave'', function () {
-        el.setAttribute(''color'', defaultColor);
-		  aTextPopUP.setAttribute(''visible'', false);
-      });
-    }
-  });
+	self write: '<script>'.
+	self write: self writeScript.
+	shouldRunInZinc ifTrue: [ self write: self sendInfoToZinc ].
+	self write:'
 </script>
 </head>
 <body>
@@ -322,30 +392,175 @@ RSAFrameExporter >> writeHMTL [
 ]
 
 { #category : #writing }
+RSAFrameExporter >> writeLabel: label [
+	| color angle |
+	color := label color.
+	color ifNil: [ ^self ].
+	angle := self angleFor: label.
+	stream << '<a-entity position='''.
+	self write3DPoint: matrix translation.
+	angle isZero ifFalse: [ 
+		stream  
+			<< ''' rotation=''0 0 ';
+			<< angle asString
+		 ].
+	stream 
+		<< ''' text='' width: ';
+		<< (label baseRectangle corner y * 0.2) asString;
+		<< '; color: #';
+		<< color asHexString;
+		<< '; value:';
+		<< label text;
+		<< '; align: center'' ></a-entity>'
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeLine: startPoint endPoint: endPoint color: aColor [
+	| color angle height position |
+	color :=  aColor muchDarker asHexString.
+	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
+	height := ( startPoint distanceTo: endPoint ) * scale x.
+	position:= ( startPoint + endPoint ) / 2.
+	stream 
+		<< '<a-entity geometry=''primitive: cylinder; radius: ';
+		<< self depthSize asString;
+		<< '; height:';
+		<< height asString ;
+		<<''' position='' '.
+	self write3DPoint: matrix translation + position.
+	angle isZero ifFalse: [ 
+		stream 
+			<< ''' rotation='' 0 0 ';
+			<< angle asString
+		].
+	stream  
+		<< ''' material='' color:#';
+		<< color; 
+		<< '''></a-entity>'. 
+
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeScript [
+	^'
+	var popUp = [ ];
+	var popInfo = '''';
+	var dateStart;
+	var dateFinal;
+	var dateResult = 0;
+	var events = [ ];
+	AFRAME.registerComponent(''change-color-on-hover'', {
+		schema: {
+			color:{
+				default: ''1F77B4''
+			}
+		},
+		init: function () {
+			var data = this.data;
+	      var el = this.el;  // <a-box>
+	      var defaultColor = el.getAttribute(''material'').color;
+			var aTextPopUP = document.querySelector(''#idPopUP'');
+			el.addEventListener(''mouseenter'', function () {
+				el.setAttribute(''color'', data.color);
+				var txtInfo = el.getAttribute(''model'');
+				if (txtInfo != null) {
+					var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
+					totalWidth = Math.trunc(txtInfo.length / 10);
+					switch (totalWidth) {
+						case 0:
+							var width = 0.4;
+							var height = 0.15;
+							break;
+						case 1:
+							var width = 0.7;
+							var height = 0.15;
+							break;
+						case 2:
+							var width = 1;
+							var height = 0.15;
+							break;
+						case totalWidth > 2:
+							var width = ''auto'';
+							var height = ''auto'';
+							break;
+					}
+					var geometry = ''primitive: plane; height: ''+ height + ''; width: '' + width;
+					aTextPopUP.setAttribute(''geometry'', geometry);
+					aTextPopUP.setAttribute(''text'', value);
+					aTextPopUP.setAttribute(''visible'', true);
+					var date = new Date();
+					popInfo = txtInfo;
+					dateStart = date.getMilliseconds();
+			 	}
+			});
+			el.addEventListener(''mouseleave'', function () {
+				el.setAttribute(''color'', defaultColor);
+				aTextPopUP.setAttribute(''visible'', false);
+				var date = new Date;
+				dateFinal = date.getMilliseconds();
+				popUp.push({''model'': popInfo,''timeStart'': dateStart, ''timeFinal'': dateFinal});
+	      });
+		}
+	});'.
+
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> writeScriptToInfo [
+	^'
+	<script src=''https://cdnjs.cloudflare.com/ajax/libs/bowser/1.9.4/bowser.min.js''></script>
+	<script src=''https://cdn.jsdelivr.net/npm/ua-parser-js@0/dist/ua-parser.min.js''></script>'
+]
+
+{ #category : #writing }
 RSAFrameExporter >> writeShapes [
 
 	self write: '
 <a-scene '.
-	shouldRenderAR | shouldRenderQR 
-		ifTrue:  [ self write: 'embedded arjs ' ]
+	shouldRenderAR | shouldRenderQR
+		ifTrue: [ self write: 'embedded arjs ' ]
 		
-		ifFalse: [ self write: 'background="color: #fff" ' ].
-
-self write: 'stats>'.
-
+		ifFalse: [ self write: 'background=''color: #fff'' ' ].
+		
+	self write: 'stats>'.
+	
 	shouldRenderFloor ifTrue: [ 
-		self write: '<a-assets>
-<a-image id="floor" src="'.
+		self write: '
+<a-assets>
+	<a-image id=''floor'' src='''.
 		self write: self floorImg.
-		self write: '"></a-image>
+		self write: '''></a-image>
 </a-assets>
-			<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
+<a-entity geometry=''primitive: cylinder; height: .2; radius: 12;'' material=''color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1'' position=''0 0 0''></a-entity>
 ' ].
-	self visitCamera. 
+	self visitCamera.
 	canvas accept: self.
 	self write: '
-</a-scene>
-'
+</a-scene>'
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeSolidBox: box [
+	| extent color |
+	extent := box extent * scale abs.
+	color := box color.
+	color ifNil: [ ^ self ].
+	stream << '<a-box '. 
+	box model ifNotNil: [ stream <<'model='''; << ( self validTextFor: box model asString); <<'''' ].
+	stream <<'position='''.
+	self write3DPoint: matrix translation.
+	stream 
+		<< ''' width='' ';
+		<< extent x asString; space; 
+		<< ''' height='' ';
+		<< extent y asString; 
+		<< ''' depth='' ';
+		<< self depthSize asString ;
+		<< ''' color= ''#';
+		<< color asHexString;
+		<< ''' change-color-on-hover=''color: #';
+		<< color muchLighter asHexString;
+		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
 ]
 
 { #category : #writing }
