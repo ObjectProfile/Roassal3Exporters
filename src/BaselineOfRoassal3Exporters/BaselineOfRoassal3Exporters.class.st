@@ -11,10 +11,13 @@ Class {
 BaselineOfRoassal3Exporters >> baseline: spec [
 	<baseline>
 	spec
-		for: #'pharo9.x'
+		for: #common
 		do: [
 			"our dependencies"
 			"https://github.com/ObjectProfile/Roassal3Exporters"
+			spec
+				baseline: 'Roassal3' 
+				with: [ spec repository: 'github://ObjectProfile/Roassal3' ].
 			spec 
 				baseline: 'OSSubprocess'
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
@@ -24,7 +27,7 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 			
 			"The packages to use, but not load"
 			spec
-				package: #'Roassal3-Exporters' with: [ spec requires: #('Units')  ];
+				package: #'Roassal3-Exporters' with: [ spec requires: self exporterDependencies ];
 				package: #'Roassal3-Exporters-Examples';
 				package: #'Roassal3-Exporters-Tests';
 				package: #'Roassal3-Exporters-Video' with: [spec requires: #('OSSubprocess') ];
@@ -55,4 +58,13 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 
 
 
+]
+
+{ #category : #baselines }
+BaselineOfRoassal3Exporters >> exporterDependencies [
+	^ Smalltalk globals at: #RSCanvas 
+		ifPresent: [ #('Units') ]
+		ifAbsent: [ 
+			'foo' traceCr.
+			#('Roassal3' 'Units') ].
 ]
