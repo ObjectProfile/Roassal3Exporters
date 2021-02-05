@@ -17,7 +17,9 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 			"https://github.com/ObjectProfile/Roassal3Exporters"
 			spec
 				baseline: 'Roassal3' 
-				with: [ spec repository: 'github://ObjectProfile/Roassal3' ].
+				with: [ spec 
+					loads: 'Full';
+					repository: 'github://ObjectProfile/Roassal3' ].
 			spec 
 				baseline: 'OSSubprocess'
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
@@ -46,6 +48,7 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 					'Core'
 					'Roassal3-Exporters-AFrame'
 					'Roassal3-Exporters-AFrame-Tests'
+					'Roassal3-Exporters-AFrame-Examples'
 				);
 				group: 'default' with: #('Core') ].
 
@@ -64,7 +67,5 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 BaselineOfRoassal3Exporters >> exporterDependencies [
 	^ Smalltalk globals at: #RSCanvas 
 		ifPresent: [ #('Units') ]
-		ifAbsent: [ 
-			'foo' traceCr.
-			#('Roassal3' 'Units') ].
+		ifAbsent: [ #('Roassal3' 'Units') ].
 ]
