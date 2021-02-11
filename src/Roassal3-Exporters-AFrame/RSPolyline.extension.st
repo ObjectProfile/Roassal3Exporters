@@ -7,7 +7,10 @@ RSPolyline >> printOnAFrame: aRSAFrameExporter [
 	points ifEmpty: [ ^self ].
 	prevPoint := points first.
 	points allButFirst do: [ :curPoint | 
-		aRSAFrameExporter writeLine: prevPoint endPoint: curPoint color: self color.
+		curPoint = prevPoint ifFalse: [ 
+			aRSAFrameExporter writeLine: prevPoint endPoint: curPoint border: self border.
+			aRSAFrameExporter stream	crlf ].
+		
 		prevPoint := curPoint.
 		].
 	

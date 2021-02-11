@@ -30,12 +30,12 @@ RSAFrameExporter >> angleFor: aShape [
 
 { #category : #accessing }
 RSAFrameExporter >> depthSize [
-	^depthSize.
+	^ depthSize
 ]
 
 { #category : #accessing }
 RSAFrameExporter >> depthSize: aNumber [
-	depthSize := aNumber.
+	depthSize := aNumber
 ]
 
 { #category : #accessing }
@@ -61,7 +61,7 @@ RSAFrameExporter >> initialize [
 	shouldRenderQR := false.
 	shouldRunInZinc := false.
 	scale := 0.006.
-	scale := scale @ scale negated.
+	self scale: 0.006.
 	translation := 0@ 0.
 	matrix := AthensAffineTransform new.
 	self depthSize: 0.003.
@@ -98,6 +98,18 @@ RSAFrameExporter >> restoreLevelAfter: aBlock [
 	self level: self level +1.
 	aBlock value.
 	self level: self level -1.
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> scale [
+	^ scale
+]
+
+{ #category : #accessing }
+RSAFrameExporter >> scale: aNumber [
+	scale := aNumber.
+	scale isNumber ifTrue: [ scale := scale @ scale negated. ]
+	
 ]
 
 { #category : #accessing }
@@ -163,8 +175,7 @@ RSAFrameExporter >> translation [
 
 { #category : #public }
 RSAFrameExporter >> validTextFor: aString [
-	^aString copyReplaceAll: '''' with: '`'.
-	
+	^ aString utf8Encoded base64Encoded
 	
 ]
 
@@ -187,19 +198,17 @@ RSAFrameExporter >> visitBoundingShape: aShape [
 
 { #category : #visiting }
 RSAFrameExporter >> visitCamera [ 
-	shouldRenderQR
-		ifTrue: [ self write: '<a-marker-camera preset=''hiro''' ]
-		ifFalse: [ self write: '<a-camera ' ].
+	stream crlf.
+	stream << (shouldRenderQR 
+		ifTrue: [ '<a-marker-camera preset="hiro"' ]
+		ifFalse: [ '<a-camera ' ]).
 	stream
-		<< 'position=''0 1.6 4''>';
-		<< '<a-entity id=''idPopUP'' ';
-		<< 'visible=''false'' position='' ';
-		<< '0 -0.2 -2''';
-		<< 'material=''color: #333''></a-entity> ';
-		<< '<a-cursor></a-cursor>'.
-	shouldRenderQR
-		ifTrue: [ self write: '</a-marker-camera>' ]
-		ifFalse: [ self write: '</a-camera>' ].
+		<< 'position="0 1.6 4">'; crlf; tab;
+		<< '<a-entity id="idPopUP" visible="false" position="0 -0.2 -2" material="color: #333"></a-entity>';
+		crlf; tab; << '<a-cursor></a-cursor>'; crlf.
+	stream << (shouldRenderQR 
+		ifTrue: [ '</a-marker-camera>' ]
+		ifFalse: ['</a-camera>' ]).
 	stream crlf.
 ]
 
@@ -208,6 +217,10 @@ RSAFrameExporter >> visitCanvas: aRSCanvas [
 	| rec |
 	rec := aRSCanvas encompassingRectangle.
 	translation := (rec floatCenter negated * scale) + (0@rec height negated * scale).
+	self depthSize ifNil: [ 
+		self depthSize: (rec width max: rec height) * 0.0001.
+	].
+	
 	aRSCanvas shapes
 		do: [ :shape | shape accept: self ]
 		separatedBy: [ stream crlf ]
@@ -268,62 +281,35 @@ RSAFrameExporter >> write: aString [
 ]
 
 { #category : #writing }
-RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint [
+RSAFrameExporter >> writeBoxBorder: aRSBorder from: startPoint to: endPoint [
 	| angle height position border color |
-	border := RSBorder new.
-	color := border color muchDarker asHexString.
+	border := aRSBorder.
+	color := border color muchDarker.
 	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
 	height := ( startPoint distanceTo: endPoint ) * scale x.
 	position:= ( startPoint + endPoint ) / 2.
 	stream
 		<< '<a-box '; 
-		<<'position='''.
+		<<'position="'.
 	self write3DPoint: matrix translation + position.
 	stream 
-		<< ''' width='' ';
-		<< (border width * scale x) asString; space; 
-		<< ''' height='' ';
+		<< '" width="';
+		<< (border width * scale x) asString; 
+		<< '" height="';
 		<<  height asString; 
-		<< ''' depth='' ';
-		<< self depthSize asString ;
-		<< ''' color= ''#';
-		<< color asString .
+		<< '" depth="';
+		<< self depthSize asString;
+		<< '" color= "#';
+		<< color asHexString.
+		
 	angle isZero ifFalse: [ 
 		stream 
-			<< ''' rotation='' 0 0 ';
+			<< '" rotation="0 0 ';
 			<< angle asString
 		].
+	
 	stream
-		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
-]
-
-{ #category : #writing }
-RSAFrameExporter >> writeBorder: startPoint endPoint: endPoint color: aColor [
-	| angle height position border |
-	border := RSBorder new.
-	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
-	height := ( startPoint distanceTo: endPoint ) * scale x.
-	position:= ( startPoint + endPoint ) / 2.
-	stream
-		<< '<a-box '; 
-		<<'position='''.
-	self write3DPoint: matrix translation + position.
-	stream 
-		<< ''' width='' ';
-		<< (border width * scale x) asString; space; 
-		<< ''' height='' ';
-		<<  height asString; 
-		<< ''' depth='' ';
-		<< self depthSize asString ;
-		<< ''' color= ''#';
-		<< aColor asString .
-	angle isZero ifFalse: [ 
-		stream 
-			<< ''' rotation='' 0 0 ';
-			<< angle asString
-		].
-	stream
-		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+		<< '" roughness="1.0" metalness="0.2"></a-box>'.
 ]
 
 { #category : #writing }
@@ -367,7 +353,7 @@ RSAFrameExporter >> writeHMTL [
 	self write: '</title>
 	<meta name=''description'' content=''Roassal canvas exported''>
 	<script src=''https://aframe.io/releases/1.0.4/aframe.min.js''></script>
-	<script src=''https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.	min.js''></script>
+	<script src=''https://unpkg.com/aframe-event-set-component@3.0.3/dist/aframe-event-set-component.min.js''></script>
 	<script src=''https://unpkg.com/aframe-extras@3.3.0/dist/aframe-extras.min.js''></script>
 	<script src=''https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js''></script>'.
 	shouldRunInZinc ifTrue: [ 
@@ -397,46 +383,47 @@ RSAFrameExporter >> writeLabel: label [
 	color := label color.
 	color ifNil: [ ^self ].
 	angle := self angleFor: label.
-	stream << '<a-entity position='''.
+	stream << '<a-entity position="'.
 	self write3DPoint: matrix translation.
 	angle isZero ifFalse: [ 
 		stream  
-			<< ''' rotation=''0 0 ';
+			<< '" rotation="0 0 ';
 			<< angle asString
 		 ].
 	stream 
-		<< ''' text='' width: ';
-		<< (label baseRectangle corner y * 0.2) asString;
+		<< '" text="width: ';
+		<< (label encompassingRectangle height * 0.04) asString;
 		<< '; color: #';
 		<< color asHexString;
 		<< '; value:';
 		<< label text;
-		<< '; align: center'' ></a-entity>'
+		<< '; align: center"></a-entity>'
 ]
 
 { #category : #writing }
-RSAFrameExporter >> writeLine: startPoint endPoint: endPoint color: aColor [
+RSAFrameExporter >> writeLine: startPoint endPoint: endPoint border: aBorder [
 	| color angle height position |
-	color :=  aColor muchDarker asHexString.
+	
+	color := aBorder color muchDarker asHexString.
 	angle := (( endPoint -  startPoint ) angle + Float halfPi ) negated radiansToDegrees.
 	height := ( startPoint distanceTo: endPoint ) * scale x.
 	position:= ( startPoint + endPoint ) / 2.
 	stream 
-		<< '<a-entity geometry=''primitive: cylinder; radius: ';
-		<< self depthSize asString;
-		<< '; height:';
+		<< '<a-entity geometry="primitive: cylinder; radius: ';
+		<< (aBorder width * scale x /2.0) asString;
+		<< '; height: ';
 		<< height asString ;
-		<<''' position='' '.
+		<<'" position="'.
 	self write3DPoint: matrix translation + position.
 	angle isZero ifFalse: [ 
 		stream 
-			<< ''' rotation='' 0 0 ';
+			<< '" rotation="0 0 ';
 			<< angle asString
 		].
 	stream  
-		<< ''' material='' color:#';
+		<< '" material="color:#';
 		<< color; 
-		<< '''></a-entity>'. 
+		<< '"></a-entity>'. 
 
 ]
 
@@ -464,6 +451,8 @@ RSAFrameExporter >> writeScript [
 				el.setAttribute(''color'', data.color);
 				var txtInfo = el.getAttribute(''model'');
 				if (txtInfo != null) {
+					txtInfo = decodeURIComponent(escape(window.atob(txtInfo)));
+					txtInfo = txtInfo.replace(/[\n\r]/g, ''\n'');
 					var value = ''value: '' + txtInfo + ''; color: #FFF; anchor: center; align: center; width: 1.2'';
 					totalWidth = Math.trunc(txtInfo.length / 10);
 					switch (totalWidth) {
@@ -518,25 +507,47 @@ RSAFrameExporter >> writeShapes [
 	self write: '
 <a-scene '.
 	shouldRenderAR | shouldRenderQR
-		ifTrue: [ self write: 'embedded arjs ' ]
+		ifTrue: [ stream << 'embedded arjs ' ]
+		ifFalse: [ 
+			stream 
+				<< 'background="color: #';
+				<< canvas color asHexString;
+				<< '" '. ].
 		
-		ifFalse: [ self write: 'background=''color: #fff'' ' ].
-		
-	self write: 'stats>'.
+	stream << 'stats>'.
 	
 	shouldRenderFloor ifTrue: [ 
 		self write: '
 <a-assets>
-	<a-image id=''floor'' src='''.
+	<a-image id="floor" src="'.
 		self write: self floorImg.
-		self write: '''></a-image>
+		self write: '"></a-image>
 </a-assets>
-<a-entity geometry=''primitive: cylinder; height: .2; radius: 12;'' material=''color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1'' position=''0 0 0''></a-entity>
+<a-entity geometry="primitive: cylinder; height: .2; radius: 12;" material="color: #BABABA; src: #floor; metalness: .2; repeat: 50 20; roughness: .1" position="0 0 0"></a-entity>
 ' ].
-	self visitCamera.
 	canvas accept: self.
+	self visitCamera.
 	self write: '
 </a-scene>'
+]
+
+{ #category : #writing }
+RSAFrameExporter >> writeSolidBorder: aShape [
+	| p1 p2 p3 p4 border rectangle |
+	border := aShape border.
+	
+	rectangle := aShape baseRectangle.
+	p1 := rectangle topLeft.
+	p2 := rectangle topRight.
+	p3 := rectangle bottomRight.
+	p4 := rectangle bottomLeft.
+	self writeBoxBorder: border from: p1 to: p2.
+	stream crlf.
+	self writeBoxBorder: border from: p2 to: p3.
+	stream crlf.
+	self writeBoxBorder: border from: p3 to: p4.
+	stream crlf.
+	self writeBoxBorder: border from: p4 to: p1.
 ]
 
 { #category : #writing }
@@ -546,21 +557,21 @@ RSAFrameExporter >> writeSolidBox: box [
 	color := box color.
 	color ifNil: [ ^ self ].
 	stream << '<a-box '. 
-	box model ifNotNil: [ stream <<'model='''; << ( self validTextFor: box model asString); <<'''' ].
-	stream <<'position='''.
+	box model ifNotNil: [ stream <<'model="'; << ( self validTextFor: box model asString); <<'"' ].
+	stream <<'position="'.
 	self write3DPoint: matrix translation.
 	stream 
-		<< ''' width='' ';
+		<< '" width="';
 		<< extent x asString; space; 
-		<< ''' height='' ';
+		<< '" height="';
 		<< extent y asString; 
-		<< ''' depth='' ';
+		<< '" depth="';
 		<< self depthSize asString ;
-		<< ''' color= ''#';
+		<< '" color="#';
 		<< color asHexString;
-		<< ''' change-color-on-hover=''color: #';
+		<< '" change-color-on-hover="color: #';
 		<< color muchLighter asHexString;
-		<< ''' roughness='' 1.0'' metalness='' 0.2'' ></a-box>'.
+		<< '" roughness="1.0" metalness="0.2"></a-box>'.
 ]
 
 { #category : #writing }
