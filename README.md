@@ -1,5 +1,5 @@
 # Roassal3Exporter
-[![Build Status](https://travis-ci.com/ObjectProfile/Roassal3Exporters.svg?branch=master)](https://travis-ci.com/ObjectProfile/Roassal3Exporters) (https://github.com/ObjectProfile/Roassal3Exporters/workflows/CI/badge.svg)](https://github.com/ObjectProfile/Roassal3Exporters/actions)
+[![Build Status](https://travis-ci.com/ObjectProfile/Roassal3Exporters.svg?branch=master)](https://travis-ci.com/ObjectProfile/Roassal3Exporters) [![.github/workflows/main.yml](https://github.com/ObjectProfile/Roassal3/workflows/CI/badge.svg)](https://github.com/ObjectProfile/Roassal3/actions)
 
 Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3) and Pharo 9
 
