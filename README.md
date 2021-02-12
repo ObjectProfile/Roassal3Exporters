@@ -1,5 +1,5 @@
 # Roassal3Exporter
-[![Build Status](https://travis-ci.com/ObjectProfile/Roassal3Exporters.svg?branch=master)](https://travis-ci.com/ObjectProfile/Roassal3Exporters)
+[![Build Status](https://travis-ci.com/ObjectProfile/Roassal3Exporters.svg?branch=master)](https://travis-ci.com/ObjectProfile/Roassal3Exporters) (https://github.com/ObjectProfile/Roassal3Exporters/workflows/CI/badge.svg)](https://github.com/ObjectProfile/Roassal3Exporters/actions)
 
 Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3) and Pharo 9
 
@@ -11,7 +11,7 @@ Metacello new
     baseline: 'Roassal3Exporters';
     repository: 'github://ObjectProfile/Roassal3Exporters';
     load.
-``` 
+```
 
 Available exporters:
 
@@ -26,12 +26,12 @@ classes := Collection withAllSubclasses.
 
 c := RSCanvas new.
 shapes := classes collect: [ :cls |
-	RSBox new model: cls; 
+	RSBox new model: cls;
 		height: (cls numberOfMethods max: 5);
-		width: (cls instVarNames size * 4 max: 5); 
+		width: (cls instVarNames size * 4 max: 5);
 		@ RSPopup;
 		@ RSDraggable  ].
-	
+
 c addAll: shapes.
 
 eb := RSEdgeBuilder orthoVertical.
@@ -66,7 +66,7 @@ Metacello new
 ```
 
  Also you will need to install ffmpeg.
- 
+
  In your terminal use
 ```
 xcode-select --install
@@ -87,23 +87,23 @@ b := RSBox new
 	extent: 100@100;
 	withBorder.
 c addShape: b.
-c newAnimation 
+c newAnimation
 	easing: RSEasing bounce;
 	from: -100@ -100;
 	to: 100@100;
 	on: b set: #position:.
-c newAnimation 
+c newAnimation
 	from: Color red;
 	to: Color blue;
 	on: b set: #color:.
-c newAnimation 
+c newAnimation
 	from: 0;
 	to: 10;
 	on: b border set: 'width:'.
-c 
+c
 	when:RSMouseClick
 	do: [ c animations do: #pause ];
-	when: RSMouseDoubleClick 
+	when: RSMouseDoubleClick
 	do: [ c animations do: #continue ].
 c clearBackground: false.
 
@@ -147,6 +147,3 @@ Metacello new
 Then execute the example `example12AFrameExport`, you will get:
 
 <img src="https://user-images.githubusercontent.com/10532890/90902971-4842e100-e39b-11ea-93fe-418cb1b5e0f8.png" width="400">
-
-
-
