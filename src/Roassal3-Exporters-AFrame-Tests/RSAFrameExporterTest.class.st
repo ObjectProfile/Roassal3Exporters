@@ -35,6 +35,7 @@ RSAFrameExporterTest >> testBox [
 	| result box |
 	result := '<a-box position="0.0 0.0 0.0" width="0.06 " height="0.06" depth="0.003" color="#9F9F9F" change-color-on-hover="color: #E9E9E9" roughness="1.0" metalness="0.2"></a-box>'.
 	box := RSBox new.
+	box size: 10.
 	box printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
@@ -55,11 +56,12 @@ RSAFrameExporterTest >> testComposite [
 ]
 
 { #category : #tests }
-RSAFrameExporterTest >> testElipse [
-	| result elipse |
+RSAFrameExporterTest >> testEllipse [
+	| result ellipse |
 	result := '<a-entity geometry='' primitive: cylinder; height: 0.06; radius: 0.03  ''  position=''0.0 0.0 0.0'' rotation='' 90 0 0''  material= ''color: #9F9F9F; blending: multiply; transparent: true'' change-color-on-hover=''color: #E9E9E9'' roughness='' 1.0'' metalness='' 0.2'' ></a-entity>'.
-	elipse := RSEllipse new.
-	elipse printOnAFrame: aFrameExporter.
+	ellipse := RSEllipse new.
+	ellipse size: 10.
+	ellipse printOnAFrame: aFrameExporter.
 	self assert: aFrameExporter stream contents equals: result.
 ]
 
