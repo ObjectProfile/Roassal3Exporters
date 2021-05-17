@@ -17,7 +17,9 @@ RSPNGExporter >> exportToFile: file [
 		surface drawDuring: [ :can | morph fullDrawOnAthensCanvas: can ].
 		surface writeToPng: file pathString.
 		surface flush.
-		surface finish.
+		
+		"The following may fail when the VM is run in the headless mode"
+		[ surface finish ] on: Error do: [ :ex  | "Do nothing" ]. 
 		 ]
 ]
 
