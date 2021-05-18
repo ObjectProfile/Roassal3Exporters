@@ -1,4 +1,4 @@
-name: CI
+name: Travis
 
 env:
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
