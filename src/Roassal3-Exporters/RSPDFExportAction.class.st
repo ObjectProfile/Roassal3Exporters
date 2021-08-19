@@ -3,7 +3,7 @@ TODO
 "
 Class {
 	#name : #RSPDFExportAction,
-	#superclass : #RSAbstractExportAction,
+	#superclass : #Object,
 	#category : #'Roassal3-Exporters-Actions'
 }
 
