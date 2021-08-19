@@ -3,7 +3,7 @@ I put menu items in the inspector, in order to use some exporters of this packag
 "
 Class {
 	#name : #RSAbstractExportAction,
-	#superclass : #RSAbstractAction,
+	#superclass : #Object,
 	#instVars : [
 		'exporter'
 	],
