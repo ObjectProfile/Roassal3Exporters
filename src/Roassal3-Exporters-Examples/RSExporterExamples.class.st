@@ -125,7 +125,7 @@ RSExporterExamples >> example11PDFExport [
 	    shapes: lbls;
 	    normalize: #numberOfMethods.
 	c @ RSCanvasController.
-	c @ RSHierarchyPacker.
+	c @ RSHierarchyPackerInteraction.
 	"c extent: RSPageExtent letter.
 	c extent: RSPageExtent a4."
 	c extent: (RSPageExtent from: 8.26 inches@ 11.69 inches).
@@ -187,10 +187,9 @@ RSExporterExamples >> example12SVGRelax [
 
 { #category : #opening }
 RSExporterExamples >> openFile: aFileReference [ 
-	| inspector window |
-	inspector := GTInspector new.
-	window := inspector openOn: aFileReference parent.
-	window when: WindowClosed do: [ aFileReference delete ].
+	| window |
+	window := StInspector inspect: aFileReference parent.
+	window whenClosedDo: [ aFileReference delete ].
 	self inform: 'File will be deleted when you close the inspector'.
 	
 ]
