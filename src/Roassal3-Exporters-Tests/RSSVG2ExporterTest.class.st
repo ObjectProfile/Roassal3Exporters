@@ -9,7 +9,7 @@ Class {
 
 { #category : #running }
 RSSVG2ExporterTest >> tearDown [
-	"'./test2.svg' asFileReference delete"
+	'./test2.svg' asFileReference delete
 ]
 
 { #category : #tests }
