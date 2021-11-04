@@ -9,17 +9,16 @@ Class {
 		'pathTransform',
 		'maxSize',
 		'convertions',
-		'shouldUsePathLabel'
+		'shouldUsePathLabel',
+		'shouldHaveFontDefs',
+		'fontURLServer'
 	],
 	#category : #'Roassal3-Exporters-Core'
 }
 
-{ #category : #visiting }
-RSSVG2Exporter >> convertString: aString [
-	^ (1 to: aString size) collect: [ :index |
-		| char |
-		char := aString at: index.
-		convertions at: char ifAbsent: [ char ] ]
+{ #category : #public }
+RSSVG2Exporter >> disableFontDefs [
+	shouldHaveFontDefs := false
 ]
 
 { #category : #public }
@@ -28,17 +27,26 @@ RSSVG2Exporter >> doNotUsePathLabel [
 ]
 
 { #category : #public }
+RSSVG2Exporter >> enableFontDefs [
+	shouldHaveFontDefs := true
+]
+
+{ #category : #public }
 RSSVG2Exporter >> exportToFile: file [
+	file writeStreamDo: [ :aStream | self exportToStream: aStream ].
+	
+]
+
+{ #category : #public }
+RSSVG2Exporter >> exportToStream: aStream [
 	| morph |
 	morph := self morph.
-	file writeStreamDo: [ :aStream | 
-		self cameraSetter set: [ 
+	self cameraSetter set: [ 
 			canvas := morph roassalCanvas.
 			morph drawShapes.
 			stream := aStream.
 			canvas accept: self.
 		].
-	].
 	
 ]
 
@@ -47,12 +55,25 @@ RSSVG2Exporter >> extension [
 	^ 'svg'
 ]
 
+{ #category : #accessing }
+RSSVG2Exporter >> fontURLServer [
+	^ fontURLServer
+]
+
+{ #category : #accessing }
+RSSVG2Exporter >> fontURLServer: aString [
+	fontURLServer := aString
+]
+
 { #category : #initialization }
 RSSVG2Exporter >> initialize [
 	super initialize.
-	self initializeSpecialCharacters.
-	self maxSize: 500.
-	self doNotUsePathLabel.
+	self 
+		initializeSpecialCharacters;
+		maxSize: 500;
+		doNotUsePathLabel;
+		enableFontDefs;
+		fontURLServer: 'https://fonts.googleapis.com/css2?family='
 ]
 
 { #category : #initialization }
@@ -237,11 +258,12 @@ RSSVG2Exporter >> visitCanvas: aRSCanvas [
 		<< canvas color asHexString.
 	self write: '" version="1.1">
 '.
+	self writeLabelDefinitionsIfNecessary: aRSCanvas.
 	aRSCanvas shapes do: [ :shape | shape accept: self ].
 	self write: '</svg>'.
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> visitChildrenIfNecessary: shape [
 	shape hasChildren ifFalse: [ ^ self ].
 	shape children do: [ :child | child accept: self ].
@@ -270,12 +292,12 @@ RSSVG2Exporter >> visitLine: line [
 	
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> write: aString [
 	stream nextPutAll: (aString copyReplaceAll: String cr with: String crlf)
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> writeFont: label [
 	| font s |
 	font := label font.
@@ -284,7 +306,7 @@ RSSVG2Exporter >> writeFont: label [
 		<< ' style="font-family: ''';
 		<< font familyName;
 		<< '''; font-size: ';
-		<< font pointSize asString;
+		<< font pointSize asSVGString;
 		<< 'px;'.
 	label isBold 
 		ifTrue: [ s << 'font-weight: bold;' ].
@@ -302,7 +324,32 @@ RSSVG2Exporter >> writeFont: label [
 	
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
+RSSVG2Exporter >> writeLabelDefinitionsIfNecessary: aRSCanvas [
+	| allLabels fonts |
+	shouldHaveFontDefs ifFalse: [ ^ self ].
+	allLabels := aRSCanvas allChildren
+		select: [ :shape |  shape isLabel ].
+	fonts := allLabels collect: [ :label | label font familyName ] as: Set.
+	fonts ifEmpty: [ ^ self ].	
+	
+	self write: '<defs>
+<style>'.
+	fonts do: [ :aString | 
+		self stream
+			crlf;
+			<< '@import url(''';
+			<< self fontURLServer;
+			<< (aString copyReplaceAll: ' ' with: '+');
+			<< ''''.
+		 ].
+	self write: '
+</style>
+</defs>
+'
+]
+
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> writeMatrix: matrix [
 	self stream
 		<< 'transform="matrix(';
@@ -320,7 +367,7 @@ RSSVG2Exporter >> writeMatrix: matrix [
 		<< ')" '
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> writePathLabel: label [
 	| copy newCanvas file i1 i2 path contents s |
 	copy := label copy.
@@ -349,7 +396,7 @@ RSSVG2Exporter >> writePathLabel: label [
 	
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> writePoint: aPoint sep: aString [
 	self stream
 		<< aPoint x asSVGString;
@@ -413,7 +460,7 @@ RSSVG2Exporter >> writeSVGStyleFor: aShape [
 
 ]
 
-{ #category : #visiting }
+{ #category : #'visiting - helpers' }
 RSSVG2Exporter >> writeSimpleLabel: label [
 	self stream
 		<< '<text'.

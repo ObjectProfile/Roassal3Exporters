@@ -7,14 +7,19 @@ Class {
 	#category : #'Roassal3-Exporters-Tests-Core'
 }
 
-{ #category : #running }
-RSSVG2ExporterTest >> tearDown [
-	'./test2.svg' asFileReference delete
+{ #category : #tests }
+RSSVG2ExporterTest >> assertSVG2Canvas: c equals: aString [
+	| stream |
+	stream := WriteStream on: ''.
+	c svg2Exporter exportToStream: stream.
+	self 
+		assert: stream contents 
+		equals: (aString copyReplaceAll: String cr with: String crlf)
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testBezier [
-	| canvas box1 box2 line file |
+	| canvas box1 box2 line |
 	canvas := RSCanvas new.
 	canvas addShape: (RSBezier new
 		color: Color red;
@@ -45,47 +50,41 @@ RSSVG2ExporterTest >> testBezier [
 		to: box2;
 		yourself.
 	canvas add: line.
-	file := './test2.svg'.
-	canvas svg2Exporter
-		fileName: file;
-		export.
+	
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: canvas
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <path d="M 250 250 C 350 350 450 250 550 350 " fill="none" stroke="#FF0000" stroke-width="1" />
 <rect x="-50" y="-50" width="100" height="100" fill="#0000FF" transform="matrix(1,0,0,1,350,50)" />
 <rect x="-50" y="-50" width="100" height="100" fill="#9F9F9F" transform="matrix(1,0,0,1,250,250)" />
 <path d="M 350 100 C 350 150 250 150 250 200 " fill="none" stroke="#808080" stroke-width="1" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'.
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testBitmap [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	c addShape: (RSBitmap new
 		form: (self iconNamed: #eyedropper);
 		extent: 200@350).
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
+
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAMAAADSK7iXAAADAFBMVEX///8AAAD///99fX3/AAAA/wAAAP8A/////wAAAAAdHR0+Pj5dXV2dnZ28vLzd3d0FBQUNDQ0VFRUlJSUuLi42NjZGRkZOTk5VVVVlZWVtbW11dXWFhYWNjY2VlZWlpaWsrKy0tLTExMTMzMzV1dXl5eXt7e319fUAAAAAMQAAYwAAlwAAyQAA/wAAADEAMTEAYzEAlzEAyTEA/zEAAGMAMWMAY2MAl2MAyWMA/2MAAJcAMZcAY5cAl5cAyZcA/5cAAMkAMckAY8kAl8kAyckA/8kAAP8AMf8AY/8Al/8Ayf8A//8xAAAxMQAxYwAxlwAxyQAx/wAxADExMTExYzExlzExyTEx/zExAGMxMWMxY2Mxl2MxyWMx/2MxAJcxMZcxY5cxl5cxyZcx/5cxAMkxMckxY8kxl8kxyckx/8kxAP8xMf8xY/8xl/8xyf8x//9jAABjMQBjYwBjlwBjyQBj/wBjADFjMTFjYzFjlzFjyTFj/zFjAGNjMWNjY2Njl2NjyWNj/2NjAJdjMZdjY5djl5djyZdj/5djAMljMcljY8ljl8ljyclj/8ljAP9jMf9jY/9jl/9jyf9j//+XAACXMQCXYwCXlwCXyQCX/wCXADGXMTGXYzGXlzGXyTGX/zGXAGOXMWOXY2OXl2OXyWOX/2OXAJeXMZeXY5eXl5eXyZeX/5eXAMmXMcmXY8mXl8mXycmX/8mXAP+XMf+XY/+Xl/+Xyf+X///JAADJMQDJYwDJlwDJyQDJ/wDJADHJMTHJYzHJlzHJyTHJ/zHJAGPJMWPJY2PJl2PJyWPJ/2PJAJfJMZfJY5fJl5fJyZfJ/5fJAMnJMcnJY8nJl8nJycnJ/8nJAP/JMf/JY//Jl//Jyf/J////AAD/MQD/YwD/lwD/yQD//wD/ADH/MTH/YzH/lzH/yTH//zH/AGP/MWP/Y2P/l2P/yWP//2P/AJf/MZf/Y5f/l5f/yZf//5f/AMn/Mcn/Y8n/l8n/ycn//8kAAAD/Mf//Y///l///yf/////5sR1SAAABAHRSTlP///////////8A////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AP//////OE00OwAAAR5JREFUeF6t1DGygjAQBmCHVkYroplhFBjzwmHouAidF8ALZOzSeYF4g1Smeu8CtlRJR5vqJejTV0CWwq2/2QnL/ruwdk4t7CfYj5IXmKnOaMkhdjO+5DHMlDF93xvZ4BD71oNyrAmx7ql4VQbYSzXlFFNK6f9qgslOaq/0U02wi2tjetPJYzWoqbdxZaQcWpWBn7Vfcfeqtxpn2ToquB/Enxpl2VdED7g5Vy81xpwi91Od1m81wnLqVJtYe64DLKeUXFsErKXvdcU1sL2riBKxXQJLnrtPFNsYyELhFUJAZJy6CxQDySr8uBAGAph7lcRATjM/riQF4rxfExEvUyD1rCACbcDjwA4t2sE3hKUYPDXsUTMuEpt3uD7LoPoFh1uzvVTXHQoAAAAASUVORK5CYII=" x="-19" y="-18" width="38" height="36" transform="matrix(5.2631578947368425,0,0,9.722222222222221,250,250)" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testBorderStylesCap [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	c addShape: (RSLine new
 		startPoint: -100@ -100;
@@ -105,26 +104,22 @@ RSSVG2ExporterTest >> testBorderStylesCap [
 		width: 50;
 		capSquare;
 		yourself).
-	file := './test2.svg'.
-	
-	c svg2Exporter
-		fileName: file;
-		export.
+
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <line x1="150" y1="150" x2="350" y2="150" fill="none" stroke="#808080" stroke-width="50" stroke-linecap="Round" />
 <line x1="150" y1="250" x2="350" y2="250" fill="none" stroke="#808080" stroke-width="50" stroke-linecap="Butt" />
 <line x1="150" y1="350" x2="350" y2="350" fill="none" stroke="#808080" stroke-width="50" stroke-linecap="Square" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testBoxes [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	c addShape: (RSBox new
 		extent: 100@100;
@@ -134,24 +129,20 @@ RSSVG2ExporterTest >> testBoxes [
 		color: Color red;
 		extent: 100@100;
 		yourself).
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <rect x="-50" y="-50" width="100" height="100" fill="#9F9F9F" transform="matrix(1,0,0,1,250,250)" />
 <rect x="-50" y="-50" width="100" height="100" fill="#FF0000" transform="matrix(1,0,0,1,350,350)" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testCanvasBackground [
-	| c y r file |
+	| c y r stream |
 	c := RSCanvas new.
 	r := Random new.
 	c color: (Color colorFrom: '325A64').
@@ -170,17 +161,16 @@ RSSVG2ExporterTest >> testCanvasBackground [
 			extent: (y/10)@( x * 75/ 499 ) ).
 		 ].
 
-	file := './test2.svg'.
+	stream := WriteStream on: ''.
 	
 	c svg2Exporter
-		fileName: file;
-		export.
-	self assert: (file asFileReference contents includesSubstring: '325A64')
+		exportToStream: stream.
+	self assert: (stream contents includesSubstring: '325A64')
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testEllipses [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	c addShape: (RSEllipse new
 		extent: 100@100;
@@ -190,24 +180,20 @@ RSSVG2ExporterTest >> testEllipses [
 		color: Color red;
 		extent: 100@100;
 		yourself).
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <ellipse cx="0" cy="0" rx="50" ry="50" fill="#9F9F9F" transform="matrix(1,0,0,1,250,250)" />
 <ellipse cx="0" cy="0" rx="50" ry="50" fill="#FF0000" transform="matrix(1,0,0,1,350,350)" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testLabelWithBorder [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	c addShape: (RSLabel new
 		fontSize: 60;
@@ -216,24 +202,25 @@ RSSVG2ExporterTest >> testLabelWithBorder [
 			color: Color red;
 			dashArray: #(4) );
 		text: 'Roassal Pharo').
-	file := './test2.svg'.
 	
-	c svg2Exporter
-		fileName: file;
-		export.
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
+<defs>
+<style>
+@import url(''https://fonts.googleapis.com/css2?family=Source+Sans+Pro''
+</style>
+</defs>
 <text style="font-family: ''Source Sans Pro''; font-size: 60px;" textLength="462.3199999999999" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,11.640000000000072,278.44)" fill="#808080" stroke="#FF0000" stroke-width="1" stroke-dasharray="4.0" stroke-dashoffset="0.0" >Roassal Pharo</text>
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testLabels [
-	| c file |
+	| c |
 	c := RSCanvas new.
 	1 to: 12 do: [ :m | 
 		| angle theta p label box |
@@ -270,15 +257,17 @@ RSSVG2ExporterTest >> testLabels [
 		color: nil;
 		withBorder;
 		radius: 90).
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
+	
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
+<defs>
+<style>
+@import url(''https://fonts.googleapis.com/css2?family=Source+Sans+Pro''
+</style>
+</defs>
 <rect x="-44.666666666666664" y="-16.9695" width="89.33333333333333" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(0.8660254037844387,0.49999999999999994,-0.49999999999999994,0.8660254037844387,375.2850084141488,322.3333333333333)" />
 <text style="font-family: ''Source Sans Pro''; font-size: 20px;font-style: italic;" textLength="89.33333333333333" lengthAdjust="spacingAndGlyphs" transform="matrix(0.8660254037844387,0.49999999999999994,-0.49999999999999994,0.8660254037844387,331.08737604464875,307.8992115048916)" fill="#660099" fill-opacity="0.4980392156862745" >January</text>
 <rect x="-48.66666666666666" y="-16.9695" width="97.33333333333331" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(0.5000000000000003,0.8660254037844386,-0.8660254037844386,0.5000000000000003,324.33333333333337,378.7491100292865)" />
@@ -304,13 +293,13 @@ RSSVG2ExporterTest >> testLabels [
 <rect x="-56.01333333333333" y="-16.9695" width="112.02666666666666" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(1,-2.4492127076447545e-16,2.4492127076447545e-16,1,406.0133333333333,249.99999999999997)" />
 <text style="font-family: ''Source Sans Pro''; font-size: 20px;font-weight: bold;" textLength="113.13749999999999" lengthAdjust="spacingAndGlyphs" transform="matrix(1,-2.4492127076447545e-16,2.4492127076447545e-16,1,347.0445833333333,259.5985)" fill="#660099" fill-opacity="0.4980392156862745" >December</text>
 <ellipse cx="0" cy="0" rx="90" ry="90" fill="none" stroke="#808080" stroke-width="1" transform="matrix(1,0,0,1,250,250)" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testLabelsDona [
-	| text canvas horizontal vertical groups count file |
+	| text canvas horizontal vertical groups count stream |
 	text := 'La donna è mobile
 Qual piuma al vento
 Muta d''accento
@@ -393,18 +382,44 @@ E di pensier
 		gapSize: 30;
 		on: groups.
 	canvas @ RSCanvasController.
-	file := './test2.svg'.
+	stream := WriteStream on: ''.
 	canvas svg2Exporter
-		fileName: file;
-		export.
+		exportToStream: stream.
 	self 
-		assert: (file asFileReference contents includesSubstring: '<text');
-		assert: (file asFileReference contents includesSubstring: '<rect')
+		assert: (stream contents includesSubstring: '<text');
+		assert: (stream contents includesSubstring: '<rect')
+]
+
+{ #category : #tests }
+RSSVG2ExporterTest >> testLabelsWithoutFonts [
+	| c stream |
+	c := RSCanvas new.
+	c add: (RSLabel new
+		fontSize: 20;
+		text: 'Mama';
+		yourself).
+	c add: (RSLabel new
+		fontSize: 20;
+		text: 'Mia';
+		position: 0@ 100;
+		yourself).
+	stream := WriteStream on: ''.
+	c svg2Exporter
+		disableFontDefs;
+		exportToStream: stream.
+	self 
+		assert: stream contents
+		equals: 
+('<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
+<text style="font-family: ''Source Sans Pro''; font-size: 20px;" textLength="64.08" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,215.56,259.5985)" fill="#808080" >Mama</text>
+<text style="font-family: ''Source Sans Pro''; font-size: 20px;" textLength="35.093333333333334" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,230.05333333333334,359.5985)" fill="#808080" >Mia</text>
+</svg>' copyReplaceAll: String cr with: String crlf).
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testLine [
-	| c file s1 s2 |
+	| c s1 s2 |
 	c := RSCanvas new.
 	s1 := RSEllipse new
 		size: 30;
@@ -424,25 +439,21 @@ RSSVG2ExporterTest >> testLine [
 		yourself).
 	c nodes @ RSDraggable.
 	c @ RSCanvasController.
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c 
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <ellipse cx="0" cy="0" rx="15" ry="15" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,53.125,53.125)" />
 <rect x="-25" y="-25" width="50" height="50" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,428.125,428.125)" />
 <line x1="79.64150429449553" y1="79.64150429449553" x2="367.9917478527522" y2="367.9917478527522" fill="none" stroke="#808080" stroke-width="1" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'.
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testLineWithMarkers [
-	| c arrow axes circle dataLine file |
+	| c arrow axes circle dataLine |
 	c := RSCanvas new.
 	arrow := RSPolygon new 
 		points: { -10@0. 0@ -10. 10@0 };
@@ -464,14 +475,11 @@ RSSVG2ExporterTest >> testLineWithMarkers [
 	c addShape: axes.
 	c addShape: dataLine.
 	c camera zoomToFit: 250@250.
-	file := './test2.svg'.
-	c svg2Exporter
-		fileName: file;
-		export.
+	
 	self 
-		assert: file asFileReference contents 
+		assertSVG2Canvas: c
 		equals: 
-('<?xml version="1.0" encoding="UTF-8"?>
+'<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
 <polyline points="125,125  125,375  375,375  " fill="none" stroke="#808080" stroke-width="1" />
 <polyline points="109.375,140.625 125,109.375 140.625,140.625 " fill="#000000" />
@@ -483,13 +491,13 @@ RSSVG2ExporterTest >> testLineWithMarkers [
 <ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(2.8318223124852047,1.3215170791597615,-1.3215170791597615,2.8318223124852047,271.875,187.5)" />
 <ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(-1.8163693553721758,2.5429170975210473,-2.5429170975210473,-1.8163693553721758,315.625,218.75)" />
 <ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(2.726581299842876,1.52688552791201,-1.52688552791201,2.726581299842876,359.375,140.625)" />
-</svg>' copyReplaceAll: String cr with: String crlf).
+</svg>'
 	
 ]
 
 { #category : #tests }
 RSSVG2ExporterTest >> testPathLabel [
-	| c file |
+	| c stream |
 	c := RSCanvas new.
 	c addShape: (RSLabel new
 		fontSize: 60;
@@ -498,14 +506,12 @@ RSSVG2ExporterTest >> testPathLabel [
 			color: Color red;
 			dashArray: #(4) );
 		text: 'Roassal Pharo').
-	file := './test2.svg'.
-	
+	stream := WriteStream on: ''.
 	c svg2Exporter
-		fileName: file;
 		usePathLabel;
-		export.
+		exportToStream: stream.
 	self 
-		assert: file asFileReference contents 
+		assert: stream contents 
 		equals: 
 ('<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
