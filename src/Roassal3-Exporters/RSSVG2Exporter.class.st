@@ -328,19 +328,23 @@ RSSVG2Exporter >> writeFont: label [
 RSSVG2Exporter >> writeLabelDefinitionsIfNecessary: aRSCanvas [
 	| allLabels fonts |
 	shouldHaveFontDefs ifFalse: [ ^ self ].
+	shouldUsePathLabel ifTrue: [ ^ self ].
 	allLabels := aRSCanvas allChildren
 		select: [ :shape |  shape isLabel ].
+	allLabels ifEmpty: [ ^ self ].
 	fonts := allLabels collect: [ :label | label font familyName ] as: Set.
-	fonts ifEmpty: [ ^ self ].	
+	fonts := fonts asSortedCollection.
 	
 	self write: '<defs>
 <style>'.
-	fonts do: [ :aString | 
+	fonts do: [ :aString |
 		self stream
 			crlf;
 			<< '@import url(''';
 			<< self fontURLServer;
 			<< (aString copyReplaceAll: ' ' with: '+');
+			"<< ':wght@';
+			<< asso value asSVGString;"
 			<< ''''.
 		 ].
 	self write: '
