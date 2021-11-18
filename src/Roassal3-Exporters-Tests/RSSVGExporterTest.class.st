@@ -2,13 +2,13 @@
 A RSSVG2ExporterTest is a test class for testing the behavior of RSSVG2Exporter
 "
 Class {
-	#name : #RSSVG2ExporterTest,
+	#name : #RSSVGExporterTest,
 	#superclass : #TestCase,
 	#category : #'Roassal3-Exporters-Tests-Core'
 }
 
 { #category : #tests }
-RSSVG2ExporterTest >> assertSVG2Canvas: c equals: aString [
+RSSVGExporterTest >> assertSVGCanvas: c equals: aString [
 	| stream |
 	stream := WriteStream on: ''.
 	c svgExporter exportToStream: stream.
@@ -18,7 +18,7 @@ RSSVG2ExporterTest >> assertSVG2Canvas: c equals: aString [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testBezier [
+RSSVGExporterTest >> testBezier [
 	| canvas box1 box2 line |
 	canvas := RSCanvas new.
 	canvas addShape: (RSBezier new
@@ -52,7 +52,7 @@ RSSVG2ExporterTest >> testBezier [
 	canvas add: line.
 	
 	self 
-		assertSVG2Canvas: canvas
+		assertSVGCanvas: canvas
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -65,7 +65,7 @@ RSSVG2ExporterTest >> testBezier [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testBitmap [
+RSSVGExporterTest >> testBitmap [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSBitmap new
@@ -73,7 +73,7 @@ RSSVG2ExporterTest >> testBitmap [
 		extent: 200@350).
 
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -83,7 +83,7 @@ RSSVG2ExporterTest >> testBitmap [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testBorderStylesCap [
+RSSVGExporterTest >> testBorderStylesCap [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSLine new
@@ -106,7 +106,7 @@ RSSVG2ExporterTest >> testBorderStylesCap [
 		yourself).
 
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -118,7 +118,7 @@ RSSVG2ExporterTest >> testBorderStylesCap [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testBoxes [
+RSSVGExporterTest >> testBoxes [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSBox new
@@ -130,7 +130,7 @@ RSSVG2ExporterTest >> testBoxes [
 		extent: 100@100;
 		yourself).
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -141,7 +141,7 @@ RSSVG2ExporterTest >> testBoxes [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testCanvasBackground [
+RSSVGExporterTest >> testCanvasBackground [
 	| c y r stream |
 	c := RSCanvas new.
 	r := Random new.
@@ -169,7 +169,7 @@ RSSVG2ExporterTest >> testCanvasBackground [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testEllipses [
+RSSVGExporterTest >> testEllipses [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSEllipse new
@@ -181,7 +181,7 @@ RSSVG2ExporterTest >> testEllipses [
 		extent: 100@100;
 		yourself).
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -192,7 +192,7 @@ RSSVG2ExporterTest >> testEllipses [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLabelWithBorder [
+RSSVGExporterTest >> testLabelWithBorder [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSLabel new
@@ -204,7 +204,7 @@ RSSVG2ExporterTest >> testLabelWithBorder [
 		text: 'Roassal Pharo').
 	
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -219,7 +219,7 @@ RSSVG2ExporterTest >> testLabelWithBorder [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLabels [
+RSSVGExporterTest >> testLabels [
 	| c |
 	c := RSCanvas new.
 	1 to: 12 do: [ :m | 
@@ -259,7 +259,7 @@ RSSVG2ExporterTest >> testLabels [
 		radius: 90).
 	
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -298,7 +298,7 @@ RSSVG2ExporterTest >> testLabels [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLabelsDona [
+RSSVGExporterTest >> testLabelsDona [
 	| text canvas horizontal vertical groups count stream |
 	text := 'La donna è mobile
 Qual piuma al vento
@@ -391,7 +391,7 @@ E di pensier
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLabelsWithoutFonts [
+RSSVGExporterTest >> testLabelsWithoutFonts [
 	| c stream |
 	c := RSCanvas new.
 	c add: (RSLabel new
@@ -418,7 +418,7 @@ RSSVG2ExporterTest >> testLabelsWithoutFonts [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLine [
+RSSVGExporterTest >> testLine [
 	| c s1 s2 |
 	c := RSCanvas new.
 	s1 := RSEllipse new
@@ -440,7 +440,7 @@ RSSVG2ExporterTest >> testLine [
 	c nodes @ RSDraggable.
 	c @ RSCanvasController.
 	self 
-		assertSVG2Canvas: c 
+		assertSVGCanvas: c 
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -452,7 +452,7 @@ RSSVG2ExporterTest >> testLine [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testLineWithMarkers [
+RSSVGExporterTest >> testLineWithMarkers [
 	| c arrow axes circle dataLine |
 	c := RSCanvas new.
 	arrow := RSPolygon new 
@@ -477,7 +477,7 @@ RSSVG2ExporterTest >> testLineWithMarkers [
 	c camera zoomToFit: 250@250.
 	
 	self 
-		assertSVG2Canvas: c
+		assertSVGCanvas: c
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
@@ -496,7 +496,7 @@ RSSVG2ExporterTest >> testLineWithMarkers [
 ]
 
 { #category : #tests }
-RSSVG2ExporterTest >> testPathLabel [
+RSSVGExporterTest >> testPathLabel [
 	| c stream |
 	c := RSCanvas new.
 	c addShape: (RSLabel new

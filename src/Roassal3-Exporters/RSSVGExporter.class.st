@@ -314,16 +314,18 @@ RSSVGExporter >> writeFont: label [
 		<< ' style="font-family: ''';
 		<< font familyName;
 		<< '''; font-size: ';
-		<< font pointSize asSVGString;
+		<< (self scaledSVGNumber: font pointSize*0.83);
 		<< 'px;'.
-	label isBold 
-		ifTrue: [ s << 'font-weight: bold;' ].
+
+	s << ' font-weight: '; << font weightValue asSVGString; << ';'.
+	s << ' font-stretch: '; << font stretchValue asSVGString; << '%;'.
 	label isItalic 
-		ifTrue: [ s << 'font-style: italic;' ].
+		ifTrue: [ s << ' font-style: italic;' ].
 	label isStruckOut 
-		ifTrue: [ s << 'text-decoration: line-through;' ].
+		ifTrue: [ s << ' text-decoration: line-through;' ].
 	label isUnderlined 
-		ifTrue: [ s << 'text-decoration: underline;' ].
+		ifTrue: [ s << ' text-decoration: underline;' ].
+	
 	s
 		<< '" textLength="';
 		<< label textWidth asSVGString;
