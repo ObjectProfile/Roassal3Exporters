@@ -208,6 +208,15 @@ RSSVGExporter >> pathTransform [
 	^ pathTransform
 ]
 
+{ #category : #public }
+RSSVGExporter >> scaledSVGNumber: aNumber [
+	| pt p1 p2 |
+	pt := self pathTransform.
+	p1 := pt transform: 0@0.
+	p2 := pt transform: aNumber @ 0.
+	^ (p1 distanceTo: p2) asSVGString
+]
+
 { #category : #testing }
 RSSVGExporter >> shouldUsePathLabel [
 	^ shouldUsePathLabel
@@ -288,8 +297,7 @@ RSSVGExporter >> visitLabel: label [
 { #category : #visiting }
 RSSVGExporter >> visitLine: line [
 	line writeSVG2On: self.
-	line markerShapesInPositionDo: [ :shape | shape accept: self ].
-	
+	line markerShapesInPositionDo: [ :shape | shape accept: self ]
 ]
 
 { #category : #'visiting - helpers' }
@@ -434,16 +442,16 @@ RSSVGExporter >> writeSVGStyleFor: aShape [
 		<< 'stroke="#';
 		<< aBorder paint asHexString;
 		<< '" stroke-width="';
-		<< aBorder width asSVGString;
+		<< (self scaledSVGNumber: aBorder width);
 		<< '" '.
 	style := aBorder style.
 	style ifNil: [ ^ self ].
 	style dashArray ifNotNil: [ :array | 
 		s << 'stroke-dasharray="'.
-		array do: [ :n | s << n asFloat asString ] separatedBy: [ s space ].
+		array do: [ :n | s << (self scaledSVGNumber: n) ] separatedBy: [ s space ].
 		s
 			<< '" stroke-dashoffset="';
-			<< aBorder style dashOffset asFloat asString;
+			<< (self scaledSVGNumber: aBorder style dashOffset);
 			<< '" '
 	].
 	
