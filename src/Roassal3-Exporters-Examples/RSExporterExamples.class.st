@@ -50,7 +50,7 @@ RSExporterExamples >> example03PDFExport [
 RSExporterExamples >> example04SVGExport [
 	"should produce an svg with resolution 500x500"
 	<script: 'self new example04SVGExport'>
-	self openFile: self canvas exportToSVG asFileReference
+	self openFile: self canvas exportToSVGCairo asFileReference
 	
 ]
 
@@ -59,7 +59,7 @@ RSExporterExamples >> example05SVGExport [
 	"should produce an svg with resolution 500x500
 	and no fixed shapes"
 	<script: 'self new example05SVGExport'>
-	self openFile: (self canvas svgExporter
+	self openFile: (self canvas svgCairoExporter
 		noFixedShapes;
 		fileName: 'test';
 		export) asFileReference
@@ -70,7 +70,7 @@ RSExporterExamples >> example05SVGExport [
 RSExporterExamples >> example06SVGExport [
 	"should produce a pdf with resolution 247@247"
 	<script: 'self new example06PDFExport'>
-	self openFile: (self canvas svgExporter
+	self openFile: (self canvas svgCairoExporter
 		zoomToShapes;
 		fileName: 'test';
 		export) asFileReference
@@ -150,7 +150,7 @@ RSExporterExamples >> example12SVGRelax [
 		text: 'Relax';
 		fontSize: 100;
 		yourself).
-	file := canvas svgExporter export asFileReference.
+	file := canvas svgCairoExporter export asFileReference.
 	label remove.
 	contents := file contents.
 	i1 := (contents indexOfSubCollection: 'd="M')+3.

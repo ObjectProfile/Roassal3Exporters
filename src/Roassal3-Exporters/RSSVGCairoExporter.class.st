@@ -2,17 +2,17 @@
 TODO
 "
 Class {
-	#name : #RSPDFExporter,
+	#name : #RSSVGCairoExporter,
 	#superclass : #RSCairoExporter,
 	#category : #'Roassal3-Exporters-Core'
 }
 
 { #category : #public }
-RSPDFExporter >> cairoSurfaceClass [ 
-	^ AthensCairoPDFSurface
+RSSVGCairoExporter >> cairoSurfaceClass [ 
+	^ AthensCairoSVGSurface
 ]
 
 { #category : #accessing }
-RSPDFExporter >> extension [
-	^ 'pdf'
+RSSVGCairoExporter >> extension [
+	^ 'svg'
 ]

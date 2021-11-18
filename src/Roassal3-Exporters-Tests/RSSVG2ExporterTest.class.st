@@ -11,7 +11,7 @@ Class {
 RSSVG2ExporterTest >> assertSVG2Canvas: c equals: aString [
 	| stream |
 	stream := WriteStream on: ''.
-	c svg2Exporter exportToStream: stream.
+	c svgExporter exportToStream: stream.
 	self 
 		assert: stream contents 
 		equals: (aString copyReplaceAll: String cr with: String crlf)
@@ -163,7 +163,7 @@ RSSVG2ExporterTest >> testCanvasBackground [
 
 	stream := WriteStream on: ''.
 	
-	c svg2Exporter
+	c svgExporter
 		exportToStream: stream.
 	self assert: (stream contents includesSubstring: '325A64')
 ]
@@ -383,7 +383,7 @@ E di pensier
 		on: groups.
 	canvas @ RSCanvasController.
 	stream := WriteStream on: ''.
-	canvas svg2Exporter
+	canvas svgExporter
 		exportToStream: stream.
 	self 
 		assert: (stream contents includesSubstring: '<text');
@@ -404,7 +404,7 @@ RSSVG2ExporterTest >> testLabelsWithoutFonts [
 		position: 0@ 100;
 		yourself).
 	stream := WriteStream on: ''.
-	c svg2Exporter
+	c svgExporter
 		disableFontDefs;
 		exportToStream: stream.
 	self 
@@ -507,7 +507,7 @@ RSSVG2ExporterTest >> testPathLabel [
 			dashArray: #(4) );
 		text: 'Roassal Pharo').
 	stream := WriteStream on: ''.
-	c svg2Exporter
+	c svgExporter
 		usePathLabel;
 		exportToStream: stream.
 	self 

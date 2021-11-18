@@ -16,13 +16,13 @@ RSCanvas >> exportToSVG [
 ]
 
 { #category : #'*Roassal3-Exporters' }
-RSCanvas >> exportToSVG2 [
-	^ self svg2Exporter export
+RSCanvas >> exportToSVGCairo [
+	^ self svgCairoExporter export
 ]
 
 { #category : #'*Roassal3-Exporters' }
 RSCanvas >> pdfExporter [
-	^ RSPDFExporter new
+	^ RSPDFCairoExporter new
 		canvas: self;
 		yourself
 ]
@@ -35,8 +35,8 @@ RSCanvas >> pngExporter [
 ]
 
 { #category : #'*Roassal3-Exporters' }
-RSCanvas >> svg2Exporter [
-	^ RSSVG2Exporter new
+RSCanvas >> svgCairoExporter [
+	^ RSSVGCairoExporter new
 		canvas: self;
 		yourself
 ]
