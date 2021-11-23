@@ -314,7 +314,8 @@ RSSVGExporter >> writeFont: label [
 		<< ' style="font-family: ''';
 		<< font familyName;
 		<< '''; font-size: ';
-		<< (label textExtents y_bearing abs asString);
+		<< (label textExtents height asString);
+		"<< (label textExtents y_bearing abs asString);"
 		"<< (self scaledSVGNumber: font pointSize*0.83);"
 		<< 'px;'.
 
