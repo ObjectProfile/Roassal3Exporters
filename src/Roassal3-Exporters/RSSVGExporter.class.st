@@ -307,14 +307,16 @@ RSSVGExporter >> write: aString [
 
 { #category : #'visiting - helpers' }
 RSSVGExporter >> writeFont: label [
-	| font s |
+	| font s metricProvider extents |
 	font := label font.
 	s := self stream.
+	metricProvider := RSCairoFitMetricsProvider new.
+	extents := metricProvider extentsOf: label.
 	s
 		<< ' style="font-family: ''';
 		<< font familyName;
 		<< '''; font-size: ';
-		<< (label textExtents height asString);
+		<< (extents height asString);
 		"<< (label textExtents y_bearing abs asString);"
 		"<< (self scaledSVGNumber: font pointSize*0.83);"
 		<< 'px;'.
@@ -331,8 +333,10 @@ RSSVGExporter >> writeFont: label [
 	s
 		<< '" textLength="';
 		"<< label textWidth asSVGString;"
-		<< (label textExtents x_advance asString); 
-		<< '" '.
+		<< (extents x_advance asString); 
+		<< '" lengthAdjust="spacingAndGlyphs" '.
+	
+		"<< '"" '."
 	
 	
 ]
