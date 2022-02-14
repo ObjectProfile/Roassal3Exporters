@@ -59,7 +59,7 @@ RSRoassalExporter >> export [
 	old := canvas fixedShapes.
 	new := showFixedShapes 
 		ifTrue: [ canvas fixedShapes ]
-		ifFalse: [ #() ].
+		ifFalse: [ RSGroup new ].
 	canvas fixedShapes: new.
 	[self exportToFile: file] 
 		ensure: [ canvas fixedShapes: old ].
