@@ -352,9 +352,6 @@ RSSVGExporter >> writeLabelDefinitionsIfNecessary: aRSCanvas [
 <style>'.
 	exporterFontStrategy ifNil: [ exporterFontStrategy := RSExporterUsingURL new ].
 	exporterFontStrategy export: fonts on: self stream.
-	"self shouldUseCustomFont
-		ifTrue: [ self writeCustomFonts ]
-		ifFalse: [ self writeFontsFromURLServer: fonts ]."
 	self write: '
 </style>
 </defs>
