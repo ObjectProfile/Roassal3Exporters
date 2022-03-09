@@ -1,5 +1,5 @@
 "
-TODO
+I represent the exporter of Roassal3 shapes using AthensCairoSVGSurface
 "
 Class {
 	#name : #RSSVGCairoExporter,

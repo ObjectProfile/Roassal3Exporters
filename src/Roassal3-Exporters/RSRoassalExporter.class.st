@@ -1,5 +1,5 @@
 "
-TODO
+I represent the abstract class to export Roassal3 shapes in different formats.
 "
 Class {
 	#name : #RSRoassalExporter,

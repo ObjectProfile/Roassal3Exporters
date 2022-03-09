@@ -69,8 +69,7 @@ RSSVGExporter >> initialize [
 		initializeSpecialCharacters;
 		maxSize: 500;
 		doNotUsePathLabel;
-		enableFontDefs";
-		fontURLServer: 'https://fonts.googleapis.com/css2?family='"
+		enableFontDefs
 ]
 
 { #category : #initialization }
@@ -317,22 +316,16 @@ RSSVGExporter >> writeFont: label [
 	s
 		<< '''; font-size: ';
 		<< font pixelSize asFloat asString;
-		"<< (extents height asString);""<< (label textExtents y_bearing abs asString);""<< (self scaledSVGNumber: font pointSize*0.83);"
 		<< 'px;'.
 
-	"s << ' font-weight: '; << font weightValue asSVGString; << ';'.
-	s << ' font-stretch: '; << font stretchValue asSVGString; << '%;'."
 	label isBold ifTrue: [ s << ' font-weight: bold;' ].
 	label isItalic ifTrue: [ s << ' font-style: italic;' ].
 	label isStruckOut ifTrue: [ s << ' text-decoration: line-through;' ].
 	label isUnderlined ifTrue: [ s << ' text-decoration: underline;' ].
 	s
 		<< '" textLength="';
-		"<< label textWidth asSVGString;""<< (extents x_advance asString);"
 		<< extents x_advance asString;
-		<< '" lengthAdjust="spacingAndGlyphs" ' "width asFloat"
-
-	"<< '"" '."
+		<< '" lengthAdjust="spacingAndGlyphs" '
 ]
 
 { #category : #'visiting - helpers' }

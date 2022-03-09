@@ -1,5 +1,5 @@
 "
-TODO
+I represent the exporter for Roassal3 shapes into a .png file
 "
 Class {
 	#name : #RSPNGExporter,
