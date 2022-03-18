@@ -58,9 +58,9 @@ RSRoassalExporter >> export [
 	canvas ifNil: [ self error: 'canvas can not be nil' ].
 	file := self createFile.
 	old := canvas fixedShapes.
-	new := showFixedShapes
-		       ifTrue: [ canvas fixedShapes ]
-		       ifFalse: [ #(  ) asGroup ].
+	new := showFixedShapes 
+		ifTrue: [ canvas fixedShapes ]
+		ifFalse: [ RSGroup new ].
 	canvas fixedShapes: new.
 	[ self exportToFile: file ] ensure: [ canvas fixedShapes: old ].
 	^ file pathString
