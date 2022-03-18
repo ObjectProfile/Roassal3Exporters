@@ -1,5 +1,5 @@
 "
-TODO
+I represent the abstract class to export Roassal3 shapes in different formats.
 "
 Class {
 	#name : #RSRoassalExporter,
@@ -53,6 +53,7 @@ RSRoassalExporter >> defaultFileName [
 
 { #category : #public }
 RSRoassalExporter >> export [
+
 	| file old new |
 	canvas ifNil: [ self error: 'canvas can not be nil' ].
 	file := self createFile.
@@ -61,10 +62,8 @@ RSRoassalExporter >> export [
 		ifTrue: [ canvas fixedShapes ]
 		ifFalse: [ RSGroup new ].
 	canvas fixedShapes: new.
-	[self exportToFile: file] 
-		ensure: [ canvas fixedShapes: old ].
+	[ self exportToFile: file ] ensure: [ canvas fixedShapes: old ].
 	^ file pathString
-
 ]
 
 { #category : #public }

@@ -11,7 +11,7 @@ Class {
 		'convertions',
 		'shouldUsePathLabel',
 		'shouldHaveFontDefs',
-		'fontURLServer'
+		'exporterFontStrategy'
 	],
 	#category : #'Roassal3-Exporters-Core'
 }
@@ -51,29 +51,25 @@ RSSVGExporter >> exportToStream: aStream [
 ]
 
 { #category : #accessing }
+RSSVGExporter >> exporterFontStrategy: strategy [
+	self assert: strategy class superclass = RSExporterFontStrategy.
+	exporterFontStrategy := strategy 
+]
+
+{ #category : #accessing }
 RSSVGExporter >> extension [
 	^ 'svg'
 ]
 
-{ #category : #accessing }
-RSSVGExporter >> fontURLServer [
-	^ fontURLServer
-]
-
-{ #category : #accessing }
-RSSVGExporter >> fontURLServer: aString [
-	fontURLServer := aString
-]
-
 { #category : #initialization }
 RSSVGExporter >> initialize [
+
 	super initialize.
-	self 
+	self
 		initializeSpecialCharacters;
 		maxSize: 500;
 		doNotUsePathLabel;
-		enableFontDefs;
-		fontURLServer: 'https://fonts.googleapis.com/css2?family='
+		enableFontDefs
 ]
 
 { #category : #initialization }
@@ -307,63 +303,48 @@ RSSVGExporter >> write: aString [
 
 { #category : #'visiting - helpers' }
 RSSVGExporter >> writeFont: label [
+
 	| font s metricProvider extents |
 	font := label font.
 	s := self stream.
 	metricProvider := RSCairoFitMetricsProvider new.
 	extents := metricProvider extentsOf: label.
+	s << ' style="font-family: '''.
+	exporterFontStrategy 
+		ifNil: [ s << font familyName ] 
+		ifNotNil: [ s << (exporterFontStrategy fontName: font familyName) ].
 	s
-		<< ' style="font-family: ''';
-		<< font familyName;
 		<< '''; font-size: ';
-		<< (extents height asString);
-		"<< (label textExtents y_bearing abs asString);"
-		"<< (self scaledSVGNumber: font pointSize*0.83);"
+		<< font pixelSize asFloat asString;
 		<< 'px;'.
 
-	"s << ' font-weight: '; << font weightValue asSVGString; << ';'.
-	s << ' font-stretch: '; << font stretchValue asSVGString; << '%;'."
-	label isItalic 
-		ifTrue: [ s << ' font-style: italic;' ].
-	label isStruckOut 
-		ifTrue: [ s << ' text-decoration: line-through;' ].
-	label isUnderlined 
-		ifTrue: [ s << ' text-decoration: underline;' ].
-	
+	label isBold ifTrue: [ s << ' font-weight: bold;' ].
+	label isItalic ifTrue: [ s << ' font-style: italic;' ].
+	label isStruckOut ifTrue: [ s << ' text-decoration: line-through;' ].
+	label isUnderlined ifTrue: [ s << ' text-decoration: underline;' ].
 	s
 		<< '" textLength="';
-		"<< label textWidth asSVGString;"
-		<< (extents x_advance asString); 
-		<< '" lengthAdjust="spacingAndGlyphs" '.
-	
-		"<< '"" '."
-	
-	
+		<< extents x_advance asString;
+		<< '" lengthAdjust="spacingAndGlyphs" '
 ]
 
 { #category : #'visiting - helpers' }
 RSSVGExporter >> writeLabelDefinitionsIfNecessary: aRSCanvas [
+
 	| allLabels fonts |
 	shouldHaveFontDefs ifFalse: [ ^ self ].
 	shouldUsePathLabel ifTrue: [ ^ self ].
-	allLabels := aRSCanvas allChildren
-		select: [ :shape |  shape isLabel ].
+	allLabels := aRSCanvas allChildren select: [ :shape | shape isLabel ].
 	allLabels ifEmpty: [ ^ self ].
-	fonts := allLabels collect: [ :label | label font familyName ] as: Set.
+	fonts := allLabels
+		         collect: [ :label | label font familyName ]
+		         as: Set.
 	fonts := fonts asSortedCollection.
-	
+
 	self write: '<defs>
 <style>'.
-	fonts do: [ :aString |
-		self stream
-			crlf;
-			<< '@import url(''';
-			<< self fontURLServer;
-			<< (aString copyReplaceAll: ' ' with: '+');
-			"<< ':wght@';
-			<< asso value asSVGString;"
-			<< ''''.
-		 ].
+	exporterFontStrategy ifNil: [ exporterFontStrategy := RSExporterUsingURL new ].
+	exporterFontStrategy export: fonts on: self stream.
 	self write: '
 </style>
 </defs>

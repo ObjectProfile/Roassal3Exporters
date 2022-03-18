@@ -53,15 +53,16 @@ RSExporterTest >> sample [
 
 { #category : #tests }
 RSExporterTest >> testExport01 [
+
 	| canvas file exporter |
 	canvas := RSCanvas new.
 	canvas addShape: (RSLabel new
-		text: 'foo';
-		isFixed: true;
-		yourself).
+			 text: 'foo';
+			 isFixed: true;
+			 yourself).
 	exporter := self exporterClass new.
 	self assert: exporter cameraSetter class equals: RSCamSetter.
-	
+
 	exporter
 		canvas: canvas;
 		noFixedShapes;
@@ -71,7 +72,7 @@ RSExporterTest >> testExport01 [
 	self assert: file isString.
 	file := file asFileReference.
 	self assert: file exists.
-	file delete.
+	file delete
 ]
 
 { #category : #tests }

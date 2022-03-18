@@ -1,5 +1,5 @@
 "
-TODO
+I represent the abstract class to export Roassal3 shapes, using AthensCairo, in different formats 
 "
 Class {
 	#name : #RSCairoExporter,
