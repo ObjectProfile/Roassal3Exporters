@@ -7,6 +7,16 @@ Class {
 	#category : #'Roassal3-Exporters-Inspector'
 }
 
+{ #category : #default }
+RSSVGExportCommand class >> defaultDescription [
+	^ 'Export to SVG image file'
+]
+
+{ #category : #default }
+RSSVGExportCommand class >> defaultName [
+	^ 'SVG'
+]
+
 { #category : #accessing }
 RSSVGExportCommand >> exporterClass [
 	^ RSSVGCairoExporter

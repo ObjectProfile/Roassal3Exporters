@@ -17,6 +17,15 @@ RSExportCommand class >> forSpec [
 	^self forSpecWithIconNamed: self defaultIconName
 ]
 
+{ #category : #executing }
+RSExportCommand >> execute [
+	| name |
+	name := self exporterClass new
+		canvas: context model inspectedObject;
+		export.
+	self inform: 'Created ',name.
+]
+
 { #category : #accessing }
 RSExportCommand >> exporterClass [
 	^ self subclassResponsibility
