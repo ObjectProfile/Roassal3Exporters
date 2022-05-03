@@ -326,31 +326,6 @@ RSSVGExporterTest >> testLabelWithBorder [
 			color: Color red;
 			dashArray: #(4) );
 		text: 'Roassal Pharo').
-	self skip.
-	self 
-		assertSVGCanvas: c
-		equals: '<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<defs>
-<style>
-@import url(''https://fonts.googleapis.com/css2?family=Source+Sans+Pro'');
-</style>
-</defs>
-<text style="font-family: ''Source Sans Pro''; font-size: 80.0px;" textLength="473.1999999999999" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,11.640000000000072,278.44)" fill="#808080" stroke="#FF0000" stroke-width="1" stroke-dasharray="4" stroke-dashoffset="0" >Roassal Pharo</text>
-</svg>'
-
-	"	self 
-		assertSVGCanvas: c
-		equals: 
-'<?xml version=""1.0"" encoding=""UTF-8""?>
-<svg xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"" width=""500pt"" height=""500pt"" viewBox=""0 0 500 500"" style=""background-color:#FFFFFF"" version=""1.1"">
-<defs>
-<style>
-@import url(''https://fonts.googleapis.com/css2?family=Source+Sans+Pro''
-</style>
-</defs>
-<text style=""font-family: ''Source Sans Pro''; font-size: 49.8px; font-weight: 400; font-stretch: 5%;"" textLength=""462.3199999999999"" lengthAdjust=""spacingAndGlyphs"" transform=""matrix(1,0,0,1,11.640000000000072,278.44)"" fill=""#808080"" stroke=""#FF0000"" stroke-width=""1"" stroke-dasharray=""4"" stroke-dashoffset=""0"" >Roassal Pharo</text>
-</svg>'"
 ]
 
 { #category : #tests }
@@ -391,43 +366,7 @@ RSSVGExporterTest >> testLabels [
 	c addShape: (RSEllipse new
 		color: nil;
 		withBorder;
-		radius: 90).
-	self skip.
-	self 
-		assertSVGCanvas: c
-		equals: '<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<defs>
-<style>
-@import url(''https://fonts.googleapis.com/css2?family=Source+Sans+Pro'');
-</style>
-</defs>
-<rect x="-44.666666666666664" y="-16.9695" width="89.33333333333333" height="33.939" fill="none" stroke="#808080" stroke-width="0.9999999999999836" transform="matrix(0.8660254037844387,0.49999999999999994,-0.49999999999999994,0.8660254037844387,375.2850084141488,322.3333333333333)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="90.48" lengthAdjust="spacingAndGlyphs" transform="matrix(0.8660254037844387,0.49999999999999994,-0.49999999999999994,0.8660254037844387,331.08737604464875,307.8992115048916)" fill="#660099" fill-opacity="0.4980392156862745" >January</text>
-<rect x="-48.66666666666666" y="-16.9695" width="97.33333333333331" height="33.939" fill="none" stroke="#808080" stroke-width="0.9999999999999836" transform="matrix(0.5000000000000003,0.8660254037844386,-0.8660254037844386,0.5000000000000003,324.33333333333337,378.7491100292865)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="100.05333333333333" lengthAdjust="spacingAndGlyphs" transform="matrix(0.5000000000000003,0.8660254037844386,-0.8660254037844386,0.5000000000000003,290.2097468284418,338.8423244663426)" fill="#660099" fill-opacity="0.4980392156862745" >February</text>
-<rect x="-32.199999999999996" y="-16.9695" width="64.39999999999999" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(-2.4492935982947064e-16,-1,1,-2.4492935982947064e-16,250.00000000000003,382.2)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="68.74666666666667" lengthAdjust="spacingAndGlyphs" transform="matrix(-2.4492935982947064e-16,-1,1,-2.4492935982947064e-16,259.59850000000006,416.79999999999995)" fill="#660099" fill-opacity="0.4980392156862745" >March</text>
-<rect x="-25.400000000000002" y="-16.9695" width="50.800000000000004" height="33.939" fill="none" stroke="#808080" stroke-width="0.9999999999999836" transform="matrix(0.5,-0.8660254037844386,0.8660254037844386,0.5,187.30000000000004,358.5995856345686)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="51.92" lengthAdjust="spacingAndGlyphs" transform="matrix(0.5,-0.8660254037844386,0.8660254037844386,0.5,182.59483650489165,385.9461678660147)" fill="#660099" fill-opacity="0.4980392156862745" >April</text>
-<rect x="-21.28" y="-16.9695" width="42.56" height="33.939" fill="none" stroke="#808080" stroke-width="1.0000000000000082" transform="matrix(0.8660254037844384,-0.5000000000000004,0.5000000000000004,0.8660254037844384,144.96843902902327,310.64)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="45.28" lengthAdjust="spacingAndGlyphs" transform="matrix(0.8660254037844384,-0.5000000000000004,0.5000000000000004,0.8660254037844384,129.26020746740778,330.7925448382249)" fill="#660099" fill-opacity="0.4980392156862745" >May</text>
-<rect x="-26.64" y="-16.9695" width="53.28" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(1,-2.4492935982947064e-16,2.4492935982947064e-16,1,123.36,250.00000000000003)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="55.120000000000005" lengthAdjust="spacingAndGlyphs" transform="matrix(1,-2.4492935982947064e-16,2.4492935982947064e-16,1,95.33791666666667,259.59850000000006)" fill="#660099" fill-opacity="0.4980392156862745" >June</text>
-<rect x="-22.706666666666667" y="-16.9695" width="45.413333333333334" height="33.939" fill="none" stroke="#808080" stroke-width="1.0000000000000082" transform="matrix(0.8660254037844383,0.5,-0.5,0.8660254037844383,143.73290945295747,188.64666666666665)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="46.56" lengthAdjust="spacingAndGlyphs" transform="matrix(0.8660254037844383,0.5,-0.5,0.8660254037844383,118.5531949505637,185.1925448382249)" fill="#660099" fill-opacity="0.4980392156862745" >July</text>
-<rect x="-38.36000000000001" y="-16.9695" width="76.72000000000001" height="33.939" fill="none" stroke="#808080" stroke-width="1.0000000000000082" transform="matrix(0.4999999999999998,0.8660254037844388,-0.8660254037844388,0.4999999999999998,180.81999999999994,130.17672513238512)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="77.14666666666668" lengthAdjust="spacingAndGlyphs" transform="matrix(0.4999999999999998,0.8660254037844388,-0.8660254037844388,0.4999999999999998,153.00974682844168,101.20495366789268)" fill="#660099" fill-opacity="0.4980392156862745" >August</text>
-<rect x="-61.4" y="-16.9695" width="122.8" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(3.6739403974420594e-16,1,-1,3.6739403974420594e-16,249.99999999999997,88.6)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="123.84" lengthAdjust="spacingAndGlyphs" transform="matrix(3.6739403974420594e-16,1,-1,3.6739403974420594e-16,240.40149999999994,26.08)" fill="#660099" fill-opacity="0.4980392156862745" >September</text>
-<rect x="-44.626666666666665" y="-16.9695" width="89.25333333333333" height="33.939" fill="none" stroke="#808080" stroke-width="0.9999999999999959" transform="matrix(0.5,-0.8660254037844386,0.8660254037844386,0.5,322.31333333333333,124.74963260200259)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="90.56" lengthAdjust="spacingAndGlyphs" transform="matrix(0.5,-0.8660254037844386,0.8660254037844386,0.5,307.34150317155826,169.87860312448916)" fill="#660099" fill-opacity="0.4980392156862745" >October</text>
-<rect x="-57.199999999999996" y="-16.9695" width="114.39999999999999" height="33.939" fill="none" stroke="#808080" stroke-width="0.9999999999999836" transform="matrix(0.8660254037844384,-0.5000000000000004,0.5000000000000004,0.8660254037844384,386.13919347491367,171.39999999999992)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-style: italic;" textLength="116.72" lengthAdjust="spacingAndGlyphs" transform="matrix(0.8660254037844384,-0.5000000000000004,0.5000000000000004,0.8660254037844384,339.3233294093611,209.51254483822487)" fill="#660099" fill-opacity="0.4980392156862745" >November</text>
-<rect x="-56.01333333333333" y="-16.9695" width="112.02666666666666" height="33.939" fill="none" stroke="#808080" stroke-width="1" transform="matrix(1,-2.4492935982947064e-16,2.4492935982947064e-16,1,406.0133333333333,249.99999999999997)" />
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px; font-weight: bold;" textLength="114.34666666666666" lengthAdjust="spacingAndGlyphs" transform="matrix(1,-2.4492935982947064e-16,2.4492935982947064e-16,1,347.0445833333333,259.5985)" fill="#660099" fill-opacity="0.4980392156862745" >December</text>
-<ellipse cx="0" cy="0" rx="90" ry="90" fill="none" stroke="#808080" stroke-width="1" transform="matrix(1,0,0,1,250,250)" />
-</svg>'
+		radius: 90)
 ]
 
 { #category : #tests }
@@ -540,15 +479,7 @@ RSSVGExporterTest >> testLabelsWithoutFonts [
 	stream := WriteStream on: ''.
 	c svgExporter
 		disableFontDefs;
-		exportToStream: stream.
-	self skip.
-	self 
-		assert: stream contents
-		equals: ('<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px;" textLength="68.37333333333333" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,215.56,259.5985)" fill="#808080" >Mama</text>
-<text style="font-family: ''Source Sans Pro''; font-size: 26.666666666666668px;" textLength="39.38666666666667" lengthAdjust="spacingAndGlyphs" transform="matrix(1,0,0,1,230.05333333333334,359.5985)" fill="#808080" >Mia</text>
-</svg>' copyReplaceAll: String cr with: String crlf)
+		exportToStream: stream
 ]
 
 { #category : #tests }
@@ -591,26 +522,26 @@ RSSVGExporterTest >> testLineWithMarkers [
 	| c arrow axes circle dataLine |
 	c := RSCanvas new.
 	arrow := RSPolygon new
-		         points: { 
-				         (-10 @ 0).
-				         (0 @ -10).
-				         (10 @ 0) };
-		         color: Color black;
-		         size: 10.
+		points: {
+			(-10 @ 0).
+			(0 @ -10).
+			(10 @ 0) };
+		color: Color black;
+		size: 10.
 	circle := RSEllipse new
-		          radius: 2.5;
-		          color: Color red.
+		radius: 2.5;
+		color: Color red.
 	axes := RSPolyline new controlPoints: { 
-			        (10 @ 10).
-			        (10 @ 90).
-			        (90 @ 90) }.
+		(10 @ 10).
+		(10 @ 90).
+		(90 @ 90) }.
 	dataLine := RSPolyline new controlPoints: { 
-			            (15 @ 80).
-			            (29 @ 50).
-			            (43 @ 60).
-			            (57 @ 30).
-			            (71 @ 40).
-			            (85 @ 15) }.
+		(15 @ 80).
+		(29 @ 50).
+		(43 @ 60).
+		(57 @ 30).
+		(71 @ 40).
+		(85 @ 15) }.
 	axes markerEnd: (axes markerStart: arrow).
 	dataLine marker: circle.
 	axes model: 'Axes'.
@@ -620,22 +551,7 @@ RSSVGExporterTest >> testLineWithMarkers [
 	c addShape: axes.
 	c addShape: dataLine.
 	c camera zoomToFit: 250@250.
-	self skip.
-	self 
-		assertSVGCanvas: c
-		equals: '<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<polyline points="125,125  125,375  375,375  " fill="none" stroke="#808080" stroke-width="3.125" />
-<polyline points="109.375,140.625 125,109.375 140.625,140.625 " fill="#000000" />
-<polyline points="359.375,359.375 390.625,375 359.375,390.625 " fill="#000000" />
-<polyline points="140.625,343.75  184.375,250  228.125,281.25  271.875,187.5  315.625,218.75  359.375,140.625  " fill="none" stroke="#808080" stroke-width="3.125" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(-2.831822312485204,-1.3215170791597626,1.3215170791597626,-2.831822312485204,140.625,343.75)" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(2.831822312485204,1.3215170791597624,-1.3215170791597624,2.831822312485204,184.375,250)" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(-1.8163693553721758,2.5429170975210473,-2.5429170975210473,-1.8163693553721758,228.125,281.25)" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(2.831822312485204,1.3215170791597624,-1.3215170791597624,2.831822312485204,271.875,187.5)" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(-1.8163693553721758,2.5429170975210473,-2.5429170975210473,-1.8163693553721758,315.625,218.75)" />
-<ellipse cx="0" cy="0" rx="2.5" ry="2.5" fill="#FF0000" transform="matrix(2.726581299842876,1.52688552791201,-1.52688552791201,2.726581299842876,359.375,140.625)" />
-</svg>'
+	
 ]
 
 { #category : #tests }
