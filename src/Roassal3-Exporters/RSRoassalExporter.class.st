@@ -99,8 +99,18 @@ RSRoassalExporter >> morph [
 ]
 
 { #category : #configuration }
+RSRoassalExporter >> noDoubleDraw [
+	self cameraSetter noDoubleDraw
+]
+
+{ #category : #configuration }
 RSRoassalExporter >> noFixedShapes [
 	showFixedShapes := false
+]
+
+{ #category : #configuration }
+RSRoassalExporter >> useDoubleDraw [
+	self cameraSetter useDoubleDraw
 ]
 
 { #category : #configuration }

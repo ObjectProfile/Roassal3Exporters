@@ -70,6 +70,7 @@ RSVideoExporter >> exportFrame: index [
 	| name |
 	name := self nameFor: index.
 	canvas pngExporter
+		noDoubleDraw;
 		fileName: (tempFiles / name) pathString ;
 		export.
 	timer addTime: step milliSeconds.
