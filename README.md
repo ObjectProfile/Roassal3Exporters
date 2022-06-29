@@ -47,7 +47,7 @@ c @ RSCanvasController.
 
 (c shapes shapeFromModel: Collection) @ (RSLabeled new text:'Über, genießen').
 
-RSPDFExporter new
+RSPDFCairoExporter new
 		canvas: c;
 		exportToFile: '/tmp/foo.pdf' asFileReference
 
