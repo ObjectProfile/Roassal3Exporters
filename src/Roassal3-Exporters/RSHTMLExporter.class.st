@@ -7,13 +7,13 @@ Class {
 	#category : #'Roassal3-Exporters-Core'
 }
 
+{ #category : #accessing }
+RSHTMLExporter class >> extension [
+	^ 'html'
+]
+
 { #category : #public }
 RSHTMLExporter >> exportToFile: file [
 	"TODO"
 	self subclassResponsibility
-]
-
-{ #category : #accessing }
-RSHTMLExporter >> extension [
-	^ 'html'
 ]

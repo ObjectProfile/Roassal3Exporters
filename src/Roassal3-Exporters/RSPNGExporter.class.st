@@ -7,6 +7,11 @@ Class {
 	#category : #'Roassal3-Exporters-Core'
 }
 
+{ #category : #accessing }
+RSPNGExporter class >> extension [
+	^ 'png'
+]
+
 { #category : #public }
 RSPNGExporter >> exportToFile: file [
 	| morph |
@@ -21,9 +26,4 @@ RSPNGExporter >> exportToFile: file [
 		"The following may fail when the VM is run in the headless mode"
 		[ surface finish ] on: Error do: [ :ex  | "Do nothing" ]. 
 		 ]
-]
-
-{ #category : #accessing }
-RSPNGExporter >> extension [
-	^ 'png'
 ]

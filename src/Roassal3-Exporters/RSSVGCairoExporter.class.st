@@ -7,12 +7,12 @@ Class {
 	#category : #'Roassal3-Exporters-Core'
 }
 
+{ #category : #accessing }
+RSSVGCairoExporter class >> extension [
+	^ 'svg'
+]
+
 { #category : #public }
 RSSVGCairoExporter >> cairoSurfaceClass [ 
 	^ AthensCairoSVGSurface
-]
-
-{ #category : #accessing }
-RSSVGCairoExporter >> extension [
-	^ 'svg'
 ]

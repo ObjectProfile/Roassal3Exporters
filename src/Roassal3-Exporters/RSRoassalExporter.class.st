@@ -14,6 +14,11 @@ Class {
 }
 
 { #category : #accessing }
+RSRoassalExporter class >> extension [
+	^ self subclassResponsibility
+]
+
+{ #category : #accessing }
 RSRoassalExporter >> baseName [
 	| file ext |
 	file := self fileName.
@@ -73,7 +78,7 @@ RSRoassalExporter >> exportToFile: file [
 
 { #category : #accessing }
 RSRoassalExporter >> extension [
-	^ self subclassResponsibility
+	^ self class extension
 ]
 
 { #category : #accessing }

@@ -16,6 +16,11 @@ Class {
 	#category : #'Roassal3-Exporters-Core'
 }
 
+{ #category : #accessing }
+RSSVGExporter class >> extension [
+	^ 'svg'
+]
+
 { #category : #public }
 RSSVGExporter >> disableFontDefs [
 	shouldHaveFontDefs := false
@@ -54,11 +59,6 @@ RSSVGExporter >> exportToStream: aStream [
 RSSVGExporter >> exporterFontStrategy: strategy [
 	self assert: strategy class superclass = RSExporterFontStrategy.
 	exporterFontStrategy := strategy 
-]
-
-{ #category : #accessing }
-RSSVGExporter >> extension [
-	^ 'svg'
 ]
 
 { #category : #initialization }
