@@ -21,6 +21,11 @@ Class {
 	#category : #'Roassal3-Exporters-Video'
 }
 
+{ #category : #accessing }
+RSVideoExporter class >> extension [
+	^ 'mp4'
+]
+
 { #category : #public }
 RSVideoExporter class >> ffmpegPath [
 	^ ffmpegPath ifNil: [ ffmpegPath := self resolveffmpegPath ].
