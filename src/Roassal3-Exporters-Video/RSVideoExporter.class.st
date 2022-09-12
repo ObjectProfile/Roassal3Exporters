@@ -149,6 +149,12 @@ RSVideoExporter >> fpsOutPut: aNumber [
 	fpsOutput := aNumber.
 ]
 
+{ #category : #accessing }
+RSVideoExporter >> framesDirectory: aFile [
+	tempFiles := aFile.
+	self keepTempDir
+]
+
 { #category : #initialization }
 RSVideoExporter >> initialize [
 	super initialize.
@@ -226,6 +232,7 @@ RSVideoExporter >> processArguments [
 		add: '-i';
 		add: '*.png';
 		yourself.
+	
 	hasTransparency ifTrue: [ 
 		"-vcodec prores_ks -pix_fmt yuva444p10le -profile:v 4444"
 		args
@@ -236,6 +243,7 @@ RSVideoExporter >> processArguments [
 			add: '-profile:v';
 			add: '4444' ]
 	ifFalse: [ 
+		"-framerate 30 -pattern_type glob -i *.png -c:v libx264 -pix_fmt yuv420p".
 		args
 			add: '-c:v';
 			add: 'libx264';
