@@ -15,6 +15,9 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 		do: [
 			"our dependencies"
 			"https://github.com/ObjectProfile/Roassal3Exporters"
+			spec
+				baseline: 'Roassal3'
+				with: [ spec repository: 'github://ObjectProfile/Roassal3/src' ].
 			spec 
 				baseline: 'OSSubprocess'
 				with: [ spec repository: 'github://pharo-contributions/OSSubprocess/repository' ].
