@@ -1,7 +1,7 @@
-Extension { #name : #RSEllipse }
+Extension { #name : #RSCircularShape }
 
 { #category : #'*Roassal3-Exporters' }
-RSEllipse >> writeSVG2On: aRSSVG2Exporter [ 
+RSCircularShape >> writeSVG2On: aRSSVG2Exporter [ 
 	| rect pos ext s |
 	rect := self baseRectangle.
 	pos := rect floatCenter.
