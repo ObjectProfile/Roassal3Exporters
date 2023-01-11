@@ -110,17 +110,16 @@ RSSVGExporterTest >> testBitmap [
 	| c |
 	c := RSCanvas new.
 	c addShape: (RSBitmap new
-		form: (self iconNamed: #eyedropper);
+		form: (self iconNamed: #pharo);
 		extent: 200@350).
 
-	self 
+	self
 		assertSVGCanvas: c
-		equals: 
+		equals:
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACYAAAAkCAMAAADSK7iXAAADAFBMVEX///8AAAD///99fX3/AAAA/wAAAP8A/////wAAAAAdHR0+Pj5dXV2dnZ28vLzd3d0FBQUNDQ0VFRUlJSUuLi42NjZGRkZOTk5VVVVlZWVtbW11dXWFhYWNjY2VlZWlpaWsrKy0tLTExMTMzMzV1dXl5eXt7e319fUAAAAAMQAAYwAAlwAAyQAA/wAAADEAMTEAYzEAlzEAyTEA/zEAAGMAMWMAY2MAl2MAyWMA/2MAAJcAMZcAY5cAl5cAyZcA/5cAAMkAMckAY8kAl8kAyckA/8kAAP8AMf8AY/8Al/8Ayf8A//8xAAAxMQAxYwAxlwAxyQAx/wAxADExMTExYzExlzExyTEx/zExAGMxMWMxY2Mxl2MxyWMx/2MxAJcxMZcxY5cxl5cxyZcx/5cxAMkxMckxY8kxl8kxyckx/8kxAP8xMf8xY/8xl/8xyf8x//9jAABjMQBjYwBjlwBjyQBj/wBjADFjMTFjYzFjlzFjyTFj/zFjAGNjMWNjY2Njl2NjyWNj/2NjAJdjMZdjY5djl5djyZdj/5djAMljMcljY8ljl8ljyclj/8ljAP9jMf9jY/9jl/9jyf9j//+XAACXMQCXYwCXlwCXyQCX/wCXADGXMTGXYzGXlzGXyTGX/zGXAGOXMWOXY2OXl2OXyWOX/2OXAJeXMZeXY5eXl5eXyZeX/5eXAMmXMcmXY8mXl8mXycmX/8mXAP+XMf+XY/+Xl/+Xyf+X///JAADJMQDJYwDJlwDJyQDJ/wDJADHJMTHJYzHJlzHJyTHJ/zHJAGPJMWPJY2PJl2PJyWPJ/2PJAJfJMZfJY5fJl5fJyZfJ/5fJAMnJMcnJY8nJl8nJycnJ/8nJAP/JMf/JY//Jl//Jyf/J////AAD/MQD/YwD/lwD/yQD//wD/ADH/MTH/YzH/lzH/yTH//zH/AGP/MWP/Y2P/l2P/yWP//2P/AJf/MZf/Y5f/l5f/yZf//5f/AMn/Mcn/Y8n/l8n/ycn//8kAAAD/Mf//Y///l///yf/////5sR1SAAABAHRSTlP///////////8A////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////AP//////OE00OwAAAR5JREFUeF6t1DGygjAQBmCHVkYroplhFBjzwmHouAidF8ALZOzSeYF4g1Smeu8CtlRJR5vqJejTV0CWwq2/2QnL/ruwdk4t7CfYj5IXmKnOaMkhdjO+5DHMlDF93xvZ4BD71oNyrAmx7ql4VQbYSzXlFFNK6f9qgslOaq/0U02wi2tjetPJYzWoqbdxZaQcWpWBn7Vfcfeqtxpn2ToquB/Enxpl2VdED7g5Vy81xpwi91Od1m81wnLqVJtYe64DLKeUXFsErKXvdcU1sL2riBKxXQJLnrtPFNsYyELhFUJAZJy6CxQDySr8uBAGAph7lcRATjM/riQF4rxfExEvUyD1rCACbcDjwA4t2sE3hKUYPDXsUTMuEpt3uD7LoPoFh1uzvVTXHQoAAAAASUVORK5CYII=" x="-19" y="-18" width="38" height="36" transform="matrix(5.2631578947368425,0,0,9.722222222222221,250,250)" />
+<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEJklEQVR4XmP4//8/w3/iMQcQKwAx084zlzSsMpoSUjvmlfQs26wBFOMBYvX/pJnHwECqBiBm2X/2uo92bOVDm4zGb0nNU77oRJe/K5qw2I8Ms8hyAENhmm/f3UUJP39tyf7/a1fZ/1fzvP8v6UreCZTTA2ItaCiJATEvELNS4gAWIBYEYhkglgVieSCW+94e0vClxPL/jyV1/3+u7f7/rTPs//cG75mELMPnACaoZg5oXIJcLgTEAlAxFE2PDOSrHkX7/7+bFPn/bnLk/9s+jv8fhnmvxqaW6lEwX0A4d62J6b8V6pr/V+vo/l8gLPJ/m4fn/wW8fP83WFhNAqpRIsUhJDtgg29g3jxVzX/TxaT/LzUy+z9TVOr/El3D/4vVdf/MFpbIhqqTAkUVELNT2wEgn7FPlFV7PUlO7f98C/v/k2VV/0+WUfm/xN7tI1COEU29MNQx7BQ7oEPJWK5Xw7StR914X4+q0Z9uVYP/s+w9//eo6P/vUdb736+q/2+mucO1PiWdef0KBgpo+vmAmB+Imcl2QLOOnVuLnu3fFl2b/61A3GHo8H+Cnc//dm0rILb836Fl8b9L3+Z/p6bFq35NY0kc5nBDEzgTWVHQYOFuVGfifq3exP1/l2vY/0ZT9/8NRi5A7Py/0dAJhE+WKxnzE1OYwRxBciKssAn0qLAOuNHqk/C/yjrgf5WV//9qS7//1Ra+r+ss/d1png2znaLki51j7tYGpP8vdoz6X+IY+bPUKbKnwCFAgC5FcY5X+sIcr7T/pSH5//M8U9cVuierwKPIoYGF5g5IDyq6nBZUeLujpNsbJWQCK4Wz/PIaaO6A+IianUlJZaCUzAkXCy33TgqtuJsUUn6Opg5oaNjPEp3YpgWrOyJimmyj41r2xMQ1/4+JbfofG9v0hi7VcXr5XP2Q9Al7Q9P6/4cBcWhq7/+wlN7/Eak9K2nuAP+Cudn+BbN/++XO+u8PxjP/B+bM/B6QPa0tNLSBjaYOcC1dae1euvyfR+my/55gvPSnZ8niab7li+TICUmSHeBQv6nfsXbjf+fajX8da9bPcapeK4+uxq1mlSLNHGDdsme7ddveKzZtO82xyds1bs23a9jWQjMHmPWdnK7eeYQXw2GdR6TMOw8tsug8+N+y4+BCmjgACBiNZ55BqWjMJ53gM5h4tt5wwrkvhhPO/DcC4f5Te2meDfWm3xHTmn6zVWfmzffaM278B2EdEJ5+7b/OtGuHaeYAve6L3EBLG7RnXP8CsxgNP9Gec9OMJg4wnvlAUnvGzStYLZ5+4xuQ7tCeepWHZtlQa/r1BgyLZ958AXRUndrMmyI0Lwd0Zt5YhbD4xgNgnOfL9B3jJNdikh0AtPQo0PIPOjNu5QJzAyulFpPugOnXNxvPvCtHLYtJd8DUqxLUthyEAWCUJp8plq37AAAAAElFTkSuQmCC" x="-16" y="-16" width="32" height="32" transform="matrix(6.25,0,0,10.9375,250,250)" />
 </svg>'
-	
 ]
 
 { #category : #tests }
