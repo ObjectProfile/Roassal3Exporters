@@ -48,6 +48,6 @@ RSAFrameExporterExamples >> example02AFrameExport [
 
 	m canvas aFrameExporter
 		noFloor;
-		fileName: '/tmp/foo';
+		fileName: 'foo';
 		exportAndOpen
 ]
