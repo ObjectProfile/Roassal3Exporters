@@ -69,12 +69,11 @@ RSExporterExamples >> example05SVGExport [
 { #category : #examples }
 RSExporterExamples >> example06SVGExport [
 	"should produce a pdf with resolution 247@247"
-	<script: 'self new example06PDFExport'>
+	<script: 'self new example06SVGExport'>
 	self openFile: (self canvas svgCairoExporter
 		zoomToShapes;
 		fileName: 'test';
 		export) asFileReference
-	
 ]
 
 { #category : #examples }
