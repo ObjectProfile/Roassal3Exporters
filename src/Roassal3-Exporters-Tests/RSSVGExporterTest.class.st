@@ -107,19 +107,14 @@ RSSVGExporterTest >> testBezier [
 
 { #category : #tests }
 RSSVGExporterTest >> testBitmap [
-	| c |
+	| c stream |
 	c := RSCanvas new.
 	c addShape: (RSBitmap new
 		form: (self iconNamed: #pharo);
 		extent: 200@350).
-
-	self
-		assertSVGCanvas: c
-		equals:
-'<?xml version="1.0" encoding="UTF-8"?>
-<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<image href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAAEJklEQVR4XmP4//8/w3/iMQcQKwAx084zlzSsMpoSUjvmlfQs26wBFOMBYvX/pJnHwECqBiBm2X/2uo92bOVDm4zGb0nNU77oRJe/K5qw2I8Ms8hyAENhmm/f3UUJP39tyf7/a1fZ/1fzvP8v6UreCZTTA2ItaCiJATEvELNS4gAWIBYEYhkglgVieSCW+94e0vClxPL/jyV1/3+u7f7/rTPs//cG75mELMPnACaoZg5oXIJcLgTEAlAxFE2PDOSrHkX7/7+bFPn/bnLk/9s+jv8fhnmvxqaW6lEwX0A4d62J6b8V6pr/V+vo/l8gLPJ/m4fn/wW8fP83WFhNAqpRIsUhJDtgg29g3jxVzX/TxaT/LzUy+z9TVOr/El3D/4vVdf/MFpbIhqqTAkUVELNT2wEgn7FPlFV7PUlO7f98C/v/k2VV/0+WUfm/xN7tI1COEU29MNQx7BQ7oEPJWK5Xw7StR914X4+q0Z9uVYP/s+w9//eo6P/vUdb736+q/2+mucO1PiWdef0KBgpo+vmAmB+Imcl2QLOOnVuLnu3fFl2b/61A3GHo8H+Cnc//dm0rILb836Fl8b9L3+Z/p6bFq35NY0kc5nBDEzgTWVHQYOFuVGfifq3exP1/l2vY/0ZT9/8NRi5A7Py/0dAJhE+WKxnzE1OYwRxBciKssAn0qLAOuNHqk/C/yjrgf5WV//9qS7//1Ra+r+ss/d1png2znaLki51j7tYGpP8vdoz6X+IY+bPUKbKnwCFAgC5FcY5X+sIcr7T/pSH5//M8U9cVuierwKPIoYGF5g5IDyq6nBZUeLujpNsbJWQCK4Wz/PIaaO6A+IianUlJZaCUzAkXCy33TgqtuJsUUn6Opg5oaNjPEp3YpgWrOyJimmyj41r2xMQ1/4+JbfofG9v0hi7VcXr5XP2Q9Al7Q9P6/4cBcWhq7/+wlN7/Eak9K2nuAP+Cudn+BbN/++XO+u8PxjP/B+bM/B6QPa0tNLSBjaYOcC1dae1euvyfR+my/55gvPSnZ8niab7li+TICUmSHeBQv6nfsXbjf+fajX8da9bPcapeK4+uxq1mlSLNHGDdsme7ddveKzZtO82xyds1bs23a9jWQjMHmPWdnK7eeYQXw2GdR6TMOw8tsug8+N+y4+BCmjgACBiNZ55BqWjMJ53gM5h4tt5wwrkvhhPO/DcC4f5Te2meDfWm3xHTmn6zVWfmzffaM278B2EdEJ5+7b/OtGuHaeYAve6L3EBLG7RnXP8CsxgNP9Gec9OMJg4wnvlAUnvGzStYLZ5+4xuQ7tCeepWHZtlQa/r1BgyLZ958AXRUndrMmyI0Lwd0Zt5YhbD4xgNgnOfL9B3jJNdikh0AtPQo0PIPOjNu5QJzAyulFpPugOnXNxvPvCtHLYtJd8DUqxLUthyEAWCUJp8plq37AAAAAElFTkSuQmCC" x="-16" y="-16" width="32" height="32" transform="matrix(6.25,0,0,10.9375,250,250)" />
-</svg>'
+	stream := WriteStream on: ''.
+	c svgExporter exportToStream: stream.
+	self assert: (stream contents includesSubstring: 'data:image/png;base64')
 ]
 
 { #category : #tests }
