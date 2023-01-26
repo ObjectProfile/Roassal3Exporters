@@ -10,7 +10,8 @@ Class {
 
 { #category : #running }
 RSCanvasExporterTest >> setUp [
-	canvas := RSCanvas new.
+	super setUp.
+	canvas := RSCanvas new
 ]
 
 { #category : #running }
@@ -18,6 +19,7 @@ RSCanvasExporterTest >> tearDown [
 	file isString ifTrue: [ ^ self ].
 	file ifNotNil: [ file delete ].
 	file := nil.
+	super tearDown
 ]
 
 { #category : #tests }

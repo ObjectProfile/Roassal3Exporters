@@ -2,7 +2,6 @@ Class {
 	#name : #RSAFrameServerTest,
 	#superclass : #TestCase,
 	#instVars : [
-		'aFrameExporter',
 		'server'
 	],
 	#category : #'Roassal3-Exporters-AFrame-Tests'
@@ -43,7 +42,8 @@ RSAFrameServerTest >> setUp [
 
 { #category : #running }
 RSAFrameServerTest >> tearDown [
-	server stop
+	server stop.
+	super tearDown
 ]
 
 { #category : #tests }
