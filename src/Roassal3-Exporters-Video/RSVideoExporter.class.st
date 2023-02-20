@@ -31,6 +31,12 @@ RSVideoExporter class >> ffmpegPath [
 	^ ffmpegPath ifNil: [ ffmpegPath := self resolveffmpegPath ].
 ]
 
+{ #category : #accessing }
+RSVideoExporter class >> inspectCommand [
+	<script>
+	^ self new fullCommand inspect
+]
+
 { #category : #public }
 RSVideoExporter class >> resolveffmpegPath [
 	"Intall ffmepg in your computer with
@@ -100,8 +106,15 @@ RSVideoExporter >> exportToDirectory: directory [
 
 { #category : #public }
 RSVideoExporter >> exportToFile: file [
+	| firstTime |
+	'Video exporting Started: ' trace.
+	firstTime := Time now traceCr.
 	self exportToDirectory: (file parent / file path base) createDirectory.
 	self exportWithffmpeg: file.
+	'Ended: ' trace.
+	Time now traceCr.
+	'Duration: ' trace.
+	(Time now asDuration - firstTime asDuration) traceCr
 ]
 
 { #category : #private }
@@ -153,6 +166,18 @@ RSVideoExporter >> fpsOutPut: aNumber [
 RSVideoExporter >> framesDirectory: aFile [
 	tempFiles := aFile.
 	self keepTempDir
+]
+
+{ #category : #accessing }
+RSVideoExporter >> fullCommand [
+	^ String streamContents: [ :stream |
+		stream << 'ffmpeg '.
+		self processArguments do: [ :each |
+			(each includes: $*)
+				ifTrue: [ stream << '"' << each << '"' ]
+				ifFalse: [ stream << each ].
+			] separatedBy: [ stream space ].
+		 ]
 ]
 
 { #category : #initialization }
