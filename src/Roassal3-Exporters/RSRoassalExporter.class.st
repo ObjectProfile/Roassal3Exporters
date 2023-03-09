@@ -113,6 +113,11 @@ RSRoassalExporter >> noFixedShapes [
 	showFixedShapes := false
 ]
 
+{ #category : #removing }
+RSRoassalExporter >> removeIfNecessary: aFileName [
+	aFileName exists ifTrue: [ aFileName delete ]
+]
+
 { #category : #configuration }
 RSRoassalExporter >> useDoubleDraw [
 	self cameraSetter useDoubleDraw

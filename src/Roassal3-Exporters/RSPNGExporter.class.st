@@ -15,6 +15,7 @@ RSPNGExporter class >> extension [
 { #category : #public }
 RSPNGExporter >> exportToFile: file [
 	| morph |
+	self removeIfNecessary: file.
 	morph := self morph.
 	self cameraSetter set: [
 		| surface |
@@ -22,8 +23,8 @@ RSPNGExporter >> exportToFile: file [
 		surface drawDuring: [ :can | morph fullDrawOnAthensCanvas: can ].
 		surface writeToPng: file pathString.
 		surface flush.
-		
+
 		"The following may fail when the VM is run in the headless mode"
-		[ surface finish ] on: Error do: [ :ex  | "Do nothing" ]. 
+		[ surface finish ] on: Error do: [ :ex  | ex traceCr ].
 		 ]
 ]

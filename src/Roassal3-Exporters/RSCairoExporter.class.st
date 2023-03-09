@@ -22,16 +22,16 @@ RSCairoExporter >> createCairoSurfaceFor: file [
 { #category : #public }
 RSCairoExporter >> exportToFile: file [
 	| surface oldSurface morph |
+	self removeIfNecessary: file.
 	surface := self createCairoSurfaceFor: file.
 	morph := self morph.
-	self cameraSetter set: [ 
+	self cameraSetter set: [
 		oldSurface := morph surface.
 		morph surface: surface.
-		
+
 		morph drawShapes.
 		surface close.
-		
+
 		surface := nil.
-		morph surface: oldSurface. ].
-	
+		morph surface: oldSurface. ]
 ]

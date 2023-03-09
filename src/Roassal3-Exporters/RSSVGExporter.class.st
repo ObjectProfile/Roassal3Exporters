@@ -38,8 +38,8 @@ RSSVGExporter >> enableFontDefs [
 
 { #category : #public }
 RSSVGExporter >> exportToFile: file [
-	file writeStreamDo: [ :aStream | self exportToStream: aStream ].
-	
+	self removeIfNecessary: file.
+	file writeStreamDo: [ :aStream | self exportToStream: aStream ]
 ]
 
 { #category : #public }
