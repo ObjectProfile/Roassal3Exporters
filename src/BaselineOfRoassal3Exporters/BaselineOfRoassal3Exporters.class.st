@@ -15,7 +15,7 @@ BaselineOfRoassal3Exporters >> baseline: spec [
 		do: [ | hasCanvas |
 			"our dependencies"
 			"https://github.com/ObjectProfile/Roassal3Exporters"
-			hasCanvas := (Smalltalk globals at: #RSCanvas) notNil.
+			hasCanvas := Smalltalk globals includesKey: #RSCanvas.
 			hasCanvas ifFalse: [
 				spec
 				baseline: 'Roassal3'
