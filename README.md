@@ -4,7 +4,7 @@
 <!-- 
 [![.github/workflows/main.yml](https://github.com/ObjectProfile/Roassal3Exporters/workflows/CI/badge.svg)](https://github.com/ObjectProfile/Roassal3Exporters/actions)-->
 
-Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3) and Pharo 9
+Exporters for [Roassal3](https://github.com/ObjectProfile/Roassal3).
 
 
 Execute the following code snippet in a Playground:
