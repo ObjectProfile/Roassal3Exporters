@@ -18,6 +18,6 @@ RSZoomToShapesSetter >> setCamera [
 	| rect |
 	rect := canvas encompassingRectangle.
 	canvas camera
-		scale: 1;
+		privateScale: 1; "prevent announcements, similarly to position: vs translateTo:"
 		position: (canvas camera positionFromSpace: rect floatCenter)
 ]
