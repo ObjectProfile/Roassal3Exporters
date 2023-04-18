@@ -14,9 +14,10 @@ RSZoomToShapesSetter >> extent [
 
 { #category : #hooks }
 RSZoomToShapesSetter >> setCamera [
+
 	| rect |
-	rect := canvas encompassingRectangle. 
+	rect := canvas encompassingRectangle.
 	canvas camera
-		position: rect floatCenter;
-		scale: 1
+		privateScale: 1; "prevent announcements, similarly to position: vs translateTo:"
+		position: (canvas camera positionFromSpace: rect floatCenter)
 ]
