@@ -42,6 +42,7 @@ RSAbstractCamSetter >> set: aBlock [
 	| camera |
 	self setCanvasCamera.
 	camera := canvas camera copy.
+	camera matrix: canvas camera matrix copy.
 	self shouldUseDoubleDraw 
 		ifTrue: [ canvas morph drawOnMockCanvas ].
 	self setCamera.
