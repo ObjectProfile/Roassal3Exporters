@@ -505,9 +505,9 @@ RSSVGExporterTest >> testLine [
 		equals: 
 '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="500pt" height="500pt" viewBox="0 0 500 500" style="background-color:#FFFFFF" version="1.1">
-<ellipse cx="0" cy="0" rx="15" ry="15" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,53.125,53.125)" />
-<rect x="-25" y="-25" width="50" height="50" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,428.125,428.125)" />
-<line x1="79.64150429449553" y1="79.64150429449553" x2="367.9917478527522" y2="367.9917478527522" fill="none" stroke="#808080" stroke-width="1.875" />
+<ellipse cx="0" cy="0" rx="15" ry="15" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,619.140625,619.140625)" />
+<rect x="-25" y="-25" width="50" height="50" fill="#9F9F9F" transform="matrix(1.875,0,0,1.875,994.140625,994.140625)" />
+<line x1="645.6571292944956" y1="645.6571292944956" x2="934.0073728527523" y2="934.0073728527523" fill="none" stroke="#808080" stroke-width="1.875" />
 </svg>'.
 	
 ]
