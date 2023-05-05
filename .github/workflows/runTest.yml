@@ -22,9 +22,24 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
+    
+      - name: Cancel Previous Runs
+        uses: styfle/cancel-workflow-action@0.9.0
+        with:
+          access_token: ${{ github.token }}
+      
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
-
-      # Runs a single command using the runners shell
-      - name: Run unit tests
-        run: bash ./scripts/runTest.sh
+      # depth 0 will download all the repository history
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+      
+      # This will delete roassal and numeric scales and it executes the tests again
+      - name: Run pharo Tests
+        id: tests
+        uses: akevalion/PharoTestsAction@v1
+        with:
+          removes-repo: 'Roassal, Numeric'
+          baseline: 'Roassal3Exporters'
+          group: 'default'
+          tests: 'Roassal3-Exporters'
