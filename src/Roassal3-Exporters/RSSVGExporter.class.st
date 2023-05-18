@@ -247,7 +247,7 @@ RSSVGExporter >> visitCanvas: aRSCanvas [
 	pathTransform
 		translateBy: (extent / 2) asFloatPoint;
 		scaleBy: aRSCanvas camera scale asFloat;
-		translateBy: aRSCanvas camera position negated asFloatPoint.
+		translateBy: (aRSCanvas camera position / aRSCanvas camera scale) asFloatPoint.
 	self 
 		write: '<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="'.
