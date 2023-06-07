@@ -94,7 +94,7 @@ RSRoassalExporter >> fileName: aString [
 { #category : #initialization }
 RSRoassalExporter >> initialize [
 	super initialize.
-	self withFixedShapes.
+	self withoutFixedShapes.
 	self zoomToCurrentCamera.
 ]
 
@@ -110,7 +110,10 @@ RSRoassalExporter >> noDoubleDraw [
 
 { #category : #configuration }
 RSRoassalExporter >> noFixedShapes [
-	showFixedShapes := false
+
+	self deprecated: 'Use withoutFixedShapes instead'
+		transformWith: '`@receiver noFixedShapes' -> ' `@receiver withoutFixedShapes'.
+	self withoutFixedShapes
 ]
 
 { #category : #removing }
@@ -126,6 +129,11 @@ RSRoassalExporter >> useDoubleDraw [
 { #category : #configuration }
 RSRoassalExporter >> withFixedShapes [
 	showFixedShapes := true
+]
+
+{ #category : #configuration }
+RSRoassalExporter >> withoutFixedShapes [
+	showFixedShapes := false
 ]
 
 { #category : #configuration }
