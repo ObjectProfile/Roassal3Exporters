@@ -30,13 +30,12 @@ RSExporterTest >> exporterClass: aClass [
 { #category : #tests }
 RSExporterTest >> sample [
 	| c menMeans womenMeans lb |
-	c := RSChart new.
+	c := RSCompositeChart new.
 	c extent: 300@200.
 	menMeans := #(20 35 30 35 27).
 	womenMeans := #(25 32 34 20 25).
-	c barHeights: menMeans.
-	(c barHeights: womenMeans)
-		bottom: menMeans.
+	c add: (RSAbstractChart barHeights: menMeans).
+	c add: ((RSAbstractChart barHeights: womenMeans) bottom: menMeans).
 	c addDecoration: (RSHorizontalTick new fromNames: #(Day1 Day2 Day3 Day4 Day5)).
 	c addDecoration: (RSVerticalTick new integer).
 	c ylabel: 'Scores'.
@@ -65,7 +64,7 @@ RSExporterTest >> testExport01 [
 
 	exporter
 		canvas: canvas;
-		noFixedShapes;
+		withoutFixedShapes;
 		zoomToShapes.
 	self assert: exporter cameraSetter class equals: RSZoomToShapesSetter.
 	file := exporter export.
@@ -77,14 +76,15 @@ RSExporterTest >> testExport01 [
 
 { #category : #tests }
 RSExporterTest >> testExport1080p [
+
 	| exporter canvas |
 	exporter := self exporterClass new.
 	canvas := self sample.
-	canvas extent: 1920@1080.
+	canvas extent: 1920 @ 1080.
 	exporter
 		canvas: canvas;
-		noFixedShapes;
-		zoomToShapes.
+		withoutFixedShapes;
+		zoomToShapes
 ]
 
 { #category : #tests }
