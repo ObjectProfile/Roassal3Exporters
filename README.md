@@ -1,3 +1,26 @@
+# Attention
+<img width="400" alt="image" src="https://github.com/ObjectProfile/Roassal3/assets/10532890/c92f4033-954f-4e29-a13d-d90ab23dffcd">
+
+WE ARE MOVING
+- Roassal3 => https://github.com/pharo-graphics/Roassal
+- Roassal3Exporters => https://github.com/pharo-graphics/RoassalExporters
+- Roassal3Documentation => https://github.com/pharo-graphics/RoassalDocumentation
+  
+New repositories:
+- RoassalLayouts =>  https://github.com/pharo-graphics/RoassalLayouts
+
+Roassal is part of pharo thats why we want to keep it as part of the pharo ecosystem, thats why we are moving and this repository will be frozen.
+
+To load pharo-graphics/Roassal in a pharo10/11 you will have to remove roassal3 first to avoid conflicts.
+```st
+#(Roassal3 Numeric) do: [:string |
+  regExp := '*', string ,'*'.
+  packages := RPackageOrganizer default packages
+	  select: [ :each | regExp match: each name ].
+  packages do: [ :each | each removeFromSystem ].
+]
+```
+
 # Roassal3Exporter
 [![CI](https://github.com/ObjectProfile/Roassal3Exporters/actions/workflows/runTest.yml/badge.svg)](https://github.com/ObjectProfile/Roassal3Exporters/actions/workflows/runTest.yml)
 
